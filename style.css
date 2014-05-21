@@ -5,14 +5,14 @@
 	background-color: black;
 }
 
-.gridCell {
+.gridCellDiv {
 	position: absolute;
 	background-color: white;
 	opacity: 0.3;
 	transition: opacity 0.2s;
 }
 
-.gridCell:hover {
+.gridCellDiv:hover {
 	cursor: pointer;
 	opacity: 0.5;
 }

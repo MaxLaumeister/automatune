@@ -22,15 +22,19 @@ function initGame(divID) {
 			var row = new Array(grid_height);
 			for (var j = 0; j < grid_height; j++) {
 				var el = document.createElement("div");
-				el.className = "gridCell";
+				el.className = "gridCellDiv";
 				el.style.left = (cell_width_percent * i + cell_spacing_percent) + "%";
 				el.style.top = (cell_height_percent * j + cell_spacing_percent) + "%";
 				el.style.width = (cell_width_percent - cell_spacing_percent)+ "%";
 				el.style.height = (cell_height_percent - cell_spacing_percent)+ "%";
 				el.style["border-radius"] = "10%";
 				gameContainer.appendChild(el);
+				row[j] = new gridCell(el);
 			}
+			grid[i] = row;
 		}
+		
+		console.log(grid);
 	}
 	
 	function onResize() {
@@ -40,6 +44,28 @@ function initGame(divID) {
 		var border_radius = (border_radius_ratio * Math.min(game_width, game_height));
 		gameContainer.style["border-radius"] = border_radius + "px";
 		gameContainer.style["border-radius"] = border_radius + "px";*/
+	}
+	
+	function gridCell(element) {
+		this.contents = {}; // Arrows, modifiers, etc.
+		this.element = element;
+		element.onclick = this.onClick.bind(this);
+	}
+	
+	gridCell.prototype = {
+		setArrow: function(dir) {
+			// 0 is right, 1 is up, 2 is left, 3 is down
+			
+		},
+		onClick: function() {
+			console.log("Clicked");
+			this.element.style["background-color"] = "red";
+			var img = document.createElement("img");
+			img.src = "images/arrow.svg";
+			img.style.width = "100%";
+			img.style.height = "100%";
+			this.element.appendChild(img);
+		}
 	}
 	
 	init();
