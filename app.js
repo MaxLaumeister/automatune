@@ -5,13 +5,13 @@ function initGame(divID) {
 	var border_radius_ratio = 0.01;
 	var ms_per_tick = 1000;
 	
-	function init() {
-		var grid_width = 10; // columns
-		var grid_height = 10; // rows
-		var cell_spacing_percent = 1;
-		var cell_width_percent = ((100 - cell_spacing_percent) / grid_width);
-		var cell_height_percent = ((100 - cell_spacing_percent) / grid_height);
+	var grid_width = 10; // columns
+	var grid_height = 10; // rows
+	var cell_spacing_percent = 1;
+	var cell_width_percent = ((100 - cell_spacing_percent) / grid_width) - cell_spacing_percent;
+	var cell_height_percent = ((100 - cell_spacing_percent) / grid_height) - cell_spacing_percent;
 	
+	function init() {
 		// Initialize grid
 		var grid = new Array(grid_width);
 		for (var i = 0; i < grid_width; i++) {
@@ -19,11 +19,11 @@ function initGame(divID) {
 			for (var j = 0; j < grid_height; j++) {
 				var el = document.createElement("div");
 				el.className = "gridCellDiv";
-				el.style.left = (cell_width_percent * i + cell_spacing_percent) + "%";
-				el.style.top = (cell_height_percent * j + cell_spacing_percent) + "%";
-				el.style.width = (cell_width_percent - cell_spacing_percent)+ "%";
-				el.style.height = (cell_height_percent - cell_spacing_percent)+ "%";
-				el.style["border-radius"] = "10%";
+				var pos = getGridPosition(i, j);
+				el.style.left = pos.x + "%";
+				el.style.top = pos.y + "%";
+				el.style.width = cell_width_percent + "%";
+				el.style.height = cell_height_percent + "%";
 				gameContainer.appendChild(el);
 				row[j] = new gridCell(el);
 			}
@@ -31,7 +31,7 @@ function initGame(divID) {
 		}
 		
 		// Initialize visitor
-		//new gridVisitor(3, 4);
+		new gridVisitor(3, 4);
 		
 		console.log(grid);
 	}
@@ -85,6 +85,11 @@ function initGame(divID) {
 		this.position = {x: posX, y: posY};
 		var div = document.createElement("div");
 		div.className = "gridVisitor";
+		div.style.width = cell_width_percent + "%";
+		div.style.height = cell_height_percent + "%";
+		var pos = getGridPosition(posX, posY);
+		div.style.left = pos.x + "%";
+		div.style.top = pos.y + "%";
 		
 		gameContainer.appendChild(div);
 		
@@ -110,6 +115,14 @@ function initGame(divID) {
 		domElement.style["transform"] = cssString;
 		domElement.style["-ms-transform"] = cssString;
 		domElement.style["-webkit-transform"] = cssString;
+	}
+	
+	// Accepts an x, y location on the grid
+	// Returns an x, y position, expressed in (top, left) percentages of the game grid div
+	function getGridPosition(x, y) {
+		var xPercent = ((cell_width_percent + cell_spacing_percent) * x + cell_spacing_percent);
+		var yPercent = ((cell_height_percent + cell_spacing_percent) * y + cell_spacing_percent);
+		return {x: xPercent, y: yPercent};
 	}
 	
 	init();
