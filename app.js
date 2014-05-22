@@ -1,20 +1,16 @@
 function initGame(divID) {
 	
 	// Shared variables
-	var gameContainer;
-	var border_radius_ratio;
+	var gameContainer = document.getElementById(divID);
+	var border_radius_ratio = 0.01;
+	var ms_per_tick = 1000;
 	
 	function init() {
-		gameContainer = document.getElementById(divID);
-		border_radius_ratio = 0.01;
-		onResize();
-		
 		var grid_width = 10; // columns
 		var grid_height = 10; // rows
 		var cell_spacing_percent = 1;
 		var cell_width_percent = ((100 - cell_spacing_percent) / grid_width);
 		var cell_height_percent = ((100 - cell_spacing_percent) / grid_height);
-		
 	
 		// Initialize grid
 		var grid = new Array(grid_width);
@@ -34,16 +30,10 @@ function initGame(divID) {
 			grid[i] = row;
 		}
 		
-		console.log(grid);
-	}
-	
-	function onResize() {
-		/*var game_width = 800; // TODO: Infer from css instead of hard-coding
-		var game_height = 800;
+		// Initialize visitor
+		//new gridVisitor(3, 4);
 		
-		var border_radius = (border_radius_ratio * Math.min(game_width, game_height));
-		gameContainer.style["border-radius"] = border_radius + "px";
-		gameContainer.style["border-radius"] = border_radius + "px";*/
+		console.log(grid);
 	}
 	
 	function gridCellProperty(type, domElement, orientation) {
@@ -72,8 +62,7 @@ function initGame(divID) {
 			// 0 is right, 1 is up, 2 is left, 3 is down
 			var img = document.createElement("img");
 			img.src = "images/arrow.svg";
-			img.style.width = "100%";
-			img.style.height = "100%";
+			img.className = "gridCellProperty";
 			
 			this.properties.arrow = new gridCellProperty("arrow", img, dir);
 			
@@ -91,6 +80,22 @@ function initGame(divID) {
 			console.log(this);
 		}
 	}
+	
+	function gridVisitor(posX, posY) {
+		this.position = {x: posX, y: posY};
+		var div = document.createElement("div");
+		div.className = "gridVisitor";
+		
+		gameContainer.appendChild(div);
+		
+		this.domElement = div;
+	}
+	
+	gridVisitor.prototype = {
+		update: function() {
+			
+		}
+	};
 	
 	// Convenience function (int, int, int)
 	function incrementWithinRange(integer, minVal, maxVal) {
