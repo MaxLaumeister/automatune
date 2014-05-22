@@ -46,26 +46,65 @@ function initGame(divID) {
 		gameContainer.style["border-radius"] = border_radius + "px";*/
 	}
 	
+	function gridCellProperty(type, domElement, orientation) {
+		this.type = type; // "arrow", etc.
+		this.domElement = domElement;
+		this.setOrientation(orientation); // 0 is right, 1 is up, 2 is left, 3 is down
+	}
+	
+	gridCellProperty.prototype = {
+		setOrientation: function(orientation) {
+			this.orientation = orientation;
+			setCSSRotation(this.domElement, orientation);
+		}
+	}
+	
 	function gridCell(element) {
-		this.contents = {}; // Arrows, modifiers, etc.
-		this.element = element;
+		this.domElement = element;
+		this.properties = {
+			arrow: null
+		}; // Arrows, modifiers, etc.
 		element.onclick = this.onClick.bind(this);
 	}
 	
 	gridCell.prototype = {
-		setArrow: function(dir) {
+		createArrow: function(dir) {
 			// 0 is right, 1 is up, 2 is left, 3 is down
-			
-		},
-		onClick: function() {
-			console.log("Clicked");
-			this.element.style["background-color"] = "red";
 			var img = document.createElement("img");
 			img.src = "images/arrow.svg";
 			img.style.width = "100%";
 			img.style.height = "100%";
-			this.element.appendChild(img);
+			
+			this.properties.arrow = new gridCellProperty("arrow", img, dir);
+			
+			this.domElement.appendChild(img);
+		},
+		onClick: function() {
+			console.log("Clicked");
+			this.domElement.style["background-color"] = "red";
+			var arrow = this.properties.arrow;
+			if (arrow == null) {
+				this.createArrow(0);
+			} else {
+				arrow.setOrientation(incrementWithinRange(arrow.orientation, 0, 3));
+			}
+			console.log(this);
 		}
+	}
+	
+	// Convenience function (int, int, int)
+	function incrementWithinRange(integer, minVal, maxVal) {
+		integer++;
+		if (integer > maxVal) return minVal;
+		else return integer;
+	}
+	
+	function setCSSRotation(domElement, orientation) {
+		var rotation = orientation * -90;
+		var cssString = "rotate(" + rotation + "deg)";
+		domElement.style["transform"] = cssString;
+		domElement.style["-ms-transform"] = cssString;
+		domElement.style["-webkit-transform"] = cssString;
 	}
 	
 	init();
