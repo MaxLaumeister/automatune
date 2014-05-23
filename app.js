@@ -2,13 +2,14 @@ function initGame(divID) {
 	
 	// Shared variables
 	var gameContainer = document.getElementById(divID);
+	var stylesheet = document.styleSheets[0];
 	var gameGrid;
 	var border_radius_ratio = 0.01;
 	var ms_per_tick = 500;
 	
 	var grid_width = 10; // columns
-	var grid_height = 10; // rows
-	var cell_spacing_percent = 1;
+	var grid_height = 10; // rows // TODO: Make container resize to keep cell aspect ratio
+	var cell_spacing_percent = 10 / Math.max(grid_width, grid_height);
 	var cell_width_percent = ((100 - cell_spacing_percent) / grid_width) - cell_spacing_percent;
 	var cell_height_percent = ((100 - cell_spacing_percent) / grid_height) - cell_spacing_percent;
 	
@@ -19,6 +20,9 @@ function initGame(divID) {
 	var O_DOWN = 3;
 	
 	function init() {
+		// Initialize CSS
+		stylesheet.insertRule(".gridCellDiv { padding: " + cell_spacing_percent + "%; }", stylesheet.cssRules.length);
+		
 		// Initialize grid
 		gameGrid = new Array(grid_width);
 		for (var i = 0; i < grid_width; i++) {
