@@ -1,3 +1,18 @@
+body {
+	margin: 0;
+	background-color: black;
+}
+
+h1 {
+	color: white;
+	margin: 0.5em;
+}
+
+.pageContainer {
+	width: 800px;
+	margin: 0 auto;
+}
+
 .gameContainer {
 	position: relative;
 	width: 800px;

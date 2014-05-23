@@ -7,8 +7,7 @@ function initGame(divID) {
 	var border_radius_ratio = 0.01;
 	var ms_per_tick = 500;
 	
-	var grid_width = 10; // columns
-	var grid_height = 10; // rows // TODO: Make container resize to keep cell aspect ratio
+	var grid_width = grid_height = 10; // columns and rows
 	var cell_spacing_percent = 10 / Math.max(grid_width, grid_height);
 	var cell_width_percent = ((100 - cell_spacing_percent) / grid_width) - cell_spacing_percent;
 	var cell_height_percent = ((100 - cell_spacing_percent) / grid_height) - cell_spacing_percent;

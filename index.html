@@ -2,17 +2,21 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>Music Grid</title>
+		<title>Harmony Matrix</title>
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<script src="libs/jquery-2.1.1.js"></script>
 		<script src="app.js"></script>
 	</head>
 	<body>
-		<div class="gameContainer" id="game"></div>
-		<script>
-			document.addEventListener('DOMContentLoaded', function(){
-				initGame("game");
-			});
-		</script>
+		<div class="pageContainer">
+			<div class="header">
+				<h1>Harmony Matrix</h1>
+			</div>
+			<div class="gameContainer" id="game"></div>
+			<script>
+				document.addEventListener('DOMContentLoaded', function(){
+					initGame("game");
+				});
+			</script>
+		</div>
 	</body>
 </html>
