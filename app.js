@@ -18,6 +18,9 @@ function initGame(divID) {
 	var O_LEFT = 2;
 	var O_DOWN = 3;
 	
+	// String constants
+	var S_UNEXPECTED_ORIENTATION = "Unexpected value for orientation";
+	
 	function init() {
 		// Initialize CSS
 		stylesheet.insertRule(".gridCellDiv { padding: " + cell_spacing_percent + "%; }", stylesheet.cssRules.length);
@@ -44,6 +47,9 @@ function initGame(divID) {
 		var visitor = new gridVisitor(3, 4, O_RIGHT);
 	}
 	
+	/**
+	 * @constructor
+	 */
 	function gridCellProperty(type, domElement, orientation) {
 		this.type = type; // "arrow", etc.
 		this.domElement = domElement;
@@ -57,6 +63,9 @@ function initGame(divID) {
 		}
 	}
 	
+	/**
+	 * @constructor
+	 */
 	function gridCell(element) {
 		this.domElement = element;
 		this.properties = {
@@ -87,6 +96,9 @@ function initGame(divID) {
 		}
 	}
 	
+	/**
+	 * @constructor
+	 */
 	function gridVisitor(posX, posY, orientation) {
 		var div = document.createElement("div");
 		div.className = "gridVisitor";
@@ -131,14 +143,14 @@ function initGame(divID) {
 				if (dir == O_UP) return O_DOWN;
 				if (dir == O_LEFT) return O_RIGHT;
 				if (dir == O_DOWN) return O_UP;
-				throw "Unexpected value for orientation";
+				throw S_UNEXPECTED_ORIENTATION;
 			}
 			function getDelta(dir) {
 				if (dir == O_RIGHT) return {x: 1, y: 0};
 				else if (dir == O_UP) return {x: 0, y: -1};
 				else if (dir == O_LEFT) return {x: -1, y: 0};
 				else if (dir == O_DOWN) return {x: 0, y: 1};
-				throw "Unexpected value for orientation";
+				throw S_UNEXPECTED_ORIENTATION;
 			}
 			
 			var old_delta = getDelta(this.orientation);
@@ -208,3 +220,6 @@ function initGame(divID) {
 	
 	init();
 }
+
+// Closure compiler export
+window['initGame'] = initGame;
