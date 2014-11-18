@@ -31,6 +31,8 @@ function initGame(divID) {
 			var row = new Array(grid_height);
 			for (var j = 0; j < grid_height; j++) {
 				var el = document.createElement("div");
+				el.setAttribute("data-pos-x", i);
+				el.setAttribute("data-pos-y", j);
 				el.className = "gridCellDiv";
 				var pos = getGridPosition(i, j);
 				el.style.left = pos.x + "%";
@@ -69,7 +71,8 @@ function initGame(divID) {
 	function gridCell(element) {
 		this.domElement = element;
 		this.properties = {
-			arrow: null
+			arrow: null,
+			sound: null
 		}; // Arrows, modifiers, etc.
 		element.onclick = this.onClick.bind(this);
 	}
@@ -92,6 +95,11 @@ function initGame(divID) {
 				this.createArrow(O_RIGHT);
 			} else {
 				arrow.setOrientation(incrementWithinRange(arrow.orientation, 0, 3));
+			}
+		},
+		playSound: function() {
+			if (this.properties.sound) {
+				this.properties.sound.play();
 			}
 		}
 	}
@@ -130,7 +138,9 @@ function initGame(divID) {
 			this.domElement.style.top = pos.y + "%";
 		},
 		destinationArrival: function(dest) {
-			this.position = this.destination;
+			var pos = this.position = this.destination;
+			gameGrid[pos.x][pos.y].playSound();
+			
 			this.destination = this.getDestination();
 			this.goToDestination(this.destination);
 		},
@@ -219,6 +229,60 @@ function initGame(divID) {
 	}
 	
 	init();
+	
+	// jQuery UI Stuff
+	
+	var sndpath = "snd/piano/Piano.mf.";
+	
+	$(gameContainer).contextmenu({
+		delegate: ".gridCellDiv",
+		menu: [
+			{title: "Change Pitch", children: [
+				{title: "C4", cmd: "pitch.C4"},
+				{title: "B3", cmd: "pitch.B3"},
+				{title: "Bb3", cmd: "pitch.Bb3"},
+				{title: "A3", cmd: "pitch.A3"},
+				{title: "Ab3", cmd: "pitch.Ab3"},
+				{title: "G3", cmd: "pitch.G3"},
+				{title: "Gb3", cmd: "pitch.Gb3"},
+				{title: "F3", cmd: "pitch.F3"},
+				{title: "E3", cmd: "pitch.E3"},
+				{title: "Eb3", cmd: "pitch.Eb3"},
+				{title: "D3", cmd: "pitch.D3"},
+				{title: "Db3", cmd: "pitch.Db3"},
+				{title: "C3", cmd: "pitch.C3"}
+			]},
+			{title: "Change Launch Speed", children: [
+				{title: "Fast", cmd: "speed.fast"},
+				{title: "Normal", cmd: "speed.normal"},
+				{title: "Slow", cmd: "speed.slow"},
+				{title: "Custom", cmd: "speed.custom"}
+			]},
+			{title: "Delete Element", cmd: "delete"}
+			],
+		select: function(event, ui) {
+			console.log("select " + ui.cmd + " on ", ui.target);
+			var el = ui.target[0];
+			// Traverse up and get grid cell
+			while(el.className != "gridCellDiv") {
+				console.log("Traversal", el);
+				el = el.parentNode;
+				if (el == document.body) {
+					throw "Bad things happened";
+				}
+			}
+			var elx = parseInt(el.getAttribute("data-pos-x"), 10);
+			var ely = parseInt(el.getAttribute("data-pos-y"), 10);
+			var gridCell = gameGrid[elx][ely];
+			console.log(elx, ely, gridCell);
+			var cmdarr = ui.cmd.split(".");
+			if (cmdarr[0] === "pitch") {
+				gridCell.properties.sound = new Howl({
+				  urls: [sndpath + cmdarr[1] + '.mp3']
+				});
+			}
+		}
+	});
 }
 
 // Closure compiler export

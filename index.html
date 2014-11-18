@@ -2,21 +2,25 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>Harmony Matrix</title>
+		<title>Music Matrix</title>
+		<link rel="stylesheet" type="text/css" href="lib/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="lib/jquery-ui.theme.css">
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<script src="app.js"></script>
 	</head>
 	<body>
 		<div class="pageContainer">
 			<div class="header">
-				<h1>Harmony Matrix</h1>
+				<h1>Music Matrix</h1>
 			</div>
 			<div class="gameContainer" id="game"></div>
-			<script>
-				document.addEventListener('DOMContentLoaded', function(){
-					initGame("game");
-				});
-			</script>
 		</div>
 	</body>
+	<script src="lib/jquery-1.11.1.js"></script>
+	<script src="lib/jquery-ui.js"></script>
+	<script src="lib/jquery.ui-contextmenu.js"></script>
+	<script src="lib/howler.js"></script>
+	<script src="app.js"></script>
+	<script>
+		initGame("game");
+	</script>
 </html>
