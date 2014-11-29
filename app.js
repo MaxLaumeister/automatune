@@ -88,11 +88,22 @@ Automatune.init = function init(args) {
             }
             window.setTimeout((function(){
                 this.properties.arrow.domElement.classList.add("active");
-            }).bind(this), 170);
+            }).bind(this), 160);
         },
         playSound: function() {
             if (this.properties.sound) {
                 this.properties.sound.play();
+            }
+        },
+        removeTile: function() {
+            this.domElement.classList.remove("active");
+            
+            if (this.properties.arrow) {
+                window.setTimeout((function(){
+                    var arr = this.properties.arrow.domElement;
+                    arr.parentNode.removeChild(arr);
+                    this.properties.arrow = null;
+                }).bind(this), 160);
             }
         }
     }
@@ -277,13 +288,13 @@ Automatune.init = function init(args) {
                 {title: "Slow", cmd: "speed.slow"},
                 {title: "Custom", cmd: "speed.custom"}
             ]},
-            {title: "Delete Element (Not Yet Implemented)", cmd: "delete"}
+            {title: "Delete Element", cmd: "delete"}
             ],
         select: function(event, ui) {
             console.log("select " + ui.cmd + " on ", ui.target);
             var el = ui.target[0];
             // Traverse up and get grid cell
-            while(el.className != "gridCellDiv") {
+            while(!el.classList.contains("gridCellDiv")) {
                 console.log("Traversal", el);
                 el = el.parentNode;
                 if (el == document.body) {
@@ -301,6 +312,9 @@ Automatune.init = function init(args) {
                         urls: [sndpath + cmdarr[1] + '.mp3']
                     });
                     break;
+                case "delete":
+                    gridCell.removeTile();
+                    break;
                 default:
                     alert("Menu item not yet implemented");
             }
@@ -317,7 +331,6 @@ Automatune.init = function init(args) {
     
     // Public auxiliary functions
     Automatune.play = function() {
-        console.log("Play function called");
         resetPlayback();
         domEls.playback.play.classList.add("active");
         
@@ -329,17 +342,18 @@ Automatune.init = function init(args) {
     };
             
     Automatune.pause = function() {
-        console.log("Pause function called");
-        resetPlayback();
-        domEls.playback.pause.classList.add("active");
+        //resetPlayback();
+        //domEls.playback.pause.classList.add("active");
         
         // playbackState = "paused";
+        alert("Pause function not yet implemented");
     };
     
     Automatune.reset = function() {
-        console.log("Reset function called");
-        resetPlayback();
-        domEls.playback.reset.classList.add("active");
+        //resetPlayback();
+        //domEls.playback.reset.classList.add("active");
+        
+        alert("Reset function not yet implemented");
     };
 };
 
