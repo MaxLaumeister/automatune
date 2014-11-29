@@ -79,13 +79,16 @@ Automatune.init = function init(args) {
             this.domElement.appendChild(img);
         },
         onClick: function() {
-            this.domElement.style["background-color"] = "red";
+            this.domElement.classList.add("active");
             var arrow = this.properties.arrow;
             if (arrow == null) {
                 this.createArrow(O_RIGHT);
             } else {
                 arrow.setOrientation(incrementWithinRange(arrow.orientation, 0, 3));
             }
+            window.setTimeout((function(){
+                this.properties.arrow.domElement.classList.add("active");
+            }).bind(this), 170);
         },
         playSound: function() {
             if (this.properties.sound) {
