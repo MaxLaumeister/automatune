@@ -2,17 +2,20 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>Music Matrix</title>
+		<title>Automatune</title>
 		<link rel="stylesheet" type="text/css" href="lib/jquery-ui.css">
 		<link rel="stylesheet" type="text/css" href="lib/jquery-ui.theme.css">
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-		<div class="pageContainer">
-			<div class="header">
-				<h1>Music Matrix</h1>
-			</div>
-			<div class="gameContainer" id="game"></div>
+		<div class="pageCenter">
+            <div class="pageContainer">
+                <div class="gameContainer" id="automatune"></div>
+                <div class="sidebar">
+                    <h1>Automatune</h1>
+                    <p>Pre-Alpha</p>
+                </div>
+            </div>
 		</div>
 	</body>
 	<script src="lib/jquery-1.11.1.js"></script>
@@ -20,7 +23,4 @@
 	<script src="lib/jquery.ui-contextmenu.js"></script>
 	<script src="lib/howler.js"></script>
 	<script src="app.js"></script>
-	<script>
-		initGame("game");
-	</script>
 </html>

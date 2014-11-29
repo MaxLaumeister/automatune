@@ -1,27 +1,39 @@
 body {
 	margin: 0;
+	color: white;
 	background-color: black;
 }
 
-h1 {
-	color: white;
-	margin: 0.5em;
+.pageCenter {
+    text-align: center;
 }
 
 .pageContainer {
-	width: 800px;
-	margin: 0 auto;
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	top: 5vmin;
+	height: 90vmin;
+	border: 1px solid rgba(255, 255, 255, .5);
 }
 
 .gameContainer {
 	position: relative;
-	width: 800px;
-	height: 800px;
+	display: inline-block;
+	vertical-align: top;
+	width: 90vmin;
+	height: 90vmin;
 	background-color: black;
 	-moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-select: none;
+}
+
+.sidebar {
+    display: inline-block;
+    width: 200px;
+    height: 100%;
 }
 
 .gridCellDiv {
