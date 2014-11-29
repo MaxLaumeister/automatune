@@ -321,6 +321,39 @@ Automatune.init = function init(args) {
         }
     });
     
+    // File menu
+    
+    $("#menubar > .file").contextmenu({
+        delegate: "span",
+        menu: [
+            {title: "New (Not Yet Implemented)", cmd: "new"},
+            {title: "Open (Not Yet Implemented)", cmd: "open"},
+            {title: "Save (Not Yet Implemented)", cmd: "save"}
+        ],
+        select: function(event, ui) {
+            console.log("select " + ui.cmd + " on ", ui.target);
+        },
+        autoTrigger: false
+    });
+    
+    // Edit menu
+    
+    $("#menubar > .edit").contextmenu({
+        delegate: "span",
+        menu: [
+            {title: "Copy (Not Yet Implemented)", cmd: "copy"},
+            {title: "Paste (Not Yet Implemented)", cmd: "paste"}
+        ],
+        select: function(event, ui) {
+            console.log("select " + ui.cmd + " on ", ui.target);
+        },
+        autoTrigger: false
+    });
+    
+    $("#menubar > li").click(function() {
+        $(this).contextmenu("open", $(this).find("span"));
+    });
+    
     function resetPlayback() {
         domEls.playback.reset.classList.remove("active");
         domEls.playback.play.classList.remove("active");

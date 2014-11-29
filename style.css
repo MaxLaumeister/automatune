@@ -17,12 +17,42 @@ body {
 	border: 1px solid rgba(255, 255, 255, .5);
 }
 
+#menubar {
+    text-align: left;
+    height: 4vmin;
+    margin: 1vmin 1vmin 0 1vmin;
+    padding: 0;
+    list-style-type: none;
+	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#menubar > li {
+    display: inline-block;
+    padding: 1vmin 1vmin 0 1vmin;
+    margin: 0;
+    height: 3vmin;
+    line-height: 2.5vmin;
+    font-size: 2.5vmin;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+#menubar > li:hover {
+    background-color: gray;
+}
+
 .gameContainer {
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
-	width: 90vmin;
-	height: 90vmin;
+	width: 85vmin;
+	height: 85vmin;
 	background-color: black;
 	-moz-user-select: none;
     -khtml-user-select: none;
@@ -33,7 +63,8 @@ body {
 .sidebar {
     display: inline-block;
     width: 200px;
-    height: 100%;
+    height: 84vmin;
+    overflow: auto;
 }
 
 #automatune-instructions {
