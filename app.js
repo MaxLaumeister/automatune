@@ -20,6 +20,8 @@ Automatune.init = function init(args) {
         }
     }
     
+    var timeouts = [];
+    
     // Shared variables
     var stylesheet = document.styleSheets[0];
     var gameGrid;
@@ -111,16 +113,10 @@ Automatune.init = function init(args) {
         this.domElement = div;
         this.position = {x: posX, y: posY};
         this.orientation = orientation;
-    
-        window.setTimeout((function(){
-            var dest = this.getDestination();
-            this.goToDestination(dest);
-        }).bind(this), 1000); // TODO: Make this activated by a play button
-    
-        this.domElement.addEventListener("transitionend", this.destinationArrival.bind(this), true);
     }
 
     gridVisitor.prototype = {
+        // Sets CSS for the visitor to its destination (CSS animation takes care of the rest)
         goToDestination: function(dest) {
             this.destination = dest;
             setCSSPositionTransition(this.domElement, ms_per_tick * getGridDistance(this.position.x, this.position.y, this.destination.x, this.destination.y)); // TODO: Make time dependent on distance
@@ -128,6 +124,7 @@ Automatune.init = function init(args) {
             this.domElement.style.left = pos.x + "%";
             this.domElement.style.top = pos.y + "%";
         },
+        // This function is called when the visitor reaches its destination
         destinationArrival: function(dest) {
             var pos = this.position = this.destination;
             gameGrid[pos.x][pos.y].playSound();
@@ -135,6 +132,7 @@ Automatune.init = function init(args) {
             this.destination = this.getDestination();
             this.goToDestination(this.destination);
         },
+        // Returns the place that the visitor is moving towards
         getDestination: function() {
             function inBounds(x, y) {
                 return (x >= 0 && x < grid_width && y >= 0 && y < grid_height);
@@ -307,28 +305,38 @@ Automatune.init = function init(args) {
         }
     });
     
-    Automatune.resetPlayback = function() {
+    function resetPlayback() {
         domEls.playback.reset.classList.remove("active");
         domEls.playback.play.classList.remove("active");
         domEls.playback.pause.classList.remove("active");
     }
-            
-    // Auxiliary functions
+    
+    var playbackState = "paused";
+    // Public auxiliary functions
     Automatune.play = function() {
         console.log("Play function called");
-        Automatune.resetPlayback();
+        resetPlayback();
         domEls.playback.play.classList.add("active");
+        
+        if (playbackState === "paused") {
+            visitor.goToDestination(visitor.getDestination());
+            visitor.domElement.addEventListener("transitionend", visitor.destinationArrival.bind(visitor), true);
+        }
+        
+        playbackState = "playing";
     };
             
     Automatune.pause = function() {
         console.log("Pause function called");
-        Automatune.resetPlayback();
+        resetPlayback();
         domEls.playback.pause.classList.add("active");
+        
+        // playbackState = "paused";
     };
     
     Automatune.reset = function() {
         console.log("Reset function called");
-        Automatune.resetPlayback();
+        resetPlayback();
         domEls.playback.reset.classList.add("active");
     };
 };
