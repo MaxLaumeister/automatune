@@ -39,9 +39,6 @@ Automatune.init = function init(args) {
     var O_LEFT = 2;
     var O_DOWN = 3;
 
-    // String constants
-    var S_UNEXPECTED_ORIENTATION = "Unexpected value for orientation";
-
     /**
      * @constructor
      */
@@ -113,6 +110,8 @@ Automatune.init = function init(args) {
         this.domElement = div;
         this.position = {x: posX, y: posY};
         this.orientation = orientation;
+        
+        this.domElement.addEventListener("transitionend", this.destinationArrival.bind(this), true);
     }
 
     gridVisitor.prototype = {
@@ -142,14 +141,14 @@ Automatune.init = function init(args) {
                 if (dir == O_UP) return O_DOWN;
                 if (dir == O_LEFT) return O_RIGHT;
                 if (dir == O_DOWN) return O_UP;
-                throw S_UNEXPECTED_ORIENTATION;
+                throw "Unexpected value for orientation";
             }
             function getDelta(dir) {
                 if (dir == O_RIGHT) return {x: 1, y: 0};
                 else if (dir == O_UP) return {x: 0, y: -1};
                 else if (dir == O_LEFT) return {x: -1, y: 0};
                 else if (dir == O_DOWN) return {x: 0, y: 1};
-                throw S_UNEXPECTED_ORIENTATION;
+                throw "Unexpected value for orientation";
             }
         
             var old_delta = getDelta(this.orientation);
@@ -312,6 +311,7 @@ Automatune.init = function init(args) {
     }
     
     var playbackState = "paused";
+    
     // Public auxiliary functions
     Automatune.play = function() {
         console.log("Play function called");
@@ -320,7 +320,6 @@ Automatune.init = function init(args) {
         
         if (playbackState === "paused") {
             visitor.goToDestination(visitor.getDestination());
-            visitor.domElement.addEventListener("transitionend", visitor.destinationArrival.bind(visitor), true);
         }
         
         playbackState = "playing";
