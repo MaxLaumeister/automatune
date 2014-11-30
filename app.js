@@ -309,7 +309,11 @@ Automatune.init = function init(args) {
             switch (cmdarr[0]) {
                 case "pitch":
                     gridCell.properties.sound = new Howl({
-                        urls: [sndpath + cmdarr[1] + '.mp3']
+                        urls: [
+                            sndpath + cmdarr[1] + '.mp3',
+                            sndpath + cmdarr[1] + '.ogg'
+                        ],
+                        volume: 0.7
                     });
                     break;
                 case "delete":
