@@ -145,6 +145,11 @@ body {
     height: 100%;
 }
 
+/* TODO: Display this button after it gets implemented */
+#playback-reset {
+    display: none;
+}
+
 .gridCellDiv {
 	position: absolute;
 	box-sizing: border-box;
