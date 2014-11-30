@@ -403,6 +403,11 @@ Automatune.init = function init(args) {
         
         alert("Reset function not yet implemented");
     };
+    
+    // Start it up!
+    $(window).load(function() {
+        Automatune.play();
+    });
 };
 
 Automatune.init({
