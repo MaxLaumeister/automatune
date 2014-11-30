@@ -181,5 +181,7 @@ body {
 	position: absolute;
 	background-color: white;
 	border-radius: 50%;
+	-webkit-transition: left 500ms linear, top 500ms linear;
+	transition: left 500ms linear, top 500ms linear;
 	pointer-events: none;
 }

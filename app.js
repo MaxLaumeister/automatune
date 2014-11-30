@@ -27,6 +27,7 @@ Automatune.init = function init(args) {
     var gameGrid;
     var border_radius_ratio = 0.01;
     var ms_per_tick = 500;
+    
 
     var grid_width = grid_height = numtiles; // columns and rows
     var cell_spacing_percent = 10 / Math.max(grid_width, grid_height);
@@ -38,7 +39,7 @@ Automatune.init = function init(args) {
     var O_UP = 1;
     var O_LEFT = 2;
     var O_DOWN = 3;
-
+    
     /**
      * @constructor
      */
@@ -122,37 +123,30 @@ Automatune.init = function init(args) {
         domEls.gameContainer.appendChild(div);
     
         this.domElement = div;
-        this.position = {x: posX, y: posY};
+        this.position = this.destination = {x: posX, y: posY};
         this.orientation = orientation;
     }
 
     gridVisitor.prototype = {
         // Sets CSS for the visitor to its destination (CSS animation takes care of the rest)
-        goToDestination: function(dest) {
-            this.destination = dest;
-            var dist = getGridDistance(this.position.x, this.position.y, this.destination.x, this.destination.y);
-            var effective_dist = Math.max(dist, 1);
-            var transition_ms = ms_per_tick * effective_dist;
+        goToDestination: function() {
+            var dest = this.destination;
             
-            setTimeout((function() {
-                this.destinationArrival(dest);
-            }).bind(this), transition_ms);
-            
-            setCSSPositionTransition(this.domElement, transition_ms);
             var pos = getGridPosition(dest.x, dest.y);
             this.domElement.style.left = pos.x + "%";
             this.domElement.style.top = pos.y + "%";
         },
         // This function is called when the visitor reaches its destination
         destinationArrival: function(dest) {
+            
             var pos = this.position = this.destination;
             gameGrid[pos.x][pos.y].playSound();
             
-            this.destination = this.getDestination();
-            this.goToDestination(this.destination);
+            this.calcDestination();
+            this.goToDestination();
         },
-        // Returns the place that the visitor is moving towards
-        getDestination: function() {
+        // Updates this.destination
+        calcDestination: function() {
             function inBounds(x, y) {
                 return (x >= 0 && x < grid_width && y >= 0 && y < grid_height);
             }
@@ -185,24 +179,20 @@ Automatune.init = function init(args) {
             var delta = getDelta(this.orientation);
             
             if (!inBounds(workingPosition.x + delta.x, workingPosition.y + delta.y)) {
-                return workingPosition;
-            }
-            while(true) {
+                this.destination = workingPosition;
+                return;
+            } else {
                 workingPosition.x += delta.x;
                 workingPosition.y += delta.y;
-                var currCell = gameGrid[workingPosition.x][workingPosition.y];
-                if (currCell.properties.arrow != null) {
-                    return workingPosition;
-                }
-                if (!inBounds(workingPosition.x + delta.x, workingPosition.y + delta.y)) {
-                    return workingPosition;
-                }
+                this.destination = workingPosition;
+                return;
             }
             // Control never reaches here
+            throw "Bad things happened";
         },
         start: function() {
-            this.destination = this.getDestination();
-            this.goToDestination(this.destination);
+            // TODO: Refactor this out
+            this.destinationArrival();
         }
     };
 
@@ -304,11 +294,9 @@ Automatune.init = function init(args) {
             {title: "Delete Element", cmd: "delete"}
             ],
         select: function(event, ui) {
-            console.log("select " + ui.cmd + " on ", ui.target);
             var el = ui.target[0];
             // Traverse up and get grid cell
             while(!el.classList.contains("gridCellDiv")) {
-                console.log("Traversal", el);
                 el = el.parentNode;
                 if (el == document.body) {
                     throw "Bad things happened";
@@ -317,7 +305,6 @@ Automatune.init = function init(args) {
             var elx = parseInt(el.getAttribute("data-pos-x"), 10);
             var ely = parseInt(el.getAttribute("data-pos-y"), 10);
             var gridCell = gameGrid[elx][ely];
-            console.log(elx, ely, gridCell);
             var cmdarr = ui.cmd.split(".");
             switch (cmdarr[0]) {
                 case "pitch":
@@ -330,11 +317,8 @@ Automatune.init = function init(args) {
                     });
                     break;
                 case "new_visitor":
-                    var new_visitor = new gridVisitor(1, 1, O_RIGHT);
+                    var new_visitor = new gridVisitor(elx, ely, O_RIGHT);
                     visitors.push(new_visitor);
-                    if (Automatune.getPlaybackState() === "playing") {
-                        new_visitor.start();
-                    }
                     break;
                 case "delete":
                     gridCell.removeTile();
@@ -400,7 +384,14 @@ Automatune.init = function init(args) {
     }
     
     var playbackState = "paused";
-    Automatune.getPlaybackState = (function(){return playbackState;});
+    Automatune.getPlaybackState = function(){return playbackState;};
+    
+    var visitors_interval = null;
+    function tickVisitors() {
+        for (var i = 0; i < visitors.length; i++) {
+            visitors[i].start();
+        }
+    }
     
     // Public auxiliary functions
     Automatune.play = function() {
@@ -409,24 +400,30 @@ Automatune.init = function init(args) {
         
         if (playbackState === "paused") {
             for (var i = 0; i < visitors.length; i++) {
-                visitors[i].goToDestination(visitors[i].getDestination());
+                visitors[i].start();
             }
+            visitors_interval = setInterval(function() {
+                tickVisitors();
+            }, ms_per_tick);
         }
         
         playbackState = "playing";
     };
             
     Automatune.pause = function() {
-        //resetPlayback();
-        //domEls.playback.pause.classList.add("active");
+        resetPlayback();
+        domEls.playback.pause.classList.add("active");
         
-        // playbackState = "paused";
-        alert("Pause function not yet implemented");
+        window.clearInterval(visitors_interval);
+        
+        playbackState = "paused";
     };
     
     Automatune.reset = function() {
         //resetPlayback();
         //domEls.playback.reset.classList.add("active");
+        
+        // Automatune.pause();
         
         alert("Reset function not yet implemented");
     };
