@@ -287,7 +287,7 @@ Automatune.init = function init(args) {
                 {title: "Db3", cmd: "pitch.Db3"},
                 {title: "C3", cmd: "pitch.C3"},
                 {title: "---"},
-                {title: "Delete Note (Not Yet Implemented)", cmd: "pitch.delete"}
+                {title: "Delete&nbsp;Note", cmd: "pitch.delete"}
             ]},
             {title: "Change Launch Speed (Not Yet Implemented)", children: [
                 {title: "Fast", cmd: "speed.fast"},
@@ -315,17 +315,21 @@ Automatune.init = function init(args) {
             var cmdarr = ui.cmd.split(".");
             switch (cmdarr[0]) {
                 case "pitch":
-                    if (cmdarr[i] === "delete") {
-                        alert("Menu item not yet implemented");
-                        break;
+                    if (cmdarr[1] === "delete") {
+                        var howl = gridCell.properties.sound;
+                        if (howl) {
+                            gridCell.properties.sound = null;
+                            howl.unload();
+                        }
+                    } else {
+                        gridCell.properties.sound = new Howl({
+                            urls: [
+                                sndpath + cmdarr[1] + '.mp3',
+                                sndpath + cmdarr[1] + '.ogg'
+                            ],
+                            volume: 0.7
+                        });
                     }
-                    gridCell.properties.sound = new Howl({
-                        urls: [
-                            sndpath + cmdarr[1] + '.mp3',
-                            sndpath + cmdarr[1] + '.ogg'
-                        ],
-                        volume: 0.7
-                    });
                     break;
                 case "new_visitor":
                     var new_visitor = new gridVisitor(elx, ely, O_RIGHT);
