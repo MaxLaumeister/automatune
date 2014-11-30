@@ -285,7 +285,9 @@ Automatune.init = function init(args) {
                 {title: "Eb3", cmd: "pitch.Eb3"},
                 {title: "D3", cmd: "pitch.D3"},
                 {title: "Db3", cmd: "pitch.Db3"},
-                {title: "C3", cmd: "pitch.C3"}
+                {title: "C3", cmd: "pitch.C3"},
+                {title: "---"},
+                {title: "Delete Note (Not Yet Implemented)", cmd: "pitch.delete"}
             ]},
             {title: "Change Launch Speed (Not Yet Implemented)", children: [
                 {title: "Fast", cmd: "speed.fast"},
@@ -293,9 +295,10 @@ Automatune.init = function init(args) {
                 {title: "Slow", cmd: "speed.slow"},
                 {title: "Custom", cmd: "speed.custom"}
             ]},
+            {title: "Clear Tile", cmd: "delete_tile"},
+            {title: "---"},
             {title: "Create New Visitor", cmd: "new_visitor"},
-            {title: "Delete Visitor", cmd: "delete_visitor"},
-            {title: "Delete Tile", cmd: "delete_tile"}
+            {title: "Delete Visitor", cmd: "delete_visitor"}
             ],
         select: function(event, ui) {
             var el = ui.target[0];
@@ -312,6 +315,10 @@ Automatune.init = function init(args) {
             var cmdarr = ui.cmd.split(".");
             switch (cmdarr[0]) {
                 case "pitch":
+                    if (cmdarr[i] === "delete") {
+                        alert("Menu item not yet implemented");
+                        break;
+                    }
                     gridCell.properties.sound = new Howl({
                         urls: [
                             sndpath + cmdarr[1] + '.mp3',
@@ -347,12 +354,23 @@ Automatune.init = function init(args) {
     $("#menubar > .menu-automatune").contextmenu({
         delegate: "span",
         menu: [
-            {title: "About Automatune (Not Yet Implemented)", cmd: "copy"}
+            {title: "About Automatune", cmd: "about"}
         ],
         select: function(event, ui) {
             console.log("select " + ui.cmd + " on ", ui.target);
+            switch(ui.cmd) {
+                case "about":
+                    $("#automatune-about").dialog("open");
+                    break;
+                default:
+                    alert("Menu item not yet implemented");
+            }
         },
         autoTrigger: false
+    });
+    
+    $("#automatune-about").dialog({
+        autoOpen: false
     });
     
     // File menu
@@ -375,8 +393,34 @@ Automatune.init = function init(args) {
     $("#menubar > .menu-edit").contextmenu({
         delegate: "span",
         menu: [
+            {title: "Select All (Not Yet Implemented)", cmd: "selectall"},
             {title: "Copy (Not Yet Implemented)", cmd: "copy"},
             {title: "Paste (Not Yet Implemented)", cmd: "paste"}
+        ],
+        select: function(event, ui) {
+            console.log("select " + ui.cmd + " on ", ui.target);
+        },
+        autoTrigger: false
+    });
+    
+    // Sound menu
+    
+    $("#menubar > .menu-sound").contextmenu({
+        delegate: "span",
+        menu: [
+            {title: "Volume (Not Yet Implemented)", cmd: "selectall", children: [
+                {title: "1&nbsp;(Lowest)", cmd: "volume.1"},
+                {title: "2", cmd: "volume.2"},
+                {title: "3", cmd: "volume.3"},
+                {title: "4", cmd: "volume.4"},
+                {title: "5", cmd: "volume.5"},
+                {title: "6", cmd: "volume.6"},
+                {title: "7", cmd: "volume.7"},
+                {title: "8", cmd: "volume.8"},
+                {title: "9", cmd: "volume.9"},
+                {title: "10&nbsp;(Highest)", cmd: "volume.10"},
+            ]},
+            {title: "Enable Metronome (Not Yet Implemented)", cmd: "copy"}
         ],
         select: function(event, ui) {
             console.log("select " + ui.cmd + " on ", ui.target);
