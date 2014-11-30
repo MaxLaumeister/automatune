@@ -20,8 +20,9 @@ body {
 #menubar {
     text-align: left;
     height: 4vmin;
-    margin: 1vmin 1vmin 0 1vmin;
-    padding: 0;
+    margin: 0;
+    padding: 1vmin;
+    font-size: 2.5vmin;
     list-style-type: none;
 	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
 	-webkit-touch-callout: none;
@@ -34,25 +35,52 @@ body {
 
 #menubar > li {
     display: inline-block;
-    padding: 1vmin 1vmin 0 1vmin;
+    padding: 0 1vmin;
     margin: 0;
-    height: 3vmin;
-    line-height: 2.5vmin;
-    font-size: 2.5vmin;
+    height: 4vmin;
+    line-height: 4vmin;
     transition: background-color 0.2s;
     cursor: pointer;
+}
+
+#menubar > li > span {
+    display: inline-block;
+}
+
+#menubar > li .logo {
+    position: relative;
+    top: -0.15vmin;
+    height: 3vmin;
+    vertical-align: middle;
+    margin-right: 1vmin;
 }
 
 #menubar > li:hover {
     background-color: gray;
 }
 
+.titlebarText {
+    color: gray;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1.5vmin;
+}
+
+.separator {
+    position: absolute;
+    left: 0;
+    top: 6vmin;
+    width: 100%;
+    border-bottom: solid gray 1px;
+}
+
 .gameContainer {
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
-	width: 85vmin;
-	height: 85vmin;
+	width: 84vmin;
+	height: 84vmin;
 	background-color: black;
 	-moz-user-select: none;
     -khtml-user-select: none;
@@ -64,12 +92,17 @@ body {
     display: inline-block;
     width: 200px;
     height: 84vmin;
+    margin: 1em;
     overflow: auto;
 }
 
 #automatune-instructions {
     color: gray;
     text-align: left;
+}
+
+.playback-controls {
+    margin: 1em auto;
 }
 
 .playback-icon {

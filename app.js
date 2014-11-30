@@ -321,9 +321,22 @@ Automatune.init = function init(args) {
         }
     });
     
+    // Automatune menu
+    
+    $("#menubar > .menu-automatune").contextmenu({
+        delegate: "span",
+        menu: [
+            {title: "About Automatune (Not Yet Implemented)", cmd: "copy"}
+        ],
+        select: function(event, ui) {
+            console.log("select " + ui.cmd + " on ", ui.target);
+        },
+        autoTrigger: false
+    });
+    
     // File menu
     
-    $("#menubar > .file").contextmenu({
+    $("#menubar > .menu-file").contextmenu({
         delegate: "span",
         menu: [
             {title: "New (Not Yet Implemented)", cmd: "new"},
@@ -338,7 +351,7 @@ Automatune.init = function init(args) {
     
     // Edit menu
     
-    $("#menubar > .edit").contextmenu({
+    $("#menubar > .menu-edit").contextmenu({
         delegate: "span",
         menu: [
             {title: "Copy (Not Yet Implemented)", cmd: "copy"},
@@ -349,6 +362,8 @@ Automatune.init = function init(args) {
         },
         autoTrigger: false
     });
+    
+    // Attach menu click handler
     
     $("#menubar > li").click(function() {
         $(this).contextmenu("open", $(this).find("span"));
