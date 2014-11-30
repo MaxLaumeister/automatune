@@ -49,6 +49,7 @@ body {
     margin: 0;
     height: 4vmin;
     line-height: 4vmin;
+    -webkit-transition: background-color 0.2s;
     transition: background-color 0.2s;
     cursor: pointer;
 }
@@ -126,6 +127,7 @@ body {
 }
 
 .playback-icon:hover {
+    -webkit-transition: background-color 0.2s;
     transition: background-color 0.2s;
     background-color: rgba(255, 255, 255, 0.5);
 }
@@ -147,8 +149,10 @@ body {
 	position: absolute;
 	box-sizing: border-box;
 	background-color: rgba(255, 255, 255, 0.3);
+	-webkit-transition: background-color 0.2s, -webkit-transform 0.5s;
 	transition: background-color 0.2s, transform 0.5s;
 	border-radius: 10%;
+	-webkit-transform: rotateY(180deg);
 	transform: rotateY(180deg);
 	cursor: pointer;
 }
@@ -158,6 +162,7 @@ body {
 }
 
 .gridCellDiv.active {
+    -webkit-transform: rotateY(0deg);
     transform: rotateY(0deg);
     background-color: rgba(255, 255, 255, 0.5);
 }
