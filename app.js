@@ -124,15 +124,21 @@ Automatune.init = function init(args) {
         this.domElement = div;
         this.position = {x: posX, y: posY};
         this.orientation = orientation;
-        
-        this.domElement.addEventListener("transitionend", this.destinationArrival.bind(this), true);
     }
 
     gridVisitor.prototype = {
         // Sets CSS for the visitor to its destination (CSS animation takes care of the rest)
         goToDestination: function(dest) {
             this.destination = dest;
-            setCSSPositionTransition(this.domElement, ms_per_tick * getGridDistance(this.position.x, this.position.y, this.destination.x, this.destination.y)); // TODO: Make time dependent on distance
+            var dist = getGridDistance(this.position.x, this.position.y, this.destination.x, this.destination.y);
+            var effective_dist = Math.max(dist, 1);
+            var transition_ms = ms_per_tick * effective_dist;
+            
+            setTimeout((function() {
+                this.destinationArrival(dest);
+            }).bind(this), transition_ms);
+            
+            setCSSPositionTransition(this.domElement, transition_ms);
             var pos = getGridPosition(dest.x, dest.y);
             this.domElement.style.left = pos.x + "%";
             this.domElement.style.top = pos.y + "%";
@@ -141,7 +147,7 @@ Automatune.init = function init(args) {
         destinationArrival: function(dest) {
             var pos = this.position = this.destination;
             gameGrid[pos.x][pos.y].playSound();
-        
+            
             this.destination = this.getDestination();
             this.goToDestination(this.destination);
         },
@@ -177,8 +183,10 @@ Automatune.init = function init(args) {
         
             var workingPosition = {x: this.position.x, y: this.position.y}; // Clone
             var delta = getDelta(this.orientation);
-        
-        
+            
+            if (!inBounds(workingPosition.x + delta.x, workingPosition.y + delta.y)) {
+                return workingPosition;
+            }
             while(true) {
                 workingPosition.x += delta.x;
                 workingPosition.y += delta.y;
