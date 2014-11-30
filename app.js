@@ -199,6 +199,10 @@ Automatune.init = function init(args) {
                 }
             }
             // Control never reaches here
+        },
+        start: function() {
+            this.destination = this.getDestination();
+            this.goToDestination(this.destination);
         }
     };
 
@@ -266,7 +270,7 @@ Automatune.init = function init(args) {
     }
 
     // Initialize visitor
-    var visitor = new gridVisitor(3, 4, O_RIGHT);
+    var visitors = [];
 
     // jQuery UI Stuff
 
@@ -296,6 +300,7 @@ Automatune.init = function init(args) {
                 {title: "Slow", cmd: "speed.slow"},
                 {title: "Custom", cmd: "speed.custom"}
             ]},
+            {title: "Create New Visitor", cmd: "new_visitor"},
             {title: "Delete Element", cmd: "delete"}
             ],
         select: function(event, ui) {
@@ -323,6 +328,13 @@ Automatune.init = function init(args) {
                         ],
                         volume: 0.7
                     });
+                    break;
+                case "new_visitor":
+                    var new_visitor = new gridVisitor(1, 1, O_RIGHT);
+                    visitors.push(new_visitor);
+                    if (Automatune.getPlaybackState() === "playing") {
+                        new_visitor.start();
+                    }
                     break;
                 case "delete":
                     gridCell.removeTile();
@@ -388,6 +400,7 @@ Automatune.init = function init(args) {
     }
     
     var playbackState = "paused";
+    Automatune.getPlaybackState = (function(){return playbackState;});
     
     // Public auxiliary functions
     Automatune.play = function() {
@@ -395,7 +408,9 @@ Automatune.init = function init(args) {
         domEls.playback.play.classList.add("active");
         
         if (playbackState === "paused") {
-            visitor.goToDestination(visitor.getDestination());
+            for (var i = 0; i < visitors.length; i++) {
+                visitors[i].goToDestination(visitors[i].getDestination());
+            }
         }
         
         playbackState = "playing";
@@ -415,6 +430,9 @@ Automatune.init = function init(args) {
         
         alert("Reset function not yet implemented");
     };
+    
+    // Add a visitor
+    visitors.push(new gridVisitor(3, 3, O_RIGHT));
     
     // Start it up!
     $(window).load(function() {
