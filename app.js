@@ -290,10 +290,10 @@ Automatune.init = function init(args) {
                 {title: "Delete&nbsp;Note", cmd: "pitch.delete"}
             ]},
             {title: "Change Launch Speed (Not Yet Implemented)", children: [
-                {title: "Fast", cmd: "speed.fast"},
-                {title: "Normal", cmd: "speed.normal"},
-                {title: "Slow", cmd: "speed.slow"},
-                {title: "Custom", cmd: "speed.custom"}
+                {title: "Fast", cmd: "speed.fast", disabled: true},
+                {title: "Normal", cmd: "speed.normal", disabled: true},
+                {title: "Slow", cmd: "speed.slow", disabled: true},
+                {title: "Custom", cmd: "speed.custom", disabled: true}
             ]},
             {title: "Clear Tile", cmd: "delete_tile"},
             {title: "---"},
@@ -382,9 +382,9 @@ Automatune.init = function init(args) {
     $("#menubar > .menu-file").contextmenu({
         delegate: "span",
         menu: [
-            {title: "New (Not Yet Implemented)", cmd: "new"},
-            {title: "Open (Not Yet Implemented)", cmd: "open"},
-            {title: "Save (Not Yet Implemented)", cmd: "save"}
+            {title: "New (Not Yet Implemented)", cmd: "new", disabled: true},
+            {title: "Open (Not Yet Implemented)", cmd: "open", disabled: true},
+            {title: "Save (Not Yet Implemented)", cmd: "save", disabled: true}
         ],
         select: function(event, ui) {
             console.log("select " + ui.cmd + " on ", ui.target);
@@ -397,9 +397,9 @@ Automatune.init = function init(args) {
     $("#menubar > .menu-edit").contextmenu({
         delegate: "span",
         menu: [
-            {title: "Select All (Not Yet Implemented)", cmd: "selectall"},
-            {title: "Copy (Not Yet Implemented)", cmd: "copy"},
-            {title: "Paste (Not Yet Implemented)", cmd: "paste"}
+            {title: "Select All (Not Yet Implemented)", cmd: "selectall", disabled: true},
+            {title: "Copy (Not Yet Implemented)", cmd: "copy", disabled: true},
+            {title: "Paste (Not Yet Implemented)", cmd: "paste", disabled: true}
         ],
         select: function(event, ui) {
             console.log("select " + ui.cmd + " on ", ui.target);
@@ -412,7 +412,7 @@ Automatune.init = function init(args) {
     $("#menubar > .menu-sound").contextmenu({
         delegate: "span",
         menu: [
-            {title: "Volume (Not Yet Implemented)", cmd: "selectall", children: [
+            {title: "Volume", children: [
                 {title: "1&nbsp;(Lowest)", cmd: "volume.1"},
                 {title: "2", cmd: "volume.2"},
                 {title: "3", cmd: "volume.3"},
@@ -424,13 +424,26 @@ Automatune.init = function init(args) {
                 {title: "9", cmd: "volume.9"},
                 {title: "10&nbsp;(Highest)", cmd: "volume.10"},
             ]},
-            {title: "Enable Metronome (Not Yet Implemented)", cmd: "copy"}
+            {title: "Enable Metronome (Not Yet Implemented)", cmd: "metronome", disabled: true}
         ],
         select: function(event, ui) {
             console.log("select " + ui.cmd + " on ", ui.target);
+            var cmdarr = ui.cmd.split(".");
+            switch (cmdarr[0]) {
+                case "volume":
+                    var vol_pre = 0.1 * parseInt(cmdarr[1], 10);
+                    var vol = vol_pre * vol_pre;
+                    Howler.volume(vol);
+                    ohSnap("Volume " + cmdarr[1], "black");
+                    break;
+                default:
+                    alert("Menu item not yet implemented");
+            }
         },
         autoTrigger: false
     });
+    // Set initial volume
+    Howler.volume(0.25);
     
     // Attach menu click handler
     
