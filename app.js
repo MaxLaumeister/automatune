@@ -193,6 +193,9 @@ Automatune.init = function init(args) {
         start: function() {
             // TODO: Refactor this out
             this.destinationArrival();
+        },
+        updatePosition: function() {
+            this.position = this.destination;
         }
     };
 
@@ -291,7 +294,8 @@ Automatune.init = function init(args) {
                 {title: "Custom", cmd: "speed.custom"}
             ]},
             {title: "Create New Visitor", cmd: "new_visitor"},
-            {title: "Delete Element", cmd: "delete"}
+            {title: "Delete Visitor", cmd: "delete_visitor"},
+            {title: "Delete Tile", cmd: "delete_tile"}
             ],
         select: function(event, ui) {
             var el = ui.target[0];
@@ -320,8 +324,17 @@ Automatune.init = function init(args) {
                     var new_visitor = new gridVisitor(elx, ely, O_RIGHT);
                     visitors.push(new_visitor);
                     break;
-                case "delete":
+                case "delete_tile":
                     gridCell.removeTile();
+                    break;
+                case "delete_visitor":
+                    for (var i = 0; i < visitors.length; i++) {
+                        var v = visitors[i];
+                        if (v.position.x === elx && v.position.y === ely) {
+                            visitors.splice(i, 1);
+                            v.domElement.parentNode.removeChild(v.domElement);
+                        }
+                    }
                     break;
                 default:
                     alert("Menu item not yet implemented");
@@ -390,6 +403,11 @@ Automatune.init = function init(args) {
     function tickVisitors() {
         for (var i = 0; i < visitors.length; i++) {
             visitors[i].start();
+            (function(curr_visitor) {
+                setTimeout(function() {
+                    curr_visitor.updatePosition();
+                }, ms_per_tick);
+            })(visitors[i]);
         }
     }
     
@@ -403,6 +421,7 @@ Automatune.init = function init(args) {
                 visitors[i].start();
             }
             visitors_interval = setInterval(function() {
+                setTimeout(visitors_interval, ms_per_tick);
                 tickVisitors();
             }, ms_per_tick);
         }
