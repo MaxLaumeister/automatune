@@ -4,6 +4,16 @@ body {
 	background-color: black;
 }
 
+::-moz-selection { /* Code for Firefox */
+    color: black;
+    background: white;
+}
+
+::selection {
+    color: black; 
+    background: white;
+}
+
 .pageCenter {
     text-align: center;
 }
@@ -12,8 +22,8 @@ body {
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
-	top: 5vmin;
-	height: 90vmin;
+	top: 2.5vmin;
+	height: 95vmin;
 	border: 1px solid rgba(255, 255, 255, .5);
 }
 
@@ -79,8 +89,8 @@ body {
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
-	width: 84vmin;
-	height: 84vmin;
+	width: 89vmin;
+	height: 89vmin;
 	background-color: black;
 	-moz-user-select: none;
     -khtml-user-select: none;
