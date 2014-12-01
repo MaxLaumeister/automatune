@@ -195,3 +195,17 @@ body {
 	border-radius: 50%;
 	pointer-events: none;
 }
+
+.tileicon {
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.tileicon.note {
+    top: 10%;
+    right: 10%;
+}
+

@@ -326,21 +326,28 @@ Automatune.init = function init(args) {
             var cmdarr = ui.cmd.split(".");
             switch (cmdarr[0]) {
                 case "pitch":
-                    if (cmdarr[1] === "delete") {
-                        var howl = gridCell.properties.sound;
-                        if (howl) {
-                            gridCell.properties.sound = null;
-                            howl.unload();
-                        }
-                    } else {
-                        gridCell.properties.sound = new Howl({
-                            urls: [
-                                sndpath + cmdarr[1] + '.mp3',
-                                sndpath + cmdarr[1] + '.ogg'
-                            ],
-                            volume: 0.7
-                        });
+                    var howl = gridCell.properties.sound;
+                    if (howl) {
+                        gridCell.properties.sound = null;
+                        howl.unload();
                     }
+                    if (cmdarr[1] === "delete") {
+                        $(gridCell.domElement).find(".tileicon.note").remove();
+                        return;
+                    }
+                    
+                    var div = document.createElement("div");
+                    div.classList.add("tileicon");
+                    div.classList.add("note");
+                    gridCell.domElement.appendChild(div);
+                    
+                    gridCell.properties.sound = new Howl({
+                        urls: [
+                            sndpath + cmdarr[1] + '.mp3',
+                            sndpath + cmdarr[1] + '.ogg'
+                        ],
+                        volume: 0.7
+                    });
                     break;
                 case "new_visitor":
                     var new_visitor = new gridVisitor(elx, ely, O_RIGHT);
