@@ -76,6 +76,10 @@ Automatune.init = function init(args) {
             arrow: null,
             sound: null
         }; // Arrows, modifiers, etc.
+        this.pos = {
+            x: parseInt(element.getAttribute("data-pos-x"), 10),
+            y: parseInt(element.getAttribute("data-pos-y"), 10)
+        };
         element.onclick = this.onClick.bind(this);
     }
 
@@ -105,6 +109,21 @@ Automatune.init = function init(args) {
         playSound: function() {
             if (this.properties.sound) {
                 this.properties.sound.play();
+                
+                var div = document.createElement("div");
+                div.classList.add("floatnote");
+                this.domElement.appendChild(div);
+                (function(d){
+                    setTimeout(function() {
+                        d.style.opacity = "0";
+                        var cssString = "scale(1.75)";
+                        d.style["-webkit-transform"] = cssString;
+                        d.style["transform"] = cssString;
+                        setTimeout(function() {
+                            d.parentNode.removeChild(d);
+                        }, 1000);
+                    }, 50);
+                })(div);
             }
         },
         removeTile: function() {
@@ -329,7 +348,7 @@ Automatune.init = function init(args) {
                     var howl = gridCell.properties.sound;
                     if (howl) {
                         gridCell.properties.sound = null;
-                        howl.unload();
+                        // howl.unload(); Need to leave the cache for other sounds
                     }
                     if (cmdarr[1] === "delete") {
                         $(gridCell.domElement).find(".tileicon.note").remove();
