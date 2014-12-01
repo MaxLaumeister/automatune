@@ -22,12 +22,23 @@ Automatune.init = function init(args) {
     
     var timeouts = [];
     
+    var tickTransitionStyle = document.createElement("style");
+    tickTransitionStyle.appendChild(document.createTextNode("")); // Webkit hack
+    document.head.appendChild(tickTransitionStyle);
+    
+    function setTickMs(ms) {
+        ms_per_tick = ms;
+        var cssString = "left " + ms + "ms linear, top " + ms + "ms linear";
+        if (tickTransitionStyle.sheet.cssRules.length > 0) tickTransitionStyle.sheet.deleteRule(0);
+        tickTransitionStyle.sheet.insertRule(".gridVisitor { -webkit-transition: " + cssString + "; transition: " + cssString + ";}", 0);
+    }
+    
     // Shared variables
     var stylesheet = document.styleSheets[0];
     var gameGrid;
     var border_radius_ratio = 0.01;
-    var ms_per_tick = 500;
-    
+    var ms_per_tick;
+    setTickMs(500);
 
     var grid_width = grid_height = numtiles; // columns and rows
     var cell_spacing_percent = 10 / Math.max(grid_width, grid_height);
@@ -422,7 +433,13 @@ Automatune.init = function init(args) {
                 {title: "7", cmd: "volume.7"},
                 {title: "8", cmd: "volume.8"},
                 {title: "9", cmd: "volume.9"},
-                {title: "10&nbsp;(Highest)", cmd: "volume.10"},
+                {title: "10&nbsp;(Highest)", cmd: "volume.10"}
+            ]},
+            {title: "Tempo", children: [
+                {title: "Slow", cmd: "tempo.slow"},
+                {title: "Normal", cmd: "tempo.normal"},
+                {title: "Fast", cmd: "tempo.fast"},
+                {title: "Fastest", cmd: "tempo.fastest"}
             ]},
             {title: "Enable Metronome (Not Yet Implemented)", cmd: "metronome", disabled: true}
         ],
@@ -435,6 +452,23 @@ Automatune.init = function init(args) {
                     var vol = vol_pre * vol_pre;
                     Howler.volume(vol);
                     ohSnap("Volume " + cmdarr[1], "black");
+                    break;
+                case "tempo":
+                    switch (cmdarr[1]) {
+                        case "slow":
+                            setTickMs(1000);
+                            break;
+                        case "normal":
+                            setTickMs(500);
+                            break;
+                        case "fast":
+                            setTickMs(250);
+                            break;
+                        case "fastest":
+                            setTickMs(125);
+                            break;
+                        default:
+                    }
                     break;
                 default:
                     alert("Menu item not yet implemented");
@@ -460,7 +494,7 @@ Automatune.init = function init(args) {
     var playbackState = "paused";
     Automatune.getPlaybackState = function(){return playbackState;};
     
-    var visitors_interval = null;
+    var visitors_timeout = null;
     function tickVisitors() {
         for (var i = 0; i < visitors.length; i++) {
             visitors[i].start();
@@ -470,6 +504,8 @@ Automatune.init = function init(args) {
                 }, ms_per_tick);
             })(visitors[i]);
         }
+        // Repeat
+        visitors_timeout = setTimeout(tickVisitors, ms_per_tick);
     }
     
     // Public auxiliary functions
@@ -481,10 +517,7 @@ Automatune.init = function init(args) {
             for (var i = 0; i < visitors.length; i++) {
                 visitors[i].start();
             }
-            visitors_interval = setInterval(function() {
-                setTimeout(visitors_interval, ms_per_tick);
-                tickVisitors();
-            }, ms_per_tick);
+            visitors_timeout = setTimeout(tickVisitors, ms_per_tick);
         }
         
         playbackState = "playing";
@@ -494,7 +527,7 @@ Automatune.init = function init(args) {
         resetPlayback();
         domEls.playback.pause.classList.add("active");
         
-        window.clearInterval(visitors_interval);
+        clearTimeout(visitors_timeout);
         
         playbackState = "paused";
     };
