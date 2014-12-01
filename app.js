@@ -330,7 +330,7 @@ Automatune.init = function init(args) {
             });
         }
         menu.children.push({title: "---"});
-        menu.children.push({title: "Delete&nbsp;Note", cmd: "pitch.delete"});
+        menu.children.push({title: "Delete&nbsp;Pitch", cmd: "pitch.delete"});
         return menu;
     }
 
@@ -338,12 +338,7 @@ Automatune.init = function init(args) {
         delegate: ".gridCellDiv",
         menu: [
             generatePitchMenu(),
-            {title: "Change Launch Speed (Not Yet Implemented)", children: [
-                {title: "Fast", cmd: "speed.fast", disabled: true},
-                {title: "Normal", cmd: "speed.normal", disabled: true},
-                {title: "Slow", cmd: "speed.slow", disabled: true},
-                {title: "Custom", cmd: "speed.custom", disabled: true}
-            ]},
+            {title: "---"},
             {title: "Clear Tile", cmd: "delete_tile"},
             {title: "---"},
             {title: "Create New Visitor", cmd: "new_visitor"},
@@ -469,16 +464,16 @@ Automatune.init = function init(args) {
         delegate: "span",
         menu: [
             {title: "Volume", children: [
-                {title: "1&nbsp;(Lowest)", cmd: "volume.1"},
-                {title: "2", cmd: "volume.2"},
-                {title: "3", cmd: "volume.3"},
-                {title: "4", cmd: "volume.4"},
-                {title: "5", cmd: "volume.5"},
-                {title: "6", cmd: "volume.6"},
-                {title: "7", cmd: "volume.7"},
-                {title: "8", cmd: "volume.8"},
+                {title: "10&nbsp;(Highest)", cmd: "volume.10"},
                 {title: "9", cmd: "volume.9"},
-                {title: "10&nbsp;(Highest)", cmd: "volume.10"}
+                {title: "8", cmd: "volume.8"},
+                {title: "7", cmd: "volume.7"},
+                {title: "6", cmd: "volume.6"},
+                {title: "5", cmd: "volume.5"},
+                {title: "4", cmd: "volume.4"},
+                {title: "3", cmd: "volume.3"},
+                {title: "2", cmd: "volume.2"},
+                {title: "1&nbsp;(Lowest)", cmd: "volume.1"}
             ]},
             {title: "Tempo", children: [
                 {title: "Slow", cmd: "tempo.slow"},
