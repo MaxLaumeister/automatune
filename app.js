@@ -122,7 +122,7 @@ Automatune.init = function init(args) {
                         setTimeout(function() {
                             d.parentNode.removeChild(d);
                         }, 1000);
-                    }, 50);
+                    }, 25);
                 })(div);
             }
         },
@@ -298,27 +298,46 @@ Automatune.init = function init(args) {
     // jQuery UI Stuff
 
     var sndpath = "snd/piano/Piano.mf.";
+    
+    function generatePitchMenu() {
+        var pitches = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "C"];
+        var menu = {title: "Set Pitch", children: []};
+        var min_octave = 1;
+        var max_octave = 7;
+        for (var i = max_octave; i >= min_octave; i--) {
+            menu.children.push({
+                title: (function(){
+                    var result = "Octave " + i;
+                    if (i === min_octave) return result + " (Lowest)";
+                    if (i === 3) return result + " (Mid)";
+                    if (i === max_octave) return result + " (Highest)";
+                    return result;
+                })(),
+                children: (function(){
+                    var result = [];
+                    for (var j = pitches.length - 1; j >= 0; j--) {
+                        var p = pitches[j]; // "C", or "Db", etc.
+                        var note_name;
+                        if (j === pitches.length - 1) note_name = p + (i + 1);
+                        else note_name = p + i;
+                        result.push({
+                            title: note_name, // "C4", or "Db4", etc.
+                            cmd: "pitch." + note_name
+                        });
+                    }
+                    return result;
+                })()
+            });
+        }
+        menu.children.push({title: "---"});
+        menu.children.push({title: "Delete&nbsp;Note", cmd: "pitch.delete"});
+        return menu;
+    }
 
     $(domEls.gameContainer).contextmenu({
         delegate: ".gridCellDiv",
         menu: [
-            {title: "Change Pitch", children: [
-                {title: "C4", cmd: "pitch.C4"},
-                {title: "B3", cmd: "pitch.B3"},
-                {title: "Bb3", cmd: "pitch.Bb3"},
-                {title: "A3", cmd: "pitch.A3"},
-                {title: "Ab3", cmd: "pitch.Ab3"},
-                {title: "G3", cmd: "pitch.G3"},
-                {title: "Gb3", cmd: "pitch.Gb3"},
-                {title: "F3", cmd: "pitch.F3"},
-                {title: "E3", cmd: "pitch.E3"},
-                {title: "Eb3", cmd: "pitch.Eb3"},
-                {title: "D3", cmd: "pitch.D3"},
-                {title: "Db3", cmd: "pitch.Db3"},
-                {title: "C3", cmd: "pitch.C3"},
-                {title: "---"},
-                {title: "Delete&nbsp;Note", cmd: "pitch.delete"}
-            ]},
+            generatePitchMenu(),
             {title: "Change Launch Speed (Not Yet Implemented)", children: [
                 {title: "Fast", cmd: "speed.fast", disabled: true},
                 {title: "Normal", cmd: "speed.normal", disabled: true},
