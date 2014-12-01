@@ -483,15 +483,19 @@ Automatune.init = function init(args) {
                     switch (cmdarr[1]) {
                         case "slow":
                             setTickMs(1000);
+                            ohSnap("Tempo: Slow", "black");
                             break;
                         case "normal":
                             setTickMs(500);
+                            ohSnap("Tempo: Normal", "black");
                             break;
                         case "fast":
                             setTickMs(250);
+                            ohSnap("Tempo: Fast", "black");
                             break;
                         case "fastest":
                             setTickMs(125);
+                            ohSnap("Tempo: Fastest", "black");
                             break;
                         default:
                     }
