@@ -114,15 +114,15 @@ Automatune.init = function init(args) {
                 div.classList.add("floatnote");
                 this.domElement.appendChild(div);
                 (function(d){
-                    setTimeout(function() {
-                        d.style.opacity = "0";
-                        var cssString = "scale(1.75)";
-                        d.style["-webkit-transform"] = cssString;
-                        d.style["transform"] = cssString;
-                        setTimeout(function() {
-                            d.parentNode.removeChild(d);
-                        }, 1000);
-                    }, 25);
+                    var player = div.animate([
+                        {transform: "scale(0.15)", opacity: 1},
+                        {transform: "scale(1.75)", opacity: 0}
+                    ], {
+                        duration: 1000
+                    });
+                    player.onfinish = function(e) {
+                        d.parentNode.removeChild(d);
+                    }
                 })(div);
             }
         },
