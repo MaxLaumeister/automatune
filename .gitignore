@@ -12,3 +12,9 @@ _site
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Closure Compiler #
+####################
+
+compiler.jar
+
