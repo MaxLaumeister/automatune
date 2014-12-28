@@ -18565,11 +18565,13 @@ n.push(p)}if(e.push({t:g,d:n}),d.lastIndex==b.length)return e}}function e(a){ret
  * Initializes Automatune on a div.
  * @class
  * @classdesc The main Automatune class.
+ * @param {HTMLElement} domEl The DOM Element (a div) that Automatune should render in.
+ * @param {int} size The width/height (in cells) of the square grid.
  */
 function Automatune(domEl, size) {
     
     /**
-     * The Grid that contains the GridCells of this Automatune instance.
+     * The {@linkcode Grid} that contains the {@linkcode GridCell|GridCells} of this Automatune instance.
      * @public
      * @type {Grid}
      */
@@ -18583,7 +18585,7 @@ function Automatune(domEl, size) {
     var updateTargets;
     
     /**
-     * Updates all active actors (e.g. {@link Visitor}s and {@link Component}s)
+     * Updates all active actors (e.g. {@linkcode Visitor|Visitors} and {@linkcode Component|Components})
      * in the system, simulating a step.
      * @private
      */
@@ -18611,7 +18613,7 @@ $(document).ready(function() {
  * @alias Component
  * @abstract
  * @class
- * @classdesc A component that goes on a grid cell, such as an arrow or note.
+ * @classdesc A modifier that gets attached to a grid cell, such as an {@linkcode Component_Arrow|Arrow} or {@linkcode Component_Note|Note}.
  */
 Automatune.Component = function() {
     /**
@@ -18638,7 +18640,7 @@ Automatune.Component = function() {
     };
     
     /**
-     * Appends this Component to a GridCell.
+     * Appends this Component to a {@linkcode GridCell}.
      * @public
      * @param {GridCell} gridCell The GridCell to append this Component to.
      */
@@ -18647,7 +18649,7 @@ Automatune.Component = function() {
     };
     
     /**
-     * Defines what the Component should do when visited.
+     * Defines what this Component should do when visited.
      * @private
      * @param {Visitor} visitor The visitor that is currently visiting this Component.
      */
@@ -18656,7 +18658,7 @@ Automatune.Component = function() {
     };
     
     /**
-     * Destroys this Component, removing it from its GridCell.
+     * Destroys this Component, removing it from its {@linkcode GridCell}.
      * @public
      */
     this.destroy = function() {
@@ -18668,7 +18670,7 @@ Automatune.Component = function() {
  * Creates a new Arrow component.
  * @alias Component_Arrow
  * @class
- * @classdesc A component that changes a Visitor's direction upon visiting a GridCell.
+ * @classdesc A component that changes a {@linkcode Visitor}'s direction upon visiting a {@linkcode GridCell}.
  * @extends Component
  */
 Automatune.Component_Arrow = function() {
@@ -18679,7 +18681,7 @@ Automatune.Component_Arrow = function() {
  * Creates a new Note component.
  * @alias Component_Note
  * @class
- * @classdesc A component that plays an audible note when visited by a Visitor.
+ * @classdesc A component that plays an audible note when visited by a {@linkcode Visitor}.
  * @extends Component
  */
 Automatune.Component_Note = function() {
@@ -18695,8 +18697,8 @@ Automatune.O_DOWN = 3;
  * Initializes an Automatune game grid.
  * @alias Grid
  * @class
- * @classdesc An Automatune game grid. Contains a 2D array of {@link GridCell}s.
- * @param {HTMLElement} domEl The outermost Automatune DOM Element.
+ * @classdesc An Automatune game grid. Manages a 2D matrix of {@link GridCell|GridCells}.
+ * @param {HTMLElement} domEl The Automatune DOM Element to attach this Grid to.
  * @param {int} size The size (width/height) of the square game grid.
  */
 Automatune.Grid = function(domEl, size) {
@@ -18709,7 +18711,7 @@ Automatune.Grid = function(domEl, size) {
     this.domElement;
     
     /**
-     * A 2D list of all {@link GridCell}s.
+     * A 2D array of all {@link GridCell|GridCells} within this Grid.
      * @private
      * @type {Array<Array<GridCell>>}
      */
@@ -18766,14 +18768,14 @@ Automatune.Grid = function(domEl, size) {
  * @alias GridCell
  * @class
  * @classdesc A cell on the game grid.
- * @param {Grid} grid The game grid.
+ * @param {Grid} grid The parent game grid.
  * @param {int} x The x position in the grid for this GridCell.
  * @param {int} y The y position in the grid for this GridCell.
  */
 Automatune.GridCell = function(grid, x, y) {
     
     /**
-     * The parent Grid of this GridCell.
+     * The parent {@linkcode Grid} of this GridCell.
      * @private
      */
     var parentGrid;
@@ -18793,14 +18795,14 @@ Automatune.GridCell = function(grid, x, y) {
     var pos;
     
     /**
-     * The Components associated with this GridCell.
+     * The {@linkcode Component|Components} associated with this GridCell.
      * @private
      * @type {Component[]}
      */
     var components;
     
     /**
-     * Append a component to this GridCell.
+     * Append a {@linkcode Component} to this GridCell.
      * @public
      * @param {Component} ct The Component to append to this GridCell.
      */
@@ -18809,7 +18811,7 @@ Automatune.GridCell = function(grid, x, y) {
     };
     
     /**
-     * Remove a component from this GridCell.
+     * Remove a {@linkcode Component} from this GridCell.
      * @public
      * @param {string} type The type of Component to remove from this GridCell.
      */
@@ -18818,7 +18820,7 @@ Automatune.GridCell = function(grid, x, y) {
     };
     
     /**
-     * Returns true if this GridCell has a component of type 'type', otherwise returns false.
+     * Returns true if this GridCell has a {@linkcode Component} of type 'type', otherwise returns false.
      * @public
      * @param {string} type The type of Component to check.
      * @returns {boolean} hasComponent 
@@ -18828,7 +18830,7 @@ Automatune.GridCell = function(grid, x, y) {
     };
     
     /**
-     * Gets the first component of a certain type that is attached to this GridCell.
+     * Gets the first {@linkcode Component} of a certain type that is attached to this GridCell.
      * @public
      * @param {string} type The type of Component to check.
      */
@@ -18837,7 +18839,7 @@ Automatune.GridCell = function(grid, x, y) {
     };
     
     /**
-     * Called when a Visitor visits this GridCell.
+     * Called when a {@linkcode Visitor} visits this GridCell.
      * Triggers the onVisit() event for all Components attached to this GridCell.
      * @private
      */
@@ -18899,7 +18901,7 @@ Automatune.Visitor = function(x, y) {
     this.pos = {x: x, y: y};
     
     /**
-     * Appends this Visitor to a GridCell.
+     * Appends this Visitor to a {@linkcode GridCell}.
      * @public
      * @param {GridCell} gridCell The GridCell to append this Visitor to.
      */

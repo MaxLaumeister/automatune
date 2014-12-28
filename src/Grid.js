@@ -2,8 +2,8 @@
  * Initializes an Automatune game grid.
  * @alias Grid
  * @class
- * @classdesc An Automatune game grid. Contains a 2D array of {@link GridCell}s.
- * @param {HTMLElement} domEl The outermost Automatune DOM Element.
+ * @classdesc An Automatune game grid. Manages a 2D matrix of {@link GridCell|GridCells}.
+ * @param {HTMLElement} domEl The Automatune DOM Element to attach this Grid to.
  * @param {int} size The size (width/height) of the square game grid.
  */
 Automatune.Grid = function(domEl, size) {
@@ -16,7 +16,7 @@ Automatune.Grid = function(domEl, size) {
     this.domElement;
     
     /**
-     * A 2D list of all {@link GridCell}s.
+     * A 2D array of all {@link GridCell|GridCells} within this Grid.
      * @private
      * @type {Array<Array<GridCell>>}
      */

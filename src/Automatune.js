@@ -2,11 +2,13 @@
  * Initializes Automatune on a div.
  * @class
  * @classdesc The main Automatune class.
+ * @param {HTMLElement} domEl The DOM Element (a div) that Automatune should render in.
+ * @param {int} size The width/height (in cells) of the square grid.
  */
 function Automatune(domEl, size) {
     
     /**
-     * The Grid that contains the GridCells of this Automatune instance.
+     * The {@linkcode Grid} that contains the {@linkcode GridCell|GridCells} of this Automatune instance.
      * @public
      * @type {Grid}
      */
@@ -20,7 +22,7 @@ function Automatune(domEl, size) {
     var updateTargets;
     
     /**
-     * Updates all active actors (e.g. {@link Visitor}s and {@link Component}s)
+     * Updates all active actors (e.g. {@linkcode Visitor|Visitors} and {@linkcode Component|Components})
      * in the system, simulating a step.
      * @private
      */

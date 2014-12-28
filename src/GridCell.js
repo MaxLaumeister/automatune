@@ -3,14 +3,14 @@
  * @alias GridCell
  * @class
  * @classdesc A cell on the game grid.
- * @param {Grid} grid The game grid.
+ * @param {Grid} grid The parent game grid.
  * @param {int} x The x position in the grid for this GridCell.
  * @param {int} y The y position in the grid for this GridCell.
  */
 Automatune.GridCell = function(grid, x, y) {
     
     /**
-     * The parent Grid of this GridCell.
+     * The parent {@linkcode Grid} of this GridCell.
      * @private
      */
     var parentGrid;
@@ -30,14 +30,14 @@ Automatune.GridCell = function(grid, x, y) {
     var pos;
     
     /**
-     * The Components associated with this GridCell.
+     * The {@linkcode Component|Components} associated with this GridCell.
      * @private
      * @type {Component[]}
      */
     var components;
     
     /**
-     * Append a component to this GridCell.
+     * Append a {@linkcode Component} to this GridCell.
      * @public
      * @param {Component} ct The Component to append to this GridCell.
      */
@@ -46,7 +46,7 @@ Automatune.GridCell = function(grid, x, y) {
     };
     
     /**
-     * Remove a component from this GridCell.
+     * Remove a {@linkcode Component} from this GridCell.
      * @public
      * @param {string} type The type of Component to remove from this GridCell.
      */
@@ -55,7 +55,7 @@ Automatune.GridCell = function(grid, x, y) {
     };
     
     /**
-     * Returns true if this GridCell has a component of type 'type', otherwise returns false.
+     * Returns true if this GridCell has a {@linkcode Component} of type 'type', otherwise returns false.
      * @public
      * @param {string} type The type of Component to check.
      * @returns {boolean} hasComponent 
@@ -65,7 +65,7 @@ Automatune.GridCell = function(grid, x, y) {
     };
     
     /**
-     * Gets the first component of a certain type that is attached to this GridCell.
+     * Gets the first {@linkcode Component} of a certain type that is attached to this GridCell.
      * @public
      * @param {string} type The type of Component to check.
      */
@@ -74,7 +74,7 @@ Automatune.GridCell = function(grid, x, y) {
     };
     
     /**
-     * Called when a Visitor visits this GridCell.
+     * Called when a {@linkcode Visitor} visits this GridCell.
      * Triggers the onVisit() event for all Components attached to this GridCell.
      * @private
      */

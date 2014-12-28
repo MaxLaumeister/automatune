@@ -2,7 +2,7 @@
  * @alias Component
  * @abstract
  * @class
- * @classdesc A component that goes on a grid cell, such as an arrow or note.
+ * @classdesc A modifier that gets attached to a grid cell, such as an {@linkcode Component_Arrow|Arrow} or {@linkcode Component_Note|Note}.
  */
 Automatune.Component = function() {
     /**
@@ -29,7 +29,7 @@ Automatune.Component = function() {
     };
     
     /**
-     * Appends this Component to a GridCell.
+     * Appends this Component to a {@linkcode GridCell}.
      * @public
      * @param {GridCell} gridCell The GridCell to append this Component to.
      */
@@ -38,7 +38,7 @@ Automatune.Component = function() {
     };
     
     /**
-     * Defines what the Component should do when visited.
+     * Defines what this Component should do when visited.
      * @private
      * @param {Visitor} visitor The visitor that is currently visiting this Component.
      */
@@ -47,7 +47,7 @@ Automatune.Component = function() {
     };
     
     /**
-     * Destroys this Component, removing it from its GridCell.
+     * Destroys this Component, removing it from its {@linkcode GridCell}.
      * @public
      */
     this.destroy = function() {
@@ -59,7 +59,7 @@ Automatune.Component = function() {
  * Creates a new Arrow component.
  * @alias Component_Arrow
  * @class
- * @classdesc A component that changes a Visitor's direction upon visiting a GridCell.
+ * @classdesc A component that changes a {@linkcode Visitor}'s direction upon visiting a {@linkcode GridCell}.
  * @extends Component
  */
 Automatune.Component_Arrow = function() {
@@ -70,7 +70,7 @@ Automatune.Component_Arrow = function() {
  * Creates a new Note component.
  * @alias Component_Note
  * @class
- * @classdesc A component that plays an audible note when visited by a Visitor.
+ * @classdesc A component that plays an audible note when visited by a {@linkcode Visitor}.
  * @extends Component
  */
 Automatune.Component_Note = function() {

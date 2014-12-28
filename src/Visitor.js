@@ -22,7 +22,7 @@ Automatune.Visitor = function(x, y) {
     this.pos = {x: x, y: y};
     
     /**
-     * Appends this Visitor to a GridCell.
+     * Appends this Visitor to a {@linkcode GridCell}.
      * @public
      * @param {GridCell} gridCell The GridCell to append this Visitor to.
      */
