@@ -2,21 +2,31 @@ module.exports = function(grunt) {
 
   var srcFiles = ['src/*.js'];
   var libFiles = ['lib/*.js'];
+  var destFile = 'dist/automatune.js';
 
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    concat: {
+      all: {
+        src: libFiles.concat(srcFiles),
+        dest: destFile
+      }
+    },
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> Copyright (c) <%= grunt.template.today("yyyy") %> Maximillian Laumeister, All Rights Reserved */\n'
       },
       build: {
         src: libFiles.concat(srcFiles),
-        dest: 'dist/automatune.min.js'
+        dest: destFile
       }
     },
     jshint: {
-      all: srcFiles
+      all: srcFiles,
+      options: {
+        expr: true
+      }
     },
     jsdoc: {
       all: {
@@ -29,10 +39,12 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jsdoc');
 
-  grunt.registerTask('default', ['jshint', 'uglify', 'jsdoc']);
+  grunt.registerTask('default', ['jshint', 'concat', 'jsdoc']);
+  grunt.registerTask('min', ['jshint', 'uglify', 'jsdoc']);
 
 };

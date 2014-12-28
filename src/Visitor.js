@@ -3,27 +3,28 @@
  * @alias Visitor
  * @class
  * @classdesc A circle that visits GridCells on the game grid.
- * @param {int} x The x position for the new Visitor.
- * @param {int} y The y position for the new Visitor.
+ * @param {int} x The x position in the grid for the new Visitor.
+ * @param {int} y The y position in the grid for the new Visitor.
  */
 Automatune.Visitor = function(x, y) {
     /**
      * The DOM Element that visually represents this Visitor.
-     * @private
+     * @public
      * @type {HTMLElement}
      */
-    var domElement;
+    this.domElement;
     
     /**
      * The current grid position of this Visitor.
-     * @private
-     * @type {{x, y}}
+     * @public
+     * @type {Object}
      */
-    var pos = {x: x, y: y};
+    this.pos = {x: x, y: y};
     
     /**
      * Appends this Visitor to a GridCell.
      * @public
+     * @param {GridCell} gridCell The GridCell to append this Visitor to.
      */
     this.appendTo = function(gridCell) {
         
