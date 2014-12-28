@@ -1,11 +1,30 @@
 /**
- * The main Automatune class.
- * @constructor
+ * Initializes Automatune on a div.
+ * @class
+ * @classdesc The main Automatune class.
  */
-function Automatune() {
+function Automatune(domEl) {
     
     /**
-     * Returns the GridCell at position {x, y}. 
+     * The DOM Element that contains the Automatune game.
+     * @private
+     */
+    var domElement;
+    
+    /**
+     * A 2D list of all {@link GridCell}s.
+     * @private
+     */
+    var gridCells = [[]];
+    
+    /**
+     * Objects to call update() on every step.
+     * @private
+     */
+    var updateTargets = [];
+    
+    /**
+     * Returns the {@link GridCell} at position (x, y) in the Automatune grid. 
      * @public
      * @param {int} x The x position of the GridCell.
      * @param {int} y The y position of the GridCell.
@@ -16,15 +35,12 @@ function Automatune() {
     };
     
     /**
-     * A 2D list of all grid cells.
+     * Updates all active actors (e.g. {@link Visitor}s and {@link Component}s)
+     * in the system, simulating a step.
      * @private
      */
-    var gridCells = [[]];
-    
-    /**
-     * Objects to call update() on every step.
-     * @private
-     */
-    var updateTargets = [];
+    function update() {
+        
+    }
     
 }
