@@ -1,10 +1,7 @@
-# Jekyll #
 ######################
-_site
-.sass-cache
-
 # OS generated files #
 ######################
+
 .DS_Store
 .DS_Store?
 ._*
@@ -13,8 +10,10 @@ _site
 ehthumbs.db
 Thumbs.db
 
-# Closure Compiler #
-####################
+#########################
+# Grunt generated files #
+#########################
 
-compiler.jar
+doc/
+node_modules/
 

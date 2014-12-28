@@ -22,17 +22,17 @@ Automatune.Component = function(t) {
      */
     this.getType = function(){
         return type;
-    }
+    };
     
     this.appendTo = function(gridCell) {
         
-    }
+    };
     
     this.onVisit = function(visitor) {
         
-    }
+    };
     
     this.destroy = function() {
     
-    }
-}
+    };
+};

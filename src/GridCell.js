@@ -22,7 +22,7 @@ Automatune.GridCell = function() {
      */
     this.append = function(ct) {
         
-    }
+    };
     
     /**
      * Remove a component from this GridCell.
@@ -30,12 +30,12 @@ Automatune.GridCell = function() {
      */
     this.remove = function(ct) {
         
-    }
+    };
     
     /**
      * Called when this GridCell is visited by a Visitor.
      */
     this.onVisit = function() {
     
-    }
-}
+    };
+};

@@ -13,7 +13,7 @@ function Automatune() {
      */
     this.getGridCell = function (x, y) {
         return gridCells[x][y];
-    }
+    };
     
     /**
      * A 2D list of all grid cells.
