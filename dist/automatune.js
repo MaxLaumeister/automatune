@@ -18570,6 +18570,15 @@ n.push(p)}if(e.push({t:g,d:n}),d.lastIndex==b.length)return e}}function e(a){ret
  */
 function Automatune(domEl, size) {
     
+    "use strict";
+    
+    /**
+     * The DOM Element that contains the Automatune game.
+     * @public
+     * @type {HTMLElement}
+     */
+    this.domElement;
+    
     /**
      * The {@linkcode Grid} that contains the {@linkcode GridCell|GridCells} of this Automatune instance.
      * @public
@@ -18599,14 +18608,17 @@ function Automatune(domEl, size) {
     
     // Initialize variables
     updateTargets = [];
-    this.grid = new Automatune.Grid(domEl, size);
+    this.domElement = domEl;
+    this.grid = new Automatune.Grid(this, size);
     
 }
 
 // Initialize Automatune
 $(document).ready(function() {
+    "use strict";
     new Automatune(document.getElementById("automatune"), 7);
 });
+
 
 
 /**
@@ -18614,8 +18626,19 @@ $(document).ready(function() {
  * @abstract
  * @class
  * @classdesc A modifier that gets attached to a grid cell, such as an {@linkcode Component_Arrow|Arrow} or {@linkcode Component_Note|Note}.
+ * @param {GridCell} pCell The parent grid cell.
+ * @param {string} t The type of component to create.
  */
-Automatune.Component = function() {
+Automatune.Component = function(pCell, t) {
+    
+    "use strict";
+    
+    /**
+     * The parent {@linkcode GridCell} of this Component.
+     * @public
+     */
+    this.parentCell;
+    
     /**
      * The type of component (arrow, note, etc.)
      * @private
@@ -18664,6 +18687,11 @@ Automatune.Component = function() {
     this.destroy = function() {
     
     };
+    
+    // Initialize variables
+    
+    this.parentCell = pCell;
+    type = t;
 };
 
 /**
@@ -18688,6 +18716,7 @@ Automatune.Component_Note = function() {
 
 };
 
+
 Automatune.O_RIGHT = 0;
 Automatune.O_UP = 1;
 Automatune.O_LEFT = 2;
@@ -18698,10 +18727,19 @@ Automatune.O_DOWN = 3;
  * @alias Grid
  * @class
  * @classdesc An Automatune game grid. Manages a 2D matrix of {@link GridCell|GridCells}.
- * @param {HTMLElement} domEl The Automatune DOM Element to attach this Grid to.
+ * @param {Automatune} pGame The main Automatune instance.
  * @param {int} size The size (width/height) of the square game grid.
  */
-Automatune.Grid = function(domEl, size) {
+Automatune.Grid = function(pGame, size) {
+    
+    "use strict";
+    
+    /**
+     * The parent Automatune game instance.
+     * @public
+     * @type {Automatune}
+     */
+    this.parentGame;
     
     /**
      * The DOM Element that visually represents the Automatune Grid.
@@ -18749,7 +18787,8 @@ Automatune.Grid = function(domEl, size) {
     // Initialize this Grid instance.
     
     // Initialize variables
-    this.domElement = domEl;
+    this.parentGame = pGame;
+    this.domElement = this.parentGame.domElement;
     gridSize = size;
     
     // Initialize grid with GridCells.
@@ -18763,25 +18802,28 @@ Automatune.Grid = function(domEl, size) {
     }
 };
 
+
 /**
  * Creates a grid cell
  * @alias GridCell
  * @class
  * @classdesc A cell on the game grid.
- * @param {Grid} grid The parent game grid.
+ * @param {Grid} pGrid The parent game grid.
  * @param {int} x The x position in the grid for this GridCell.
  * @param {int} y The y position in the grid for this GridCell.
  */
-Automatune.GridCell = function(grid, x, y) {
+Automatune.GridCell = function(pGrid, x, y) {
+    
+    "use strict";
     
     /**
      * The parent {@linkcode Grid} of this GridCell.
-     * @private
+     * @public
      */
-    var parentGrid;
+    this.parentGrid;
     
     /**
-     * The DOM Element that visually represents this GridCell.
+     * The .
      * @public
      * @type {HTMLElement}
      */
@@ -18852,12 +18894,12 @@ Automatune.GridCell = function(grid, x, y) {
     // Initialize this GridCell instance.
     
     // Initialize variables
-    parentGrid = grid;
+    this.parentGrid = pGrid;
     pos = {x: x, y: y};
     components = [];
     
     // Initialize DOM Element
-    var grid_size = parentGrid.getGridSize();
+    var grid_size = this.parentGrid.getGridSize();
     var cell_spacing_percent = 10 / grid_size;
     var cell_width_percent = ((100 - cell_spacing_percent) / grid_size) - cell_spacing_percent;
     var cell_height_percent = ((100 - cell_spacing_percent) / grid_size) - cell_spacing_percent;
@@ -18873,19 +18915,62 @@ Automatune.GridCell = function(grid, x, y) {
     this.domElement.style.width = cell_width_percent + "%";
     this.domElement.style.height = cell_height_percent + "%";
     
-    parentGrid.domElement.appendChild(this.domElement);
+    this.parentGrid.domElement.appendChild(this.domElement);
         
 };
+
+
+/**
+ * Initializes the Automatune main and context menus.
+ * @alias Menu
+ * @class
+ * @classdesc Manages the Automatune main and context menus.
+ * @param {Automatune} pGame The main Automatune instance.
+ */
+Automatune.Menu = function(pGame) {
+    
+    "use strict";
+    
+    /**
+     * The parent Automatune game instance.
+     * @public
+     * @type {Automatune}
+     */
+    this.parentGame;
+    
+    /**
+     * The DOM Element that this Menu applies to.
+     * @public
+     * @type {HTMLElement}
+     */
+    this.domElement;
+    
+    // Initialize variables
+    
+    this.parentGame = pGame;
+    this.domElement = this.parentGame.domElement;
+};
+
 
 /**
  * Create a new visitor
  * @alias Visitor
  * @class
  * @classdesc A circle that visits GridCells on the game grid.
+ * @param {Grid} pGrid The parent game grid.
  * @param {int} x The x position in the grid for the new Visitor.
  * @param {int} y The y position in the grid for the new Visitor.
  */
-Automatune.Visitor = function(x, y) {
+Automatune.Visitor = function(pGrid, x, y) {
+    
+    "use strict";
+    
+    /**
+     * The parent {@linkcode Grid} of this GridCell.
+     * @public
+     */
+    this.parentGrid;
+    
     /**
      * The DOM Element that visually represents this Visitor.
      * @public
@@ -18916,4 +19001,8 @@ Automatune.Visitor = function(x, y) {
     this.update = function() {
         
     };
+    
+    // Initialize variables
+    this.parentGrid = pGrid;
 };
+

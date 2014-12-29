@@ -3,8 +3,19 @@
  * @abstract
  * @class
  * @classdesc A modifier that gets attached to a grid cell, such as an {@linkcode Component_Arrow|Arrow} or {@linkcode Component_Note|Note}.
+ * @param {GridCell} pCell The parent grid cell.
+ * @param {string} t The type of component to create.
  */
-Automatune.Component = function() {
+Automatune.Component = function(pCell, t) {
+    
+    "use strict";
+    
+    /**
+     * The parent {@linkcode GridCell} of this Component.
+     * @public
+     */
+    this.parentCell;
+    
     /**
      * The type of component (arrow, note, etc.)
      * @private
@@ -53,6 +64,11 @@ Automatune.Component = function() {
     this.destroy = function() {
     
     };
+    
+    // Initialize variables
+    
+    this.parentCell = pCell;
+    type = t;
 };
 
 /**
@@ -76,3 +92,4 @@ Automatune.Component_Arrow = function() {
 Automatune.Component_Note = function() {
 
 };
+

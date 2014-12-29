@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+  "use strict";
+
   var srcFiles = ['src/*.js'];
   var libFiles = ['lib/*.js'];
   var destFile = 'dist/automatune.js';
@@ -23,9 +25,12 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      all: srcFiles,
+      all: {
+        src: srcFiles.concat(['Gruntfile.js'])
+      },
       options: {
-        expr: true
+        expr: true,
+        strict: true
       }
     },
     jsdoc: {
@@ -36,6 +41,15 @@ module.exports = function(grunt) {
           private: false
         }
       }
+    },
+    watch: {
+      all: {
+        files: libFiles.concat(srcFiles).concat(['Gruntfile.js']),
+        tasks: ['newer:jshint:all', 'concat'],
+        options: {
+          interrupt: true
+        }
+      }
     }
   });
 
@@ -43,8 +57,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-newer');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['jshint', 'concat', 'jsdoc']);
-  grunt.registerTask('min', ['jshint', 'uglify', 'jsdoc']);
-
+  grunt.registerTask('default', ['jshint', 'concat']);
+  grunt.registerTask('min', ['jshint', 'uglify']);
+  grunt.registerTask('doc', ['jsdoc']);
 };
+

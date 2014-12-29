@@ -7,6 +7,15 @@
  */
 function Automatune(domEl, size) {
     
+    "use strict";
+    
+    /**
+     * The DOM Element that contains the Automatune game.
+     * @public
+     * @type {HTMLElement}
+     */
+    this.domElement;
+    
     /**
      * The {@linkcode Grid} that contains the {@linkcode GridCell|GridCells} of this Automatune instance.
      * @public
@@ -36,11 +45,14 @@ function Automatune(domEl, size) {
     
     // Initialize variables
     updateTargets = [];
-    this.grid = new Automatune.Grid(domEl, size);
+    this.domElement = domEl;
+    this.grid = new Automatune.Grid(this, size);
     
 }
 
 // Initialize Automatune
 $(document).ready(function() {
+    "use strict";
     new Automatune(document.getElementById("automatune"), 7);
 });
+

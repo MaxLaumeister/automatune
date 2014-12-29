@@ -3,20 +3,22 @@
  * @alias GridCell
  * @class
  * @classdesc A cell on the game grid.
- * @param {Grid} grid The parent game grid.
+ * @param {Grid} pGrid The parent game grid.
  * @param {int} x The x position in the grid for this GridCell.
  * @param {int} y The y position in the grid for this GridCell.
  */
-Automatune.GridCell = function(grid, x, y) {
+Automatune.GridCell = function(pGrid, x, y) {
+    
+    "use strict";
     
     /**
      * The parent {@linkcode Grid} of this GridCell.
-     * @private
+     * @public
      */
-    var parentGrid;
+    this.parentGrid;
     
     /**
-     * The DOM Element that visually represents this GridCell.
+     * The .
      * @public
      * @type {HTMLElement}
      */
@@ -87,12 +89,12 @@ Automatune.GridCell = function(grid, x, y) {
     // Initialize this GridCell instance.
     
     // Initialize variables
-    parentGrid = grid;
+    this.parentGrid = pGrid;
     pos = {x: x, y: y};
     components = [];
     
     // Initialize DOM Element
-    var grid_size = parentGrid.getGridSize();
+    var grid_size = this.parentGrid.getGridSize();
     var cell_spacing_percent = 10 / grid_size;
     var cell_width_percent = ((100 - cell_spacing_percent) / grid_size) - cell_spacing_percent;
     var cell_height_percent = ((100 - cell_spacing_percent) / grid_size) - cell_spacing_percent;
@@ -108,6 +110,7 @@ Automatune.GridCell = function(grid, x, y) {
     this.domElement.style.width = cell_width_percent + "%";
     this.domElement.style.height = cell_height_percent + "%";
     
-    parentGrid.domElement.appendChild(this.domElement);
+    this.parentGrid.domElement.appendChild(this.domElement);
         
 };
+
