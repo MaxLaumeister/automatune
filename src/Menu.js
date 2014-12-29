@@ -9,6 +9,8 @@ Automatune.Menu = function(pGame) {
     
     "use strict";
     
+    assert(arguments.length === 1);
+    
     /**
      * The parent Automatune game instance.
      * @public

@@ -10,6 +10,8 @@ Automatune.Grid = function(pGame, size) {
     
     "use strict";
     
+    assert(arguments.length === 2);
+    
     /**
      * The parent Automatune game instance.
      * @public

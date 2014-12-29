@@ -18572,6 +18572,8 @@ function Automatune(domEl, size) {
     
     "use strict";
     
+    assert(arguments.length === 2);
+    
     /**
      * The DOM Element that contains the Automatune game.
      * @public
@@ -18620,18 +18622,36 @@ $(document).ready(function() {
 });
 
 
+function assert(obj) {
+    
+    "use strict";
+    
+    function getErrorObject(){
+        try { throw Error(''); } catch(err) { return err; }
+    }
+    
+    // If obj is "falsey", then throw an exception.
+    if (!obj || arguments.length !== 1) {
+        var err = getErrorObject();
+        var caller_line = err.stack.split("\n")[4];
+        var index = caller_line.indexOf("at ");
+        var clean = caller_line.slice(index+2, caller_line.length).trim();
+        throw "\"Assert Failed\" at " + clean;
+    }
+}
 
 /**
  * @alias Component
  * @abstract
  * @class
- * @classdesc A modifier that gets attached to a grid cell, such as an {@linkcode Component_Arrow|Arrow} or {@linkcode Component_Note|Note}.
- * @param {GridCell} pCell The parent grid cell.
- * @param {string} t The type of component to create.
+ * @classdesc A component on a grid cell, such as an {@linkcode Component_Arrow|Arrow}. A {@linkcode GridCell} can only contain one component at a time.
+ * @param {Orientation} orient The orientation the new Component should have.
  */
-Automatune.Component = function(pCell, t) {
+Automatune.Component = function(orient) {
     
     "use strict";
+    
+    assert(arguments.length === 1);
     
     /**
      * The parent {@linkcode GridCell} of this Component.
@@ -18640,11 +18660,11 @@ Automatune.Component = function(pCell, t) {
     this.parentCell;
     
     /**
-     * The type of component (arrow, note, etc.)
+     * The {@linkcode Orientation} (right, up, left, or down) that this Component has.
      * @private
-     * @type {string}
+     * @type {Orientation}
      */
-    var type;
+    var orientation;
     
     /**
      * The DOM Element that visually represents this Component.
@@ -18652,15 +18672,6 @@ Automatune.Component = function(pCell, t) {
      * @type {HTMLElement}
      */
     this.domElement;
-    
-    /**
-     * Returns the type of this Component (arrow, note, etc.).
-     * @public
-     * @returns {string} type The type of this Component.
-     */
-    this.getType = function(){
-        return type;
-    };
     
     /**
      * Appends this Component to a {@linkcode GridCell}.
@@ -18672,12 +18683,22 @@ Automatune.Component = function(pCell, t) {
     };
     
     /**
+     * Changes the direction that this Component is facing.
+     * @public
+     * @param {Orientation} orient The new Orientation for the component.
+     */
+    this.setOrientation = function(orient) {
+        orientation = orient;
+        // TODO: Update DOM Element
+    };
+    
+    /**
      * Defines what this Component should do when visited.
      * @private
      * @param {Visitor} visitor The visitor that is currently visiting this Component.
      */
     this.onVisit = function(visitor) {
-        
+        throw "onVisit called on a Component that does not implement onVisit.";
     };
     
     /**
@@ -18690,8 +18711,7 @@ Automatune.Component = function(pCell, t) {
     
     // Initialize variables
     
-    this.parentCell = pCell;
-    type = t;
+    orientation = orient;
 };
 
 /**
@@ -18700,22 +18720,40 @@ Automatune.Component = function(pCell, t) {
  * @class
  * @classdesc A component that changes a {@linkcode Visitor}'s direction upon visiting a {@linkcode GridCell}.
  * @extends Component
+ * @param {Orientation} orientation The type of component to create.
  */
-Automatune.Component_Arrow = function() {
+Automatune.Component_Arrow = function(orientation) {
+    
+    "use strict";
+    
+    assert(arguments.length === 1);
+    
+    Automatune.Component.call(this, orientation);
+    
+    // Init DOM
+    
+    var img = document.createElement("img");
+    img.src = "images/arrow.svg";
+    img.className = "gridCellProperty";
 
+    this.domElement = img;
+    this.parentCell.domElement.appendChild(img);
+    
+    /**
+     * Destroys this Arrow, removing it from its {@linkcode GridCell}.
+     * @public
+     */
+    this.destroy = function() {
+        // Deconstruct DOM
+        //this.domElement.
+    };
 };
+
 
 /**
- * Creates a new Note component.
- * @alias Component_Note
- * @class
- * @classdesc A component that plays an audible note when visited by a {@linkcode Visitor}.
- * @extends Component
+ * Enum that defines orientation. Possible values are Automatune.O_RIGHT, Automatune.O_UP, Automatune.O_LEFT, and Automatune.O_DOWN.
+ * @alias Orientation
  */
-Automatune.Component_Note = function() {
-
-};
-
 
 Automatune.O_RIGHT = 0;
 Automatune.O_UP = 1;
@@ -18733,6 +18771,8 @@ Automatune.O_DOWN = 3;
 Automatune.Grid = function(pGame, size) {
     
     "use strict";
+    
+    assert(arguments.length === 2);
     
     /**
      * The parent Automatune game instance.
@@ -18816,9 +18856,12 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     "use strict";
     
+    assert(arguments.length === 3);
+    
     /**
      * The parent {@linkcode Grid} of this GridCell.
      * @public
+     * @type {Grid}
      */
     this.parentGrid;
     
@@ -18832,32 +18875,59 @@ Automatune.GridCell = function(pGrid, x, y) {
     /**
      * The grid position of this GridCell.
      * @private
-     * @type {temp}
+     * @type {Vector2}
      */
     var pos;
     
     /**
-     * The {@linkcode Component|Components} associated with this GridCell.
+     * The {@linkcode Modifier|Modifiers} associated with this GridCell.
+     * @private
+     * @type {Modifier[]}
+     */
+    var modifiers;
+    
+    /**
+     * The {@linkcode Component} associated with this GridCell, if any.
      * @private
      * @type {Component[]}
      */
-    var components;
+    var component;
     
     /**
-     * Append a {@linkcode Component} to this GridCell.
+     * Append a {@linkcode Modifier} to this GridCell.
      * @public
-     * @param {Component} ct The Component to append to this GridCell.
+     * @param {Modifier} mod The Modifier to append to this GridCell.
      */
-    this.appendComponent = function(ct) {
+    this.appendModifier = function(mod) {
         
     };
     
     /**
-     * Remove a {@linkcode Component} from this GridCell.
+     * Remove a {@linkcode Modifier} of a certain type from this GridCell.
+     * If there are multiple Modifiers of this type, removes the oldest Modifier.
      * @public
-     * @param {string} type The type of Component to remove from this GridCell.
+     * @param {string} type The type of Modifier to remove from this GridCell.
      */
-    this.removeComponent = function(type) {
+    this.removeModifier = function(type) {
+        
+    };
+    
+    /**
+     * Returns true if this GridCell has a {@linkcode Modifier} of type 'type', otherwise returns false.
+     * @public
+     * @param {string} type The type of Modifier to check.
+     * @returns {boolean} hasModifier
+     */
+    this.hasModifier = function(type) {
+        
+    };
+    
+    /**
+     * Gets the first {@linkcode Modifier} of a certain type that is attached to this GridCell.
+     * @public
+     * @param {string} type The type of Modifier to check.
+     */
+    this.getModifier = function(type) {
         
     };
     
@@ -18868,35 +18938,65 @@ Automatune.GridCell = function(pGrid, x, y) {
      * @returns {boolean} hasComponent 
      */
     this.hasComponent = function(type) {
-        
+        return component !== null;
     };
     
     /**
-     * Gets the first {@linkcode Component} of a certain type that is attached to this GridCell.
+     * Gets the {@linkcode Component} that is attached to this GridCell.
+     * If no Component is attached, returns null.
      * @public
-     * @param {string} type The type of Component to check.
+     * @returns {Component} component
      */
-    this.getComponent = function(type) {
-        
+    this.getComponent = function() {
+        return component;
+    };
+    
+    /**
+     * Sets the {@linkcode Component} that is attached to this GridCell.
+     * @public
+     * @param {Component} ct The Component to attach to this GridCell.
+     */
+    this.setComponent = function(ct) {
+        this.destroyComponent();
+        ct.parentCell = this;
+        component = ct;
+    };
+    
+    /**
+     * Destroys the {@linkcode Component} that is attached to this GridCell, if any.
+     * @public
+     */
+    this.destroyComponent = function(ct) {
+        if (component) component.destroy();
+        component = null;
     };
     
     /**
      * Called when a {@linkcode Visitor} visits this GridCell.
-     * Triggers the onVisit() event for all Components attached to this GridCell.
+     * Triggers the onVisit() event for the Component and all Modifiers attached to this GridCell.
      * @private
      */
     this.onVisit = function() {
     
     };
     
-    
+    /**
+     * Called when this GridCell is clicked.
+     * @private
+     */
+    var onClick = function() {
+        if (!this.hasComponent()) {
+            this.setComponent(new Automatune.Component_Arrow(Automatune.O_RIGHT));
+        }
+    };
     
     // Initialize this GridCell instance.
     
     // Initialize variables
     this.parentGrid = pGrid;
     pos = {x: x, y: y};
-    components = [];
+    modifiers = [];
+    component = null;
     
     // Initialize DOM Element
     var grid_size = this.parentGrid.getGridSize();
@@ -18916,7 +19016,10 @@ Automatune.GridCell = function(pGrid, x, y) {
     this.domElement.style.height = cell_height_percent + "%";
     
     this.parentGrid.domElement.appendChild(this.domElement);
-        
+    
+    // Register onClick
+    
+    this.domElement.onclick = onClick.bind(this);
 };
 
 
@@ -18930,6 +19033,8 @@ Automatune.GridCell = function(pGrid, x, y) {
 Automatune.Menu = function(pGame) {
     
     "use strict";
+    
+    assert(arguments.length === 1);
     
     /**
      * The parent Automatune game instance.
@@ -18953,6 +19058,77 @@ Automatune.Menu = function(pGame) {
 
 
 /**
+ * @alias Modifier
+ * @abstract
+ * @class
+ * @classdesc A modifier that gets attached to a grid cell, such as a {@linkcode Component_Note|Note}. A {@linkcode GridCell} may have one or more modifiers.
+ * @param {GridCell} pCell The parent grid cell.
+ */
+Automatune.Modifier = function(pCell) {
+    
+    "use strict";
+    
+    assert(arguments.length === 2);
+    
+    /**
+     * The parent {@linkcode GridCell} of this Component.
+     * @public
+     */
+    this.parentCell;
+    
+    /**
+     * The DOM Element that visually represents this Modifier.
+     * @public
+     * @type {HTMLElement}
+     */
+    this.domElement;
+    
+    /**
+     * Appends this Modifier to a {@linkcode GridCell}.
+     * @public
+     * @param {GridCell} gridCell The GridCell to append this Component to.
+     */
+    this.appendTo = function(gridCell) {
+        
+    };
+    
+    /**
+     * Defines what this Modifier should do when visited.
+     * @private
+     * @param {Visitor} visitor The visitor that is currently visiting this Component.
+     */
+    this.onVisit = function(visitor) {
+        throw "onVisit called on a Modifier that does not implement onVisit.";
+    };
+    
+    /**
+     * Destroys this Modifier, removing it from its {@linkcode GridCell}.
+     * @public
+     */
+    this.destroy = function() {
+    
+    };
+    
+    // Initialize variables
+    
+    this.parentCell = pCell;
+};
+
+/**
+ * Creates a new Note modifier.
+ * @alias Modifier_Note
+ * @class
+ * @classdesc A modifier that plays an audible note when visited by a {@linkcode Visitor}.
+ * @extends Modifier
+ */
+Automatune.Modifier_Note = function() {
+    
+    //assert(arguments.length === 3);
+    
+};
+
+
+/**
  * Create a new visitor
  * @alias Visitor
  * @class
@@ -18964,6 +19140,8 @@ Automatune.Menu = function(pGame) {
 Automatune.Visitor = function(pGrid, x, y) {
     
     "use strict";
+    
+    assert(arguments.length === 3);
     
     /**
      * The parent {@linkcode Grid} of this GridCell.

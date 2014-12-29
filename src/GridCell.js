@@ -11,9 +11,12 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     "use strict";
     
+    assert(arguments.length === 3);
+    
     /**
      * The parent {@linkcode Grid} of this GridCell.
      * @public
+     * @type {Grid}
      */
     this.parentGrid;
     
@@ -27,32 +30,59 @@ Automatune.GridCell = function(pGrid, x, y) {
     /**
      * The grid position of this GridCell.
      * @private
-     * @type {temp}
+     * @type {Vector2}
      */
     var pos;
     
     /**
-     * The {@linkcode Component|Components} associated with this GridCell.
+     * The {@linkcode Modifier|Modifiers} associated with this GridCell.
+     * @private
+     * @type {Modifier[]}
+     */
+    var modifiers;
+    
+    /**
+     * The {@linkcode Component} associated with this GridCell, if any.
      * @private
      * @type {Component[]}
      */
-    var components;
+    var component;
     
     /**
-     * Append a {@linkcode Component} to this GridCell.
+     * Append a {@linkcode Modifier} to this GridCell.
      * @public
-     * @param {Component} ct The Component to append to this GridCell.
+     * @param {Modifier} mod The Modifier to append to this GridCell.
      */
-    this.appendComponent = function(ct) {
+    this.appendModifier = function(mod) {
         
     };
     
     /**
-     * Remove a {@linkcode Component} from this GridCell.
+     * Remove a {@linkcode Modifier} of a certain type from this GridCell.
+     * If there are multiple Modifiers of this type, removes the oldest Modifier.
      * @public
-     * @param {string} type The type of Component to remove from this GridCell.
+     * @param {string} type The type of Modifier to remove from this GridCell.
      */
-    this.removeComponent = function(type) {
+    this.removeModifier = function(type) {
+        
+    };
+    
+    /**
+     * Returns true if this GridCell has a {@linkcode Modifier} of type 'type', otherwise returns false.
+     * @public
+     * @param {string} type The type of Modifier to check.
+     * @returns {boolean} hasModifier
+     */
+    this.hasModifier = function(type) {
+        
+    };
+    
+    /**
+     * Gets the first {@linkcode Modifier} of a certain type that is attached to this GridCell.
+     * @public
+     * @param {string} type The type of Modifier to check.
+     */
+    this.getModifier = function(type) {
         
     };
     
@@ -63,35 +93,65 @@ Automatune.GridCell = function(pGrid, x, y) {
      * @returns {boolean} hasComponent 
      */
     this.hasComponent = function(type) {
-        
+        return component !== null;
     };
     
     /**
-     * Gets the first {@linkcode Component} of a certain type that is attached to this GridCell.
+     * Gets the {@linkcode Component} that is attached to this GridCell.
+     * If no Component is attached, returns null.
      * @public
-     * @param {string} type The type of Component to check.
+     * @returns {Component} component
      */
-    this.getComponent = function(type) {
-        
+    this.getComponent = function() {
+        return component;
+    };
+    
+    /**
+     * Sets the {@linkcode Component} that is attached to this GridCell.
+     * @public
+     * @param {Component} ct The Component to attach to this GridCell.
+     */
+    this.setComponent = function(ct) {
+        this.destroyComponent();
+        ct.parentCell = this;
+        component = ct;
+    };
+    
+    /**
+     * Destroys the {@linkcode Component} that is attached to this GridCell, if any.
+     * @public
+     */
+    this.destroyComponent = function(ct) {
+        if (component) component.destroy();
+        component = null;
     };
     
     /**
      * Called when a {@linkcode Visitor} visits this GridCell.
-     * Triggers the onVisit() event for all Components attached to this GridCell.
+     * Triggers the onVisit() event for the Component and all Modifiers attached to this GridCell.
      * @private
      */
     this.onVisit = function() {
     
     };
     
-    
+    /**
+     * Called when this GridCell is clicked.
+     * @private
+     */
+    var onClick = function() {
+        if (!this.hasComponent()) {
+            this.setComponent(new Automatune.Component_Arrow(Automatune.O_RIGHT));
+        }
+    };
     
     // Initialize this GridCell instance.
     
     // Initialize variables
     this.parentGrid = pGrid;
     pos = {x: x, y: y};
-    components = [];
+    modifiers = [];
+    component = null;
     
     // Initialize DOM Element
     var grid_size = this.parentGrid.getGridSize();
@@ -111,6 +171,9 @@ Automatune.GridCell = function(pGrid, x, y) {
     this.domElement.style.height = cell_height_percent + "%";
     
     this.parentGrid.domElement.appendChild(this.domElement);
-        
+    
+    // Register onClick
+    
+    this.domElement.onclick = onClick.bind(this);
 };
 

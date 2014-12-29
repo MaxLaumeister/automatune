@@ -11,6 +11,8 @@ Automatune.Visitor = function(pGrid, x, y) {
     
     "use strict";
     
+    assert(arguments.length === 3);
+    
     /**
      * The parent {@linkcode Grid} of this GridCell.
      * @public

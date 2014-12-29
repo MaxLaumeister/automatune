@@ -9,6 +9,8 @@ function Automatune(domEl, size) {
     
     "use strict";
     
+    assert(arguments.length === 2);
+    
     /**
      * The DOM Element that contains the Automatune game.
      * @public

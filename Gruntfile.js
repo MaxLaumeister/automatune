@@ -30,7 +30,8 @@ module.exports = function(grunt) {
       },
       options: {
         expr: true,
-        strict: true
+        strict: true,
+        newcap: true
       }
     },
     jsdoc: {
@@ -45,7 +46,7 @@ module.exports = function(grunt) {
     watch: {
       all: {
         files: libFiles.concat(srcFiles).concat(['Gruntfile.js']),
-        tasks: ['newer:jshint:all', 'concat'],
+        tasks: ['concat', 'newer:jshint:all'],
         options: {
           interrupt: true
         }
@@ -60,7 +61,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-newer');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['jshint', 'concat']);
+  grunt.registerTask('default', ['concat', 'jshint']);
   grunt.registerTask('min', ['jshint', 'uglify']);
   grunt.registerTask('doc', ['jsdoc']);
 };
