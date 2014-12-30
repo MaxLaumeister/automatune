@@ -19,6 +19,13 @@ function assert(expression) {
 
 Automatune.util = {};
 
+// TODO doc
+Automatune.util.extend = function(baseClass, newClass) {
+    "use strict";
+    newClass.prototype = Object.create(baseClass.prototype);
+    newClass.prototype.constructor = newClass;
+};
+
 /**
  * Sets the CSS rotation of an HTMLElement to reflect an {@linkcode Orientation.
  *

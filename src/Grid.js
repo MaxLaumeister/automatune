@@ -35,7 +35,7 @@ Automatune.Grid = function(pGame, size) {
      * @private
      * @type {Array<Array<GridCell>>}
      */
-    var gridCells;
+    this.gridCells;
     
     /**
      * The length/width of the grid, in cells.
@@ -43,7 +43,7 @@ Automatune.Grid = function(pGame, size) {
      * @private
      * @type {int}
      */
-    var gridSize;
+    this.gridSize;
     
     /**
      * The width of an individual cell in this Grid, in CSS percentage.
@@ -61,52 +61,6 @@ Automatune.Grid = function(pGame, size) {
      */
     this.cellCSSSpacing;
     
-    /**
-     * Get the length/width of the Grid, which is also the side length of the Grid.
-     *
-     * @public
-     * @returns {int} gridSize The length/width of the Grid.
-     */
-    this.getGridSize = function() {
-        return gridSize;
-    };
-    
-    /**
-     * Given an (x, y) coordinate position, returns whether this position is within bounds of the grid.
-     *
-     * @public
-     * @param {int} x The x coordinate of the location to check.
-     * @param {int} y The y coordinate of the location to check.
-     * @returns {boolean} isInBounds Whether the location is within the grid's bounds.
-     */
-    this.isInBounds = function(x, y) {
-        return (x >= 0 && x < gridSize && y >= 0 && y < gridSize);
-    };
-    
-    /**
-     * Returns the {@link GridCell} at position (x, y) in the Automatune grid.
-     *
-     * @public
-     * @param {int} x The x position of the GridCell.
-     * @param {int} y The y position of the GridCell.
-     * @returns {GridCell}
-     */
-    this.getCell = function (x, y) {
-        return gridCells[x][y];
-    };
-    
-    /**
-     * Constructs a JSON-compatible object representing the current state of this object.
-     *
-     * @public
-     * @returns {Object} save A JSON-compatible object representing a save state.
-     */
-    this.getSaveState = function() {
-        return {
-            instanceOf: "Grid"
-            // TODO: Finish save state implementation
-        };
-    };
     
     
     // Initialize this Grid instance.
@@ -114,20 +68,71 @@ Automatune.Grid = function(pGame, size) {
     // Initialize variables
     this.parentGame = pGame;
     this.domElement = this.parentGame.domElement;
-    gridSize = size;
+    this.gridSize = size;
     
     // Initialize CSS conversion factors
-    this.cellCSSSpacing = 10 / gridSize;
-    this.cellCSSWidth = ((100 - this.cellCSSSpacing) / gridSize) - this.cellCSSSpacing;
+    this.cellCSSSpacing = 10 / this.gridSize;
+    this.cellCSSWidth = ((100 - this.cellCSSSpacing) / this.gridSize) - this.cellCSSSpacing;
     
     // Initialize grid with GridCells.
-    gridCells = new Array(size);
+    this.gridCells = new Array(size);
     for (var i = 0; i < size; i++) {
         var column = new Array(size);
         for (var j = 0; j < size; j++) {
             column[j] = new Automatune.GridCell(this, i, j);
         }
-        gridCells[i] = column;
+        this.gridCells[i] = column;
     }
+};
+
+/**
+ * Get the length/width of the Grid, which is also the side length of the Grid.
+ *
+ * @public
+ * @returns {int} gridSize The length/width of the Grid.
+ */
+Automatune.Grid.prototype.getGridSize = function() {
+    "use strict";
+    return this.gridSize;
+};
+
+/**
+ * Given an (x, y) coordinate position, returns whether this position is within bounds of the grid.
+ *
+ * @public
+ * @param {int} x The x coordinate of the location to check.
+ * @param {int} y The y coordinate of the location to check.
+ * @returns {boolean} isInBounds Whether the location is within the grid's bounds.
+ */
+Automatune.Grid.prototype.isInBounds = function(x, y) {
+    "use strict";
+    return (x >= 0 && x < this.gridSize && y >= 0 && y < this.gridSize);
+};
+
+/**
+ * Returns the {@link GridCell} at position (x, y) in the Automatune grid.
+ *
+ * @public
+ * @param {int} x The x position of the GridCell.
+ * @param {int} y The y position of the GridCell.
+ * @returns {GridCell}
+ */
+Automatune.Grid.prototype.getCell = function (x, y) {
+    "use strict";
+    return this.gridCells[x][y];
+};
+
+/**
+ * Constructs a JSON-compatible object representing the current state of this object.
+ *
+ * @public
+ * @returns {Object} save A JSON-compatible object representing a save state.
+ */
+Automatune.Grid.prototype.getSaveState = function() {
+    "use strict";
+    return {
+        instanceOf: "Grid"
+        // TODO: Finish save state implementation
+    };
 };
 

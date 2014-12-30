@@ -130,7 +130,6 @@ Automatune.Menu = function(pGame, menuEl) {
             {title: "About Automatune", cmd: "about"}
         ],
         select: function(event, ui) {
-            console.log("select " + ui.cmd + " on ", ui.target);
             switch(ui.cmd) {
                 case "about":
                     $("#automatune-about").dialog("open");

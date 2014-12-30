@@ -47,66 +47,6 @@ Automatune.Visitor = function(pGame, x, y, orient) {
      */
     this.orientation;
     
-    /**
-     * Steps this Visitor forward, sending it on its way to the next grid cell.
-     *
-     * @private
-     */
-    this.update = function() {
-        this.parentGame.grid.getCell(this.pos.x, this.pos.y).onVisit(this);
-        
-        var grid = this.parentGame.grid;
-        var delta = Automatune.util.getOrientationDelta(this.orientation);
-        if (!grid.isInBounds(this.pos.x + delta.x, this.pos.y + delta.y)) {
-            this.orientation = Automatune.util.getOpposite(this.orientation);
-            delta = Automatune.util.getOrientationDelta(this.orientation);
-        }
-        this.pos = {x: this.pos.x + delta.x, y: this.pos.y + delta.y};
-        this.updateCSSPosition();
-    };
-    
-    /**
-     * Updates the element's CSS position to reflect its grid position.
-     *
-     * @private
-     */
-    this.updateCSSPosition = function() {
-        var cell_width_percent = grid.cellCSSWidth;
-        
-        var cssPos = this.parentGame.grid.getCell(this.pos.x, this.pos.y).getCSSPosition();
-        var factor = 100 / cell_width_percent;
-        
-        cssPos = {
-            x: cssPos.x * factor,
-            y: cssPos.y * factor
-        };
-        
-        var cssTransform = "translate(" + cssPos.x + "%, " + cssPos.y + "%)";
-        this.domElement.style["-webkit-transform"] = cssTransform;
-        this.domElement.style.transform = cssTransform;
-    };
-    
-    // TODO doc
-    this.updateTickMs = function() {
-        var ms = this.parentGame.getTickMs();
-        this.domElement.style["webkit-transition"] = "-webkit-transform " + ms + "ms linear";
-        this.domElement.style.transition = "transform " + ms + "ms linear";
-    };
-    
-    /**
-     * Constructs a JSON-compatible object representing the current state of this object.
-     *
-     * @public
-     * @returns {Object} save A JSON-compatible object representing a save state.
-     */
-    this.getSaveState = function() {
-        return {
-            instanceOf: "Visitor",
-            pos: this.pos,
-            orientation: this.orientation
-        };
-    };
-    
     // Initialize variables
     
     this.parentGame = pGame;
@@ -125,5 +65,69 @@ Automatune.Visitor = function(pGame, x, y, orient) {
     
     // Initialize DOM Transition
     this.updateTickMs();
+};
+
+/**
+ * Steps this Visitor forward, sending it on its way to the next grid cell.
+ *
+ * @private
+ */
+Automatune.Visitor.prototype.update = function() {
+    "use strict";
+    this.parentGame.grid.getCell(this.pos.x, this.pos.y).onVisit(this);
+    
+    var grid = this.parentGame.grid;
+    var delta = Automatune.util.getOrientationDelta(this.orientation);
+    if (!grid.isInBounds(this.pos.x + delta.x, this.pos.y + delta.y)) {
+        this.orientation = Automatune.util.getOpposite(this.orientation);
+        delta = Automatune.util.getOrientationDelta(this.orientation);
+    }
+    this.pos = {x: this.pos.x + delta.x, y: this.pos.y + delta.y};
+    this.updateCSSPosition();
+};
+
+/**
+ * Updates the element's CSS position to reflect its grid position.
+ *
+ * @private
+ */
+Automatune.Visitor.prototype.updateCSSPosition = function() {
+    "use strict";
+    var cell_width_percent = this.parentGame.grid.cellCSSWidth;
+    
+    var cssPos = this.parentGame.grid.getCell(this.pos.x, this.pos.y).getCSSPosition();
+    var factor = 100 / cell_width_percent;
+    
+    cssPos = {
+        x: cssPos.x * factor,
+        y: cssPos.y * factor
+    };
+    
+    var cssTransform = "translate(" + cssPos.x + "%, " + cssPos.y + "%)";
+    this.domElement.style["-webkit-transform"] = cssTransform;
+    this.domElement.style.transform = cssTransform;
+};
+
+// TODO doc
+Automatune.Visitor.prototype.updateTickMs = function() {
+    "use strict";
+    var ms = this.parentGame.getTickMs();
+    this.domElement.style["webkit-transition"] = "-webkit-transform " + ms + "ms linear";
+    this.domElement.style.transition = "transform " + ms + "ms linear";
+};
+
+/**
+ * Constructs a JSON-compatible object representing the current state of this object.
+ *
+ * @public
+ * @returns {Object} save A JSON-compatible object representing a save state.
+ */
+Automatune.Visitor.prototype.getSaveState = function() {
+    "use strict";
+    return {
+        instanceOf: "Visitor",
+        pos: this.pos,
+        orientation: this.orientation
+    };
 };
 

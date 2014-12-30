@@ -36,56 +36,7 @@ Automatune.Component = function(pCell, orient) {
      */
     this.domElement;
     
-    /**
-     * Appends this Component to a {@linkcode GridCell}.
-     *
-     * @public
-     * @param {GridCell} gridCell The GridCell to append this Component to.
-     */
-    this.appendTo = function(gridCell) {
-        
-    };
     
-    /**
-     * Rotates this Component to face an arbitrary {@linkcode Orientation}.
-     *
-     * @public
-     * @param {Orientation} orient The new Orientation for the component.
-     */
-    this.setOrientation = function(orient) {
-        this.orientation = orient;
-        Automatune.util.setCSSRotation(this.domElement, this.orientation);
-    };
-    
-    /**
-     * Rotates this Component right 90 degrees.
-     *
-     * @public
-     */
-    this.rotateRight = function() {
-        this.orientation = Automatune.util.rotateRight(this.orientation);
-        Automatune.util.setCSSRotation(this.domElement, this.orientation);
-    };
-    
-    /**
-     * Rotates this Component left 90 degrees.
-     *
-     * @public
-     */
-    this.rotateLeft = function() {
-        this.orientation = Automatune.util.rotateLeft(this.orientation);
-        Automatune.util.setCSSRotation(this.domElement, this.orientation);
-    };
-    
-    /**
-     * Defines what this Component should do when visited.
-     *
-     * @private
-     * @param {Visitor} visitor The visitor that is currently visiting this Component.
-     */
-    this.onVisit = function(visitor) {
-        throw "onVisit called on a Component that does not implement onVisit.";
-    };
     
     // Initialize variables
     
@@ -100,6 +51,61 @@ Automatune.Component = function(pCell, orient) {
     window.setTimeout((function(){
         this.domElement.classList.add("active");
     }).bind(this), 160);
+};
+
+/**
+ * Appends this Component to a {@linkcode GridCell}.
+ *
+ * @public
+ * @param {GridCell} gridCell The GridCell to append this Component to.
+ */
+Automatune.Component.prototype.appendTo = function(gridCell) {
+    
+};
+
+/**
+ * Rotates this Component to face an arbitrary {@linkcode Orientation}.
+ *
+ * @public
+ * @param {Orientation} orient The new Orientation for the component.
+ */
+Automatune.Component.prototype.setOrientation = function(orient) {
+    "use strict";
+    this.orientation = orient;
+    Automatune.util.setCSSRotation(this.domElement, this.orientation);
+};
+
+/**
+ * Rotates this Component right 90 degrees.
+ *
+ * @public
+ */
+Automatune.Component.prototype.rotateRight = function() {
+    "use strict";
+    this.orientation = Automatune.util.rotateRight(this.orientation);
+    Automatune.util.setCSSRotation(this.domElement, this.orientation);
+};
+
+/**
+ * Rotates this Component left 90 degrees.
+ *
+ * @public
+ */
+Automatune.Component.prototype.rotateLeft = function() {
+    "use strict";
+    this.orientation = Automatune.util.rotateLeft(this.orientation);
+    Automatune.util.setCSSRotation(this.domElement, this.orientation);
+};
+
+/**
+ * Defines what this Component should do when visited.
+ *
+ * @private
+ * @param {Visitor} visitor The visitor that is currently visiting this Component.
+ */
+Automatune.Component.prototype.onVisit = function(visitor) {
+    "use strict";
+    throw "onVisit called on a Component that does not implement onVisit.";
 };
 
 /**
@@ -128,26 +134,35 @@ Automatune.Component_Arrow = function(pCell, orient) {
     
     Automatune.Component.call(this, pCell, orient);
     
-    var img;
     
-    /**
-     * Destroys this Arrow, removing it from its {@linkcode GridCell}.
-     * @public
-     */
-    this.destroy = function() {
-        // Deconstruct DOM
-        this.domElement.removeChild(img);
-        Automatune.Component.prototype.destroy.call(this);
-    };
-    
-    this.onVisit = function(visitor) {
-        visitor.orientation = this.orientation;
-    };
     
     // Initialize Arrow DOM
     
-    img = document.createElement("img");
-    img.src = "images/arrow.svg";
-    this.domElement.appendChild(img);
+    this.img = document.createElement("img");
+    this.img.src = "images/arrow.svg";
+    this.domElement.appendChild(this.img);
+};
+Automatune.util.extend(Automatune.Component, Automatune.Component_Arrow);
+
+/*function extend(ChildClass, ParentClass) {
+	"use strict";
+	ChildClass.prototype = new ParentClass();
+	ChildClass.prototype.constructor = ChildClass;
+}*/
+
+/**
+ * Destroys this Arrow, removing it from its {@linkcode GridCell}.
+ * @public
+ */
+Automatune.Component_Arrow.prototype.destroy = function() {
+    "use strict";
+    // Deconstruct DOM
+    this.domElement.removeChild(this.img);
+    Automatune.Component.prototype.destroy.call(this);
+};
+
+Automatune.Component_Arrow.prototype.onVisit = function(visitor) {
+    "use strict";
+    visitor.orientation = this.orientation;
 };
 

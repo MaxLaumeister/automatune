@@ -44,7 +44,7 @@ function Automatune(domEl, playbackEl, menuEl, size) {
      * @private
      * @type {Object[]}
      */
-    var updateTargets;
+    this.updateTargets;
     
     /**
      * The interval that calls update on the updateTargets.
@@ -52,7 +52,7 @@ function Automatune(domEl, playbackEl, menuEl, size) {
      * @private
      * @type {intervalID}
      */
-    var updateInterval;
+    this.updateInterval;
     
     /**
      * The amount of milliseconds between "ticks" of the Automatune simulation.
@@ -60,125 +60,16 @@ function Automatune(domEl, playbackEl, menuEl, size) {
      * @private
      * @type {float}
      */
-    var tickMs;
+    this.tickMs;
     
-    /**
-     * Updates all active actors (e.g. {@linkcode Visitor|Visitors}, {@linkcode Component|Components},
-     * and {@linkcode Modifier|Modifiers} in the system, simulating a step.
-     *
-     * @private
-     */
-    function update() {
-        for (var i = 0; i < updateTargets.length; i++) {
-            var target = updateTargets[i];
-            target.update();
-        }
-    }
-    
-    /**
-     * Sets the number of milliseconds between ticks in the Automatune simulation.
-     *
-     * @public
-     * @param {float} ms Milliseconds between ticks.
-     */
-    this.setTickMs = function(ms) {
-        window.clearInterval(updateInterval);
-        tickMs = ms;
-        updateInterval = window.setInterval(update, tickMs);
-        
-        // Update targets tick ms
-        for (var i = 0; i < updateTargets.length; i++) {
-            updateTargets[i].updateTickMs();
-        }
-    };
-    
-    /**
-     * Gets the number of milliseconds between ticks in the Automatune simulation.
-     *
-     * @public
-     * @returns {float} ms Milliseconds between ticks.
-     */
-    this.getTickMs = function() {
-        return tickMs;
-    };
-    
-    var playing = false;
-    /**
-     * Plays the Automatune by starting all {@linkcode Visitor|Visitors},
-     * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}.
-     *
-     * @public
-     */
-    this.play = function() {
-        if (!playing) {
-            playing = true;
-            updateInterval = window.setInterval(update, tickMs);
-            update();
-        }
-    };
-    
-    /**
-     * Constructs a JSON-compatible object representing the current state of the entire game.
-     *
-     * @public
-     * @returns {Object} save A JSON-compatible object representing a save state.
-     */
-    this.getSaveState = function() {
-        return {
-            version: "prototype",
-            tickMs: tickMs,
-            updateTargets: (function() {
-                var result = [];
-                for (var i = 0; i < updateTargets.length; i++) {
-                    result.push(updateTargets[i].getSaveState());
-                }
-                return result;
-            })(),
-            grid: this.grid.getSaveState()
-        };
-    };
-    
-    /**
-     * Pauses the Automatune by stopping all {@linkcode Visitor|Visitors},
-     * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}.
-     *
-     * @public
-     */
-    this.pause = function() {
-        playing = false;
-        window.clearInterval(updateInterval);
-    };
-    
-    /**
-     * Resets all {@linkcode Visitor|Visitors},
-     * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}
-     * to their original position and orientation.
-     *
-     * @public
-     */
-    this.reset = function() {
-        // TODO: Implement
-    };
-    
-    /**
-     * Creates a new {@linkcode Visitor} on the Automatune grid.
-     *
-     * @public
-     * @param {int} x The grid x coordinate for the new Visitor.
-     * @param {int} y The grid y coordinate for the new Visitor.
-     * @param {Orientation} orientation The {@linkcode Orientation} for the new Visitor.
-     */
-    this.createVisitor = function(x, y, orientation) {
-        var vis = new Automatune.Visitor(this, x, y, orientation);
-        updateTargets.push(vis);
-    };
-    
+    // TODO doc
+    this.playing = false;
     
     // Initialize this Automatune instance.
     
     // Initialize variables
-    updateTargets = [];
-    tickMs = Automatune.TICK_NORMAL;
+    this.updateTargets = [];
+    this.tickMs = Automatune.TICK_NORMAL;
     this.domElement = domEl;
     this.playbackElement = playbackEl;
     this.grid = new Automatune.Grid(this, size);
@@ -204,9 +95,9 @@ function Automatune(domEl, playbackEl, menuEl, size) {
         }
     }
     assert(playButton && pauseButton && resetButton); // Make sure all the buttons are there
-    playButton.onclick = this.play;
-    pauseButton.onclick = this.pause;
-    resetButton.onclick = this.reset;
+    playButton.onclick = this.play.bind(this);
+    pauseButton.onclick = this.pause.bind(this);
+    resetButton.onclick = this.reset.bind(this);
 }
 
 // Initialize Automatune
@@ -220,4 +111,131 @@ $(document).ready(function() {
     AutomatuneInst.play();
     console.log("SaveState: ", AutomatuneInst.getSaveState());
 });
+
+/**
+ * Updates all active actors (e.g. {@linkcode Visitor|Visitors}, {@linkcode Component|Components},
+ * and {@linkcode Modifier|Modifiers} in the system, simulating a step.
+ *
+ * @private
+ */
+Automatune.prototype.update = function() {
+    "use strict";
+    for (var i = 0; i < this.updateTargets.length; i++) {
+        var target = this.updateTargets[i];
+        target.update();
+    }
+};
+
+/**
+ * Sets the number of milliseconds between ticks in the Automatune simulation.
+ *
+ * @public
+ * @param {float} ms Milliseconds between ticks.
+ */
+Automatune.prototype.setTickMs = function(ms) {
+    "use strict";
+    
+    this.tickMs = ms;
+    // Update targets tick ms
+    for (var i = 0; i < this.updateTargets.length; i++) {
+        this.updateTargets[i].updateTickMs();
+    }
+    
+    if (this.playing) {
+        window.clearInterval(this.updateInterval);
+        this.updateInterval = window.setInterval(this.update.bind(this), this.tickMs);
+    }
+    
+};
+
+/**
+ * Gets the number of milliseconds between ticks in the Automatune simulation.
+ *
+ * @public
+ * @returns {float} ms Milliseconds between ticks.
+ */
+Automatune.prototype.getTickMs = function() {
+    "use strict";
+    return this.tickMs;
+};
+
+/**
+ * Plays the Automatune by starting all {@linkcode Visitor|Visitors},
+ * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}.
+ *
+ * @public
+ */
+Automatune.prototype.play = function() {
+    "use strict";
+    if (!this.playing) {
+        this.playing = true;
+        this.updateInterval = window.setInterval(this.update.bind(this), this.tickMs);
+        this.update();
+    }
+};
+
+/**
+ * Pauses the Automatune by stopping all {@linkcode Visitor|Visitors},
+ * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}.
+ *
+ * @public
+ */
+Automatune.prototype.pause = function() {
+    "use strict";
+    this.playing = false;
+    window.clearInterval(this.updateInterval);
+};
+
+/**
+ * Resets all {@linkcode Visitor|Visitors},
+ * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}
+ * to their original position and orientation.
+ *
+ * @public
+ */
+Automatune.prototype.reset = function() {
+    "use strict";
+    // TODO: Implement
+};
+
+/**
+ * Creates a new {@linkcode Visitor} on the Automatune grid.
+ *
+ * @public
+ * @param {int} x The grid x coordinate for the new Visitor.
+ * @param {int} y The grid y coordinate for the new Visitor.
+ * @param {Orientation} orientation The {@linkcode Orientation} for the new Visitor.
+ */
+Automatune.prototype.createVisitor = function(x, y, orientation) {
+    "use strict";
+    var vis = new Automatune.Visitor(this, x, y, orientation);
+    this.updateTargets.push(vis);
+};
+
+/**
+ * Constructs a JSON-compatible object representing the current state of the entire game.
+ *
+ * @public
+ * @returns {Object} save A JSON-compatible object representing a save state.
+ */
+Automatune.prototype.getSaveState = function() {
+    "use strict";
+    
+    var self = this;
+    
+    function getUpdateTargets() {
+        var result = [];
+        for (var i = 0; i < self.updateTargets.length; i++) {
+            result.push(self.updateTargets[i].getSaveState());
+        }
+        return result;
+    }
+    
+    return {
+        version: "prototype",
+        tickMs: self.tickMs,
+        updateTargets: getUpdateTargets(),
+        grid: self.grid.getSaveState()
+    };
+};
 

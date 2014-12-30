@@ -2,8 +2,8 @@ module.exports = function(grunt) {
 
   "use strict";
 
-  var srcFiles = ['src/*.js'];
   var libFiles = ['lib/*.js'];
+  var srcFiles = ['src/Util.js', 'src/Automatune.js', 'src/*.js'];
   var destFile = 'dist/automatune.js';
 
   // Project configuration.

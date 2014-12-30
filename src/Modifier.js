@@ -30,39 +30,42 @@ Automatune.Modifier = function(pCell) {
     //TODO docs
     this.type;
     
-    /**
-     * Appends this Modifier to a {@linkcode GridCell}.
-     *
-     * @public
-     * @param {GridCell} gridCell The GridCell to append this Component to.
-     */
-    this.appendTo = function(gridCell) {
-        
-    };
     
-    /**
-     * Defines what this Modifier should do when visited.
-     *
-     * @private
-     * @param {Visitor} visitor The visitor that is currently visiting this Component.
-     */
-    this.onVisit = function(visitor) {
-        throw "onVisit called on a Modifier that does not implement onVisit.";
-    };
-    
-    /**
-     * Destroys this Modifier, removing it from its {@linkcode GridCell}.
-     *
-     * @public
-     */
-    this.destroy = function() {
-    
-    };
     
     // Initialize variables
     
     this.parentCell = pCell;
     this.type = "abstract";
+};
+
+/**
+ * Appends this Modifier to a {@linkcode GridCell}.
+ *
+ * @public
+ * @param {GridCell} gridCell The GridCell to append this Component to.
+ */
+Automatune.Modifier.prototype.appendTo = function(gridCell) {
+    
+};
+
+/**
+ * Defines what this Modifier should do when visited.
+ *
+ * @private
+ * @param {Visitor} visitor The visitor that is currently visiting this Component.
+ */
+Automatune.Modifier.prototype.onVisit = function(visitor) {
+    "use strict";
+    throw "onVisit called on a Modifier that does not implement onVisit.";
+};
+
+/**
+ * Destroys this Modifier, removing it from its {@linkcode GridCell}.
+ *
+ * @public
+ */
+Automatune.Modifier.prototype.destroy = function() {
+
 };
 
 //TODO docs
@@ -82,12 +85,9 @@ Automatune.Modifier_Note = function(pCell, noteName) {
     Automatune.Modifier.call(this, pCell);
     
     // TODO docs
-    var howl;
+    this.howl;
     
-    //TODO docs
-    this.onVisit = function(visitor) {
-        howl.play();
-    };
+    
     
     // Initialize Varaibles
     
@@ -95,7 +95,7 @@ Automatune.Modifier_Note = function(pCell, noteName) {
     
     var sndpath = "snd/piano/Piano.mf.";
     
-    howl = new Howl({
+    this.howl = new Howl({
         urls: [
             sndpath + noteName + '.mp3',
             sndpath + noteName + '.ogg'
@@ -103,5 +103,12 @@ Automatune.Modifier_Note = function(pCell, noteName) {
         volume: 0.7
     });
     
+};
+Automatune.util.extend(Automatune.Modifier, Automatune.Modifier_Note);
+
+//TODO docs
+Automatune.Modifier_Note.prototype.onVisit = function(visitor) {
+    "use strict";
+    this.howl.play();
 };
 
