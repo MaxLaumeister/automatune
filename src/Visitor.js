@@ -86,6 +86,13 @@ Automatune.Visitor = function(pGame, x, y, orient) {
         this.domElement.style.transform = cssTransform;
     };
     
+    // TODO doc
+    this.updateTickMs = function() {
+        var ms = this.parentGame.getTickMs();
+        this.domElement.style["webkit-transition"] = "-webkit-transform " + ms + "ms linear";
+        this.domElement.style.transition = "transform " + ms + "ms linear";
+    };
+    
     /**
      * Constructs a JSON-compatible object representing the current state of this object.
      *
@@ -117,8 +124,6 @@ Automatune.Visitor = function(pGame, x, y, orient) {
     this.parentGame.domElement.appendChild(this.domElement);
     
     // Initialize DOM Transition
-    var ms = this.parentGame.getTickMs();
-    this.domElement.style["webkit-transition"] = "-webkit-transform " + ms + "ms linear";
-    this.domElement.style.transition = "transform " + ms + "ms linear";
+    this.updateTickMs();
 };
 

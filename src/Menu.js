@@ -77,7 +77,7 @@ Automatune.Menu = function(pGame, menuEl) {
         menu: [
             generatePitchMenu(),
             {title: "---"},
-            {title: "Clear Tile", cmd: "delete_tile"},
+            {title: "Delete Component", cmd: "delete_component"},
             {title: "---"},
             {title: "Create New Visitor", cmd: "new_visitor"},
             {title: "Delete Visitor", cmd: "delete_visitor"}
@@ -102,11 +102,10 @@ Automatune.Menu = function(pGame, menuEl) {
                     }
                     break;
                 case "new_visitor":
-                    //var new_visitor = new gridVisitor(elx, ely, O_RIGHT);
-                    //visitors.push(new_visitor);
+                    MenuInst.parentGame.createVisitor(elx, ely, Automatune.O_RIGHT);
                     break;
-                case "delete_tile":
-                    gridCell.removeTile();
+                case "delete_component":
+                    MenuInst.parentGame.grid.getCell(elx, ely).destroyComponent();
                     break;
                 case "delete_visitor":
                     for (var i = 0; i < visitors.length; i++) {
@@ -215,19 +214,19 @@ Automatune.Menu = function(pGame, menuEl) {
                 case "tempo":
                     switch (cmdarr[1]) {
                         case "slow":
-                            setTickMs(1000);
+                            MenuInst.parentGame.setTickMs(Automatune.TICK_SLOW);
                             ohSnap("Tempo: Slow", "black");
                             break;
                         case "normal":
-                            setTickMs(500);
+                            MenuInst.parentGame.setTickMs(Automatune.TICK_NORMAL);
                             ohSnap("Tempo: Normal", "black");
                             break;
                         case "fast":
-                            setTickMs(250);
+                            MenuInst.parentGame.setTickMs(Automatune.TICK_FAST);
                             ohSnap("Tempo: Fast", "black");
                             break;
                         case "fastest":
-                            setTickMs(125);
+                            MenuInst.parentGame.setTickMs(Automatune.TICK_FASTEST);
                             ohSnap("Tempo: Fastest", "black");
                             break;
                         default:

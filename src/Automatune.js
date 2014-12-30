@@ -85,6 +85,11 @@ function Automatune(domEl, playbackEl, menuEl, size) {
         window.clearInterval(updateInterval);
         tickMs = ms;
         updateInterval = window.setInterval(update, tickMs);
+        
+        // Update targets tick ms
+        for (var i = 0; i < updateTargets.length; i++) {
+            updateTargets[i].updateTickMs();
+        }
     };
     
     /**

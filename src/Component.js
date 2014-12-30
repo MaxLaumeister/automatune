@@ -87,15 +87,6 @@ Automatune.Component = function(pCell, orient) {
         throw "onVisit called on a Component that does not implement onVisit.";
     };
     
-    /**
-     * Destroys this Component, removing it from its {@linkcode GridCell}.
-     *
-     * @public
-     */
-    this.destroy = function() {
-    
-    };
-    
     // Initialize variables
     
     this.orientation = orient;
@@ -109,6 +100,16 @@ Automatune.Component = function(pCell, orient) {
     window.setTimeout((function(){
         this.domElement.classList.add("active");
     }).bind(this), 160);
+};
+
+/**
+ * Destroys this Component, removing it from its {@linkcode GridCell}.
+ *
+ * @public
+ */
+Automatune.Component.prototype.destroy = function() {
+    "use strict";
+    this.domElement.parentNode.removeChild(this.domElement);
 };
 
 /**
@@ -127,13 +128,16 @@ Automatune.Component_Arrow = function(pCell, orient) {
     
     Automatune.Component.call(this, pCell, orient);
     
+    var img;
+    
     /**
      * Destroys this Arrow, removing it from its {@linkcode GridCell}.
      * @public
      */
     this.destroy = function() {
         // Deconstruct DOM
-        //this.domElement.
+        this.domElement.removeChild(img);
+        Automatune.Component.prototype.destroy.call(this);
     };
     
     this.onVisit = function(visitor) {
@@ -142,7 +146,7 @@ Automatune.Component_Arrow = function(pCell, orient) {
     
     // Initialize Arrow DOM
     
-    var img = document.createElement("img");
+    img = document.createElement("img");
     img.src = "images/arrow.svg";
     this.domElement.appendChild(img);
 };
