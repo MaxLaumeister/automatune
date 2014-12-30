@@ -83,6 +83,16 @@ Automatune.Grid = function(pGame, size) {
         return gridCells[x][y];
     };
     
+    /**
+     * Constructs a JSON-compatible object representing the current state of this object.
+     * @returns {Object} save A JSON-compatible object representing a save state.
+     */
+    this.getSaveState = function() {
+        return {
+            instanceOf: "Grid"
+            // TODO: Finish save state implementation
+        };
+    };
     
     
     // Initialize this Grid instance.

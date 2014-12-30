@@ -62,7 +62,7 @@ function Automatune(domEl, playbackEl, size) {
     function update() {
         for (var i = 0; i < updateTargets.length; i++) {
             var target = updateTargets[i];
-            target.update.call(target);
+            target.update();
         }
     }
     
@@ -98,6 +98,25 @@ function Automatune(domEl, playbackEl, size) {
             updateInterval = window.setInterval(update, tickMs);
             update();
         }
+    };
+    
+    /**
+     * Constructs a JSON-compatible object representing the current state of the entire game.
+     * @returns {Object} save A JSON-compatible object representing a save state.
+     */
+    this.getSaveState = function() {
+        return {
+            version: "prototype",
+            tickMs: tickMs,
+            updateTargets: (function() {
+                var result = [];
+                for (var i = 0; i < updateTargets.length; i++) {
+                    result.push(updateTargets[i].getSaveState());
+                }
+                return result;
+            })(),
+            grid: this.grid.getSaveState()
+        };
     };
     
     /**
@@ -168,5 +187,6 @@ $(document).ready(function() {
     var AutomatuneInst = new Automatune(el, pb, 7);
     AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
     AutomatuneInst.play();
+    console.log("SaveState: ", AutomatuneInst.getSaveState());
 });
 

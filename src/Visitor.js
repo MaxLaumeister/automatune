@@ -72,6 +72,18 @@ Automatune.Visitor = function(pGame, x, y, orient) {
         this.parentGame.grid.getCell(this.pos.x, this.pos.y).onVisit(this);
     };
     
+    /**
+     * Constructs a JSON-compatible object representing the current state of this object.
+     * @returns {Object} save A JSON-compatible object representing a save state.
+     */
+    this.getSaveState = function() {
+        return {
+            instanceOf: "Visitor",
+            pos: this.pos,
+            orientation: this.orientation
+        };
+    };
+    
     // Initialize variables
     
     this.parentGame = pGame;

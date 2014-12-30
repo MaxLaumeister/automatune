@@ -146,9 +146,9 @@ Automatune.GridCell = function(pGrid, x, y) {
      * @param {Visitor} visitor The visitor that is visiting this GridCell.
      */
     this.onVisit = function(visitor) {
-        if (component) component.onVisit.call(component, visitor);
+        if (component) component.onVisit(visitor);
         for (var i = 0; i < modifiers.length; i++) {
-            modifiers[i].onVisit.call(modifiers[i], visitor);
+            modifiers[i].onVisit(visitor);
         }
     };
     
