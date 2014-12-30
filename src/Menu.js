@@ -4,12 +4,13 @@
  * @class
  * @classdesc Manages the Automatune main and context menus.
  * @param {Automatune} pGame The main Automatune instance.
+ * @param {HTMLElement} menuEl The DOM Element of the main Automatune menu bar.
  */
-Automatune.Menu = function(pGame) {
+Automatune.Menu = function(pGame, menuEl) {
     
     "use strict";
     
-    assert(arguments.length === 1);
+    assert(arguments.length === 2);
     
     /**
      * The parent Automatune game instance.
@@ -19,15 +20,14 @@ Automatune.Menu = function(pGame) {
     this.parentGame;
     
     /**
-     * The DOM Element that this Menu applies to.
+     * The "Menu Bar" DOM Element, containing the menus.
      * @public
      * @type {HTMLElement}
      */
-    this.domElement;
+    this.menuDomElement;
     
     // Initialize variables
     
     this.parentGame = pGame;
-    this.domElement = this.parentGame.domElement;
 };
 

@@ -3,21 +3,22 @@
  * @alias Visitor
  * @class
  * @classdesc A circle that visits GridCells on the game grid.
- * @param {Grid} pGrid The parent game grid.
- * @param {int} x The x position in the grid for the new Visitor.
- * @param {int} y The y position in the grid for the new Visitor.
+ * @param {Automatune} pGame The parent game instance.
+ * @param {int} x The initial x position in the grid for the Visitor.
+ * @param {int} y The initial y position in the grid for the Visitor.
+ * @param {Orientation} orient The starting {@linkcode Orientation} of the Visitor.
  */
-Automatune.Visitor = function(pGrid, x, y) {
+Automatune.Visitor = function(pGame, x, y, orient) {
     
     "use strict";
     
-    assert(arguments.length === 3);
+    assert(arguments.length === 4);
     
     /**
-     * The parent {@linkcode Grid} of this GridCell.
+     * The parent {@linkcode Automatune} instance of this Visitor.
      * @public
      */
-    this.parentGrid;
+    this.parentGame;
     
     /**
      * The DOM Element that visually represents this Visitor.
@@ -31,7 +32,7 @@ Automatune.Visitor = function(pGrid, x, y) {
      * @public
      * @type {Object}
      */
-    this.pos = {x: x, y: y};
+    this.pos;
     
     /**
      * Appends this Visitor to a {@linkcode GridCell}.
@@ -51,6 +52,20 @@ Automatune.Visitor = function(pGrid, x, y) {
     };
     
     // Initialize variables
-    this.parentGrid = pGrid;
+    
+    this.parentGame = pGame;
+    this.pos = {x: x, y: y};
+    
+    // Initialize DOM
+    
+    this.domElement = document.createElement("div");
+    this.domElement.className = "gridVisitor";
+    var grid = this.parentGame.grid;
+    this.domElement.style.width = grid.cellCSSWidth + "%";
+    this.domElement.style.height = grid.cellCSSWidth + "%";
+    var cssPos = grid.getCell(this.pos.x, this.pos.y).getCSSPosition();
+    this.domElement.style.left = cssPos.x + "%";
+    this.domElement.style.top = cssPos.y + "%";
+    this.parentGame.domElement.appendChild(this.domElement);
 };
 

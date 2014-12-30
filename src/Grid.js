@@ -41,6 +41,18 @@ Automatune.Grid = function(pGame, size) {
     var gridSize;
     
     /**
+     * The width of an individual cell in this Grid, in CSS percentage.
+     * @public
+     */
+    this.cellCSSWidth;
+    
+    /**
+     * The spacing between individual cells in this Grid, in CSS percentage.
+     * @public
+     */
+    this.cellCSSSpacing;
+    
+    /**
      * Get the length/width of the grid, in cells.
      * @public
      * @type {int}
@@ -68,6 +80,10 @@ Automatune.Grid = function(pGame, size) {
     this.parentGame = pGame;
     this.domElement = this.parentGame.domElement;
     gridSize = size;
+    
+    // Initialize CSS conversion factors
+    this.cellCSSSpacing = 10 / gridSize;
+    this.cellCSSWidth = ((100 - this.cellCSSSpacing) / gridSize) - this.cellCSSSpacing;
     
     // Initialize grid with GridCells.
     gridCells = new Array(size);

@@ -35,11 +35,18 @@ module.exports = function(grunt) {
       }
     },
     jsdoc: {
-      all: {
+      public: {
         src: srcFiles,
         options: {
           destination: 'doc',
           private: false
+        }
+      },
+      private: {
+        src: srcFiles,
+        options: {
+          destination: 'doc',
+          private: true
         }
       }
     },
@@ -63,6 +70,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['concat', 'jshint']);
   grunt.registerTask('min', ['jshint', 'uglify']);
-  grunt.registerTask('doc', ['jsdoc']);
+  grunt.registerTask('doc', ['jsdoc:public']);
+  grunt.registerTask('docprivate', ['jsdoc:private']);
 };
 

@@ -53,7 +53,7 @@ Automatune.GridCell = function(pGrid, x, y) {
      * @public
      * @param {Modifier} mod The Modifier to append to this GridCell.
      */
-    this.appendModifier = function(mod) {
+    this.addModifier = function(mod) {
         
     };
     
@@ -126,6 +126,18 @@ Automatune.GridCell = function(pGrid, x, y) {
         component = null;
         this.domElement.classList.remove("active");
     };
+
+    /**
+     * Calculate the CSS position of this cell in percentage points relative to the grid.
+     * @public
+     */
+    this.getCSSPosition = function() {
+        var g = this.parentGrid;
+        var cx = (g.cellCSSWidth + g.cellCSSSpacing) * pos.x + g.cellCSSSpacing;
+        var cy = (g.cellCSSWidth + g.cellCSSSpacing) * pos.y + g.cellCSSSpacing;
+        
+        return {x: cx, y: cy};
+    };
     
     /**
      * Called when a {@linkcode Visitor} visits this GridCell.
@@ -159,19 +171,18 @@ Automatune.GridCell = function(pGrid, x, y) {
     // Initialize DOM Element
     var grid_size = this.parentGrid.getGridSize();
     var cell_spacing_percent = 10 / grid_size;
-    var cell_width_percent = ((100 - cell_spacing_percent) / grid_size) - cell_spacing_percent;
-    var cell_height_percent = ((100 - cell_spacing_percent) / grid_size) - cell_spacing_percent;
+    var cell_size_percent = ((100 - cell_spacing_percent) / grid_size) - cell_spacing_percent;
     
     this.domElement = document.createElement("div");
     this.domElement.setAttribute("data-pos-x", x);
     this.domElement.setAttribute("data-pos-y", y);
     this.domElement.className = "gridCellDiv";
-    var cssPos_x = (cell_width_percent + cell_spacing_percent) * x + cell_spacing_percent;
-    var cssPos_y = (cell_height_percent + cell_spacing_percent) * y + cell_spacing_percent;
+    var cssPos_x = (cell_size_percent + cell_spacing_percent) * x + cell_spacing_percent;
+    var cssPos_y = (cell_size_percent + cell_spacing_percent) * y + cell_spacing_percent;
     this.domElement.style.left = cssPos_x + "%";
     this.domElement.style.top = cssPos_y + "%";
-    this.domElement.style.width = cell_width_percent + "%";
-    this.domElement.style.height = cell_height_percent + "%";
+    this.domElement.style.width = cell_size_percent + "%";
+    this.domElement.style.height = cell_size_percent + "%";
     this.domElement.style.padding = cell_spacing_percent + "%";
     
     this.parentGrid.domElement.appendChild(this.domElement);
