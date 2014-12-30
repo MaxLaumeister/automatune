@@ -1,5 +1,6 @@
 /**
  * Creates a grid cell
+ *
  * @alias GridCell
  * @class
  * @classdesc A cell on the game grid.
@@ -15,13 +16,15 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * The parent {@linkcode Grid} of this GridCell.
+     *
      * @public
      * @type {Grid}
      */
     this.parentGrid;
     
     /**
-     * The .
+     * The DOM Element that visually represents this GridCell.
+     *
      * @public
      * @type {HTMLElement}
      */
@@ -29,6 +32,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * The grid position of this GridCell.
+     *
      * @private
      * @type {Vector2}
      */
@@ -36,6 +40,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * The {@linkcode Modifier|Modifiers} associated with this GridCell.
+     *
      * @private
      * @type {Modifier[]}
      */
@@ -43,15 +48,17 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * The {@linkcode Component} associated with this GridCell, if any.
+     *
      * @private
      * @type {Component[]}
      */
     var component;
     
     /**
-     * Append a {@linkcode Modifier} to this GridCell.
+     * Add a {@linkcode Modifier} to this GridCell.
+     *
      * @public
-     * @param {Modifier} mod The Modifier to append to this GridCell.
+     * @param {Modifier} mod The Modifier to add to this GridCell.
      */
     this.addModifier = function(mod) {
         
@@ -60,6 +67,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     /**
      * Remove a {@linkcode Modifier} of a certain type from this GridCell.
      * If there are multiple Modifiers of this type, removes the oldest Modifier.
+     *
      * @public
      * @param {string} type The type of Modifier to remove from this GridCell.
      */
@@ -69,6 +77,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * Returns true if this GridCell has a {@linkcode Modifier} of type 'type', otherwise returns false.
+     *
      * @public
      * @param {string} type The type of Modifier to check.
      * @returns {boolean} hasModifier
@@ -79,8 +88,10 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * Gets the first {@linkcode Modifier} of a certain type that is attached to this GridCell.
+     *
      * @public
      * @param {string} type The type of Modifier to check.
+     * @returns {Modifier} mod The Modifier that is attached to this GridCell.
      */
     this.getModifier = function(type) {
         
@@ -88,6 +99,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * Returns true if this GridCell has a {@linkcode Component} of type 'type', otherwise returns false.
+     *
      * @public
      * @param {string} type The type of Component to check.
      * @returns {boolean} hasComponent 
@@ -99,6 +111,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     /**
      * Gets the {@linkcode Component} that is attached to this GridCell.
      * If no Component is attached, returns null.
+     *
      * @public
      * @returns {Component} component
      */
@@ -108,6 +121,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * Sets the {@linkcode Component} that is attached to this GridCell.
+     *
      * @public
      * @param {Component} ct The Component to attach to this GridCell.
      */
@@ -119,9 +133,10 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * Destroys the {@linkcode Component} that is attached to this GridCell, if any.
+     *
      * @public
      */
-    this.destroyComponent = function(ct) {
+    this.destroyComponent = function() {
         if (component) component.destroy();
         component = null;
         this.domElement.classList.remove("active");
@@ -129,7 +144,9 @@ Automatune.GridCell = function(pGrid, x, y) {
 
     /**
      * Calculate the CSS position of this cell in percentage points relative to the grid.
+     *
      * @public
+     * @returns {Vector2} pos The CSS position of this cell.
      */
     this.getCSSPosition = function() {
         var g = this.parentGrid;
@@ -142,6 +159,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     /**
      * Called when a {@linkcode Visitor} visits this GridCell.
      * Triggers the onVisit() event for the Component and all Modifiers attached to this GridCell.
+     *
      * @private
      * @param {Visitor} visitor The visitor that is visiting this GridCell.
      */
@@ -154,6 +172,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     
     /**
      * Called when this GridCell is clicked.
+     *
      * @private
      */
     var onClick = function() {

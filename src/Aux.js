@@ -21,6 +21,7 @@ Automatune.util = {};
 
 /**
  * Sets the CSS rotation of an HTMLElement to reflect an {@linkcode Orientation.
+ *
  * @param {HTMLElement} domElement The DOM Element to set the rotation of.
  * @param {Orientation} orientation The Orientation to set the rotation to reflect.
  */
@@ -35,6 +36,7 @@ Automatune.util.setCSSRotation = function(domElement, orientation) {
 
 /**
  * Given an Orientation, returns an Orientation rotated 90 degrees to the right.
+ *
  * @param {Orientation} orientation The Orientation to rotate.
  * @returns {Orientation} orientationRight The orientation rotated 90 degrees to the right.
  */
@@ -47,6 +49,7 @@ Automatune.util.rotateRight = function(orientation) {
 
 /**
  * Given an Orientation, returns an Orientation rotated 90 degrees to the left.
+ *
  * @param {Orientation} orientation The Orientation to rotate.
  * @returns {Orientation} orientationRight The orientation rotated 90 degrees to the left.
  */
@@ -59,6 +62,7 @@ Automatune.util.rotateLeft = function(orientation) {
 
 /**
  * Given an Orientation, returns an Orientation rotated 180 degrees.
+ *
  * @param {Orientation} orientation The Orientation to rotate.
  * @returns {Orientation} orientationRight The orientation rotated 180 degrees.
  */
@@ -73,6 +77,7 @@ Automatune.util.getOpposite = function(orientation) {
 
 /**
  * Given an Orientation, returns an {x, y} delta of where an object would land if it were to move forward.
+ *
  * @param {Orientation} orientation The Orientation to derive the delta from.
  * @returns {Vector2} delta The delta derived from the orientation.
  */

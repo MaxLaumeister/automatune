@@ -1,5 +1,6 @@
 /**
  * Initializes Automatune on a div.
+ *
  * @class
  * @classdesc The main Automatune class.
  * @param {HTMLElement} domEl The DOM Element (a square div) that Automatune should render in.
@@ -14,6 +15,7 @@ function Automatune(domEl, playbackEl, size) {
     
     /**
      * The DOM Element that contains the Automatune game.
+     *
      * @public
      * @type {HTMLElement}
      */
@@ -21,6 +23,7 @@ function Automatune(domEl, playbackEl, size) {
     
     /**
      * The DOM Element that contains the Automatune playback controls.
+     *
      * @public
      * @type {HTMLElement}
      */
@@ -28,6 +31,7 @@ function Automatune(domEl, playbackEl, size) {
     
     /**
      * The {@linkcode Grid} that contains the {@linkcode GridCell|GridCells} of this Automatune instance.
+     *
      * @public
      * @type {Grid}
      */
@@ -35,6 +39,7 @@ function Automatune(domEl, playbackEl, size) {
     
     /**
      * Objects to call update() on every step.
+     *
      * @private
      * @type {Object[]}
      */
@@ -42,6 +47,7 @@ function Automatune(domEl, playbackEl, size) {
     
     /**
      * The interval that calls update on the updateTargets.
+     *
      * @private
      * @type {intervalID}
      */
@@ -49,6 +55,7 @@ function Automatune(domEl, playbackEl, size) {
     
     /**
      * The amount of milliseconds between "ticks" of the Automatune simulation.
+     *
      * @private
      * @type {float}
      */
@@ -57,6 +64,7 @@ function Automatune(domEl, playbackEl, size) {
     /**
      * Updates all active actors (e.g. {@linkcode Visitor|Visitors}, {@linkcode Component|Components},
      * and {@linkcode Modifier|Modifiers} in the system, simulating a step.
+     *
      * @private
      */
     function update() {
@@ -68,6 +76,7 @@ function Automatune(domEl, playbackEl, size) {
     
     /**
      * Sets the number of milliseconds between ticks in the Automatune simulation.
+     *
      * @public
      * @param {float} ms Milliseconds between ticks.
      */
@@ -79,10 +88,11 @@ function Automatune(domEl, playbackEl, size) {
     
     /**
      * Gets the number of milliseconds between ticks in the Automatune simulation.
+     *
      * @public
      * @returns {float} ms Milliseconds between ticks.
      */
-    this.getTickMs = function(ms) {
+    this.getTickMs = function() {
         return tickMs;
     };
     
@@ -90,6 +100,7 @@ function Automatune(domEl, playbackEl, size) {
     /**
      * Plays the Automatune by starting all {@linkcode Visitor|Visitors},
      * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}.
+     *
      * @public
      */
     this.play = function() {
@@ -102,6 +113,8 @@ function Automatune(domEl, playbackEl, size) {
     
     /**
      * Constructs a JSON-compatible object representing the current state of the entire game.
+     *
+     * @public
      * @returns {Object} save A JSON-compatible object representing a save state.
      */
     this.getSaveState = function() {
@@ -122,6 +135,7 @@ function Automatune(domEl, playbackEl, size) {
     /**
      * Pauses the Automatune by stopping all {@linkcode Visitor|Visitors},
      * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}.
+     *
      * @public
      */
     this.pause = function() {
@@ -129,14 +143,24 @@ function Automatune(domEl, playbackEl, size) {
         window.clearInterval(updateInterval);
     };
     
-    // TODO
+    /**
+     * Resets all {@linkcode Visitor|Visitors},
+     * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}
+     * to their original position and orientation.
+     *
+     * @public
+     */
     this.reset = function() {
-        
+        // TODO: Implement
     };
     
     /**
      * Creates a new {@linkcode Visitor} on the Automatune grid.
+     *
      * @public
+     * @param {int} x The grid x coordinate for the new Visitor.
+     * @param {int} y The grid y coordinate for the new Visitor.
+     * @param {Orientation} orientation The {@linkcode Orientation} for the new Visitor.
      */
     this.createVisitor = function(x, y, orientation) {
         var vis = new Automatune.Visitor(this, x, y, orientation);

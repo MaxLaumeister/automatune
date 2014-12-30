@@ -14,12 +14,15 @@ Automatune.Component = function(pCell, orient) {
     
     /**
      * The parent {@linkcode GridCell} of this Component.
+     *
      * @public
+     * @type {GridCell}
      */
     this.parentCell;
     
     /**
      * The {@linkcode Orientation} (right, up, left, or down) that this Component has.
+     *
      * @private
      * @type {Orientation}
      */
@@ -27,6 +30,7 @@ Automatune.Component = function(pCell, orient) {
     
     /**
      * The DOM Element that visually represents this Component.
+     *
      * @public
      * @type {HTMLElement}
      */
@@ -34,6 +38,7 @@ Automatune.Component = function(pCell, orient) {
     
     /**
      * Appends this Component to a {@linkcode GridCell}.
+     *
      * @public
      * @param {GridCell} gridCell The GridCell to append this Component to.
      */
@@ -42,7 +47,8 @@ Automatune.Component = function(pCell, orient) {
     };
     
     /**
-     * Changes the direction that this Component is facing.
+     * Rotates this Component to face an arbitrary {@linkcode Orientation}.
+     *
      * @public
      * @param {Orientation} orient The new Orientation for the component.
      */
@@ -52,7 +58,8 @@ Automatune.Component = function(pCell, orient) {
     };
     
     /**
-     * Rotates this component right 90 degrees
+     * Rotates this Component right 90 degrees.
+     *
      * @public
      */
     this.rotateRight = function() {
@@ -61,7 +68,8 @@ Automatune.Component = function(pCell, orient) {
     };
     
     /**
-     * Rotates this component left 90 degrees
+     * Rotates this Component left 90 degrees.
+     *
      * @public
      */
     this.rotateLeft = function() {
@@ -71,6 +79,7 @@ Automatune.Component = function(pCell, orient) {
     
     /**
      * Defines what this Component should do when visited.
+     *
      * @private
      * @param {Visitor} visitor The visitor that is currently visiting this Component.
      */
@@ -80,6 +89,7 @@ Automatune.Component = function(pCell, orient) {
     
     /**
      * Destroys this Component, removing it from its {@linkcode GridCell}.
+     *
      * @public
      */
     this.destroy = function() {

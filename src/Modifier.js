@@ -13,12 +13,15 @@ Automatune.Modifier = function(pCell) {
     
     /**
      * The parent {@linkcode GridCell} of this Component.
+     *
      * @public
+     * @type {GridCell}
      */
     this.parentCell;
     
     /**
      * The DOM Element that visually represents this Modifier.
+     *
      * @public
      * @type {HTMLElement}
      */
@@ -26,6 +29,7 @@ Automatune.Modifier = function(pCell) {
     
     /**
      * Appends this Modifier to a {@linkcode GridCell}.
+     *
      * @public
      * @param {GridCell} gridCell The GridCell to append this Component to.
      */
@@ -35,6 +39,7 @@ Automatune.Modifier = function(pCell) {
     
     /**
      * Defines what this Modifier should do when visited.
+     *
      * @private
      * @param {Visitor} visitor The visitor that is currently visiting this Component.
      */
@@ -44,6 +49,7 @@ Automatune.Modifier = function(pCell) {
     
     /**
      * Destroys this Modifier, removing it from its {@linkcode GridCell}.
+     *
      * @public
      */
     this.destroy = function() {

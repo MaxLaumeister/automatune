@@ -1,5 +1,6 @@
 /**
  * Initializes the Automatune main and context menus.
+ *
  * @alias Menu
  * @class
  * @classdesc Manages the Automatune main and context menus.
@@ -14,6 +15,7 @@ Automatune.Menu = function(pGame, menuEl) {
     
     /**
      * The parent Automatune game instance.
+     *
      * @public
      * @type {Automatune}
      */
@@ -21,6 +23,7 @@ Automatune.Menu = function(pGame, menuEl) {
     
     /**
      * The "Menu Bar" DOM Element, containing the menus.
+     *
      * @public
      * @type {HTMLElement}
      */

@@ -1,5 +1,6 @@
 /**
  * Initializes an Automatune game grid.
+ *
  * @alias Grid
  * @class
  * @classdesc An Automatune game grid. Manages a 2D matrix of {@link GridCell|GridCells}.
@@ -14,6 +15,7 @@ Automatune.Grid = function(pGame, size) {
     
     /**
      * The parent Automatune game instance.
+     *
      * @public
      * @type {Automatune}
      */
@@ -21,6 +23,7 @@ Automatune.Grid = function(pGame, size) {
     
     /**
      * The DOM Element that visually represents the Automatune Grid.
+     *
      * @public
      * @type {HTMLElement}
      */
@@ -28,6 +31,7 @@ Automatune.Grid = function(pGame, size) {
     
     /**
      * A 2D array of all {@link GridCell|GridCells} within this Grid.
+     *
      * @private
      * @type {Array<Array<GridCell>>}
      */
@@ -35,6 +39,7 @@ Automatune.Grid = function(pGame, size) {
     
     /**
      * The length/width of the grid, in cells.
+     *
      * @private
      * @type {int}
      */
@@ -42,20 +47,25 @@ Automatune.Grid = function(pGame, size) {
     
     /**
      * The width of an individual cell in this Grid, in CSS percentage.
+     *
      * @public
+     * @type {float}
      */
     this.cellCSSWidth;
     
     /**
      * The spacing between individual cells in this Grid, in CSS percentage.
+     *
      * @public
+     * @type {float}
      */
     this.cellCSSSpacing;
     
     /**
-     * Get the length/width of the grid, in cells.
+     * Get the length/width of the Grid, which is also the side length of the Grid.
+     *
      * @public
-     * @type {int}
+     * @returns {int} gridSize The length/width of the Grid.
      */
     this.getGridSize = function() {
         return gridSize;
@@ -63,6 +73,7 @@ Automatune.Grid = function(pGame, size) {
     
     /**
      * Given an (x, y) coordinate position, returns whether this position is within bounds of the grid.
+     *
      * @public
      * @param {int} x The x coordinate of the location to check.
      * @param {int} y The y coordinate of the location to check.
@@ -73,7 +84,8 @@ Automatune.Grid = function(pGame, size) {
     };
     
     /**
-     * Returns the {@link GridCell} at position (x, y) in the Automatune grid. 
+     * Returns the {@link GridCell} at position (x, y) in the Automatune grid.
+     *
      * @public
      * @param {int} x The x position of the GridCell.
      * @param {int} y The y position of the GridCell.
@@ -85,6 +97,8 @@ Automatune.Grid = function(pGame, size) {
     
     /**
      * Constructs a JSON-compatible object representing the current state of this object.
+     *
+     * @public
      * @returns {Object} save A JSON-compatible object representing a save state.
      */
     this.getSaveState = function() {

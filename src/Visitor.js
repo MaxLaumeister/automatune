@@ -1,5 +1,6 @@
 /**
  * Create a new visitor
+ *
  * @alias Visitor
  * @class
  * @classdesc A circle that visits GridCells on the game grid.
@@ -16,12 +17,15 @@ Automatune.Visitor = function(pGame, x, y, orient) {
     
     /**
      * The parent {@linkcode Automatune} instance of this Visitor.
+     *
      * @public
+     * @type {Automatune}
      */
     this.parentGame;
     
     /**
      * The DOM Element that visually represents this Visitor.
+     *
      * @public
      * @type {HTMLElement}
      */
@@ -29,6 +33,7 @@ Automatune.Visitor = function(pGame, x, y, orient) {
     
     /**
      * The current grid position of this Visitor.
+     *
      * @public
      * @type {Object}
      */
@@ -36,22 +41,15 @@ Automatune.Visitor = function(pGame, x, y, orient) {
     
     /**
      * The {@linkcode Orientation} (right, up, left, or down) of this Visitor.
+     *
      * @private
      * @type {Orientation}
      */
     this.orientation;
     
     /**
-     * Appends this Visitor to a {@linkcode GridCell}.
-     * @public
-     * @param {GridCell} gridCell The GridCell to append this Visitor to.
-     */
-    this.appendTo = function(gridCell) {
-        
-    };
-    
-    /**
      * Steps this Visitor forward, sending it on its way to the next grid cell.
+     *
      * @private
      */
     this.update = function() {
@@ -74,6 +72,8 @@ Automatune.Visitor = function(pGame, x, y, orient) {
     
     /**
      * Constructs a JSON-compatible object representing the current state of this object.
+     *
+     * @public
      * @returns {Object} save A JSON-compatible object representing a save state.
      */
     this.getSaveState = function() {
