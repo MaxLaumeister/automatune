@@ -66,7 +66,10 @@ Automatune.Visitor = function(pGame, x, y, orient) {
         this.domElement.style.left = cssPos.x + "%";
         this.domElement.style.top = cssPos.y + "%";
         
+        
+        
         this.pos = {x: this.pos.x + delta.x, y: this.pos.y + delta.y};
+        this.parentGame.grid.getCell(this.pos.x, this.pos.y).onVisit(this);
     };
     
     // Initialize variables

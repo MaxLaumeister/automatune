@@ -23,7 +23,7 @@ Automatune.Component = function(pCell, orient) {
      * @private
      * @type {Orientation}
      */
-    var orientation;
+    this.orientation;
     
     /**
      * The DOM Element that visually represents this Component.
@@ -47,8 +47,8 @@ Automatune.Component = function(pCell, orient) {
      * @param {Orientation} orient The new Orientation for the component.
      */
     this.setOrientation = function(orient) {
-        orientation = orient;
-        Automatune.util.setCSSRotation(this.domElement, orientation);
+        this.orientation = orient;
+        Automatune.util.setCSSRotation(this.domElement, this.orientation);
     };
     
     /**
@@ -56,8 +56,8 @@ Automatune.Component = function(pCell, orient) {
      * @public
      */
     this.rotateRight = function() {
-        orientation = Automatune.util.rotateRight(orientation);
-        Automatune.util.setCSSRotation(this.domElement, orientation);
+        this.orientation = Automatune.util.rotateRight(this.orientation);
+        Automatune.util.setCSSRotation(this.domElement, this.orientation);
     };
     
     /**
@@ -65,8 +65,8 @@ Automatune.Component = function(pCell, orient) {
      * @public
      */
     this.rotateLeft = function() {
-        orientation = Automatune.util.rotateLeft(orientation);
-        Automatune.util.setCSSRotation(this.domElement, orientation);
+        this.orientation = Automatune.util.rotateLeft(this.orientation);
+        Automatune.util.setCSSRotation(this.domElement, this.orientation);
     };
     
     /**
@@ -88,13 +88,13 @@ Automatune.Component = function(pCell, orient) {
     
     // Initialize variables
     
-    orientation = orient;
+    this.orientation = orient;
     this.parentCell = pCell;
     this.domElement = document.createElement("div");
     this.domElement.className = "gridCellProperty";
     this.parentCell.domElement.appendChild(this.domElement);
     
-    this.setOrientation(orientation);
+    this.setOrientation(this.orientation);
     
     window.setTimeout((function(){
         this.domElement.classList.add("active");
@@ -107,15 +107,15 @@ Automatune.Component = function(pCell, orient) {
  * @class
  * @classdesc A component that changes a {@linkcode Visitor}'s direction upon visiting a {@linkcode GridCell}.
  * @extends Component
- * @param {Orientation} orientation The type of component to create.
+ * @param {Orientation} orient The type of component to create.
  */
-Automatune.Component_Arrow = function(pCell, orientation) {
+Automatune.Component_Arrow = function(pCell, orient) {
     
     "use strict";
     
     assert(arguments.length === 2);
     
-    Automatune.Component.call(this, pCell, orientation);
+    Automatune.Component.call(this, pCell, orient);
     
     /**
      * Destroys this Arrow, removing it from its {@linkcode GridCell}.
@@ -124,6 +124,10 @@ Automatune.Component_Arrow = function(pCell, orientation) {
     this.destroy = function() {
         // Deconstruct DOM
         //this.domElement.
+    };
+    
+    this.onVisit = function(visitor) {
+        visitor.orientation = this.orientation;
     };
     
     // Initialize Arrow DOM

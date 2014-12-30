@@ -143,9 +143,13 @@ Automatune.GridCell = function(pGrid, x, y) {
      * Called when a {@linkcode Visitor} visits this GridCell.
      * Triggers the onVisit() event for the Component and all Modifiers attached to this GridCell.
      * @private
+     * @param {Visitor} visitor The visitor that is visiting this GridCell.
      */
-    this.onVisit = function() {
-    
+    this.onVisit = function(visitor) {
+        if (component) component.onVisit.call(component, visitor);
+        for (var i = 0; i < modifiers.length; i++) {
+            modifiers[i].onVisit.call(modifiers[i], visitor);
+        }
     };
     
     /**

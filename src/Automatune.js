@@ -61,7 +61,8 @@ function Automatune(domEl, playbackEl, size) {
      */
     function update() {
         for (var i = 0; i < updateTargets.length; i++) {
-            updateTargets[i].update();
+            var target = updateTargets[i];
+            target.update.call(target);
         }
     }
     
