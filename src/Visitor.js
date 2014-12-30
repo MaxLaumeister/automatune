@@ -35,6 +35,13 @@ Automatune.Visitor = function(pGame, x, y, orient) {
     this.pos;
     
     /**
+     * The {@linkcode Orientation} (right, up, left, or down) of this Visitor.
+     * @private
+     * @type {Orientation}
+     */
+    this.orientation;
+    
+    /**
      * Appends this Visitor to a {@linkcode GridCell}.
      * @public
      * @param {GridCell} gridCell The GridCell to append this Visitor to.
@@ -48,13 +55,25 @@ Automatune.Visitor = function(pGame, x, y, orient) {
      * @private
      */
     this.update = function() {
-        console.log("Update Visitor");
+        var grid = this.parentGame.grid;
+        var delta = Automatune.util.getOrientationDelta(this.orientation);
+        if (!grid.isInBounds(this.pos.x + delta.x, this.pos.y + delta.y)) {
+            this.orientation = Automatune.util.getOpposite(this.orientation);
+            delta = Automatune.util.getOrientationDelta(this.orientation);
+        }
+        var destination = {x: this.pos.x + delta.x, y: this.pos.y + delta.y};
+        var cssPos = grid.getCell(destination.x, destination.y).getCSSPosition();
+        this.domElement.style.left = cssPos.x + "%";
+        this.domElement.style.top = cssPos.y + "%";
+        
+        this.pos = {x: this.pos.x + delta.x, y: this.pos.y + delta.y};
     };
     
     // Initialize variables
     
     this.parentGame = pGame;
     this.pos = {x: x, y: y};
+    this.orientation = orient;
     
     // Initialize DOM
     
@@ -67,5 +86,11 @@ Automatune.Visitor = function(pGame, x, y, orient) {
     this.domElement.style.left = cssPos.x + "%";
     this.domElement.style.top = cssPos.y + "%";
     this.parentGame.domElement.appendChild(this.domElement);
+    
+    // Initialize DOM Transition
+    var ms = this.parentGame.getTickMs();
+    var cssTrans = "left " + ms + "ms linear, top " + ms + "ms linear";
+    this.domElement.style["webkit-transition"] = cssTrans;
+    this.domElement.style.transition = cssTrans;
 };
 

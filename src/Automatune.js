@@ -76,6 +76,15 @@ function Automatune(domEl, playbackEl, size) {
         updateInterval = window.setInterval(update, tickMs);
     };
     
+    /**
+     * Gets the number of milliseconds between ticks in the Automatune simulation.
+     * @public
+     * @returns {float} ms Milliseconds between ticks.
+     */
+    this.getTickMs = function(ms) {
+        return tickMs;
+    };
+    
     var playing = false;
     /**
      * Plays the Automatune by starting all {@linkcode Visitor|Visitors},
@@ -86,6 +95,7 @@ function Automatune(domEl, playbackEl, size) {
         if (!playing) {
             playing = true;
             updateInterval = window.setInterval(update, tickMs);
+            update();
         }
     };
     
@@ -155,7 +165,7 @@ $(document).ready(function() {
     var el = document.getElementById("automatune");
     var pb = document.getElementsByClassName("playback-controls")[0];
     var AutomatuneInst = new Automatune(el, pb, 7);
-    AutomatuneInst.createVisitor(3, 4);
+    AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
     AutomatuneInst.play();
 });
 

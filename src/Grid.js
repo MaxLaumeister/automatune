@@ -62,6 +62,17 @@ Automatune.Grid = function(pGame, size) {
     };
     
     /**
+     * Given an (x, y) coordinate position, returns whether this position is within bounds of the grid.
+     * @public
+     * @param {int} x The x coordinate of the location to check.
+     * @param {int} y The y coordinate of the location to check.
+     * @returns {boolean} isInBounds Whether the location is within the grid's bounds.
+     */
+    this.isInBounds = function(x, y) {
+        return (x >= 0 && x < gridSize && y >= 0 && y < gridSize);
+    };
+    
+    /**
      * Returns the {@link GridCell} at position (x, y) in the Automatune grid. 
      * @public
      * @param {int} x The x position of the GridCell.

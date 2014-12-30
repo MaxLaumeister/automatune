@@ -42,6 +42,7 @@ Automatune.util.rotateRight = function(orientation) {
     "use strict";
     if (orientation === 3) return 0;
     else return orientation + 1;
+    assert(false);
 };
 
 /**
@@ -53,5 +54,34 @@ Automatune.util.rotateLeft = function(orientation) {
     "use strict";
     if (orientation === 0) return 3;
     else return orientation - 1;
+    assert(false);
+};
+
+/**
+ * Given an Orientation, returns an Orientation rotated 180 degrees.
+ * @param {Orientation} orientation The Orientation to rotate.
+ * @returns {Orientation} orientationRight The orientation rotated 180 degrees.
+ */
+Automatune.util.getOpposite = function(orientation) {
+    "use strict";
+    if (orientation == Automatune.O_RIGHT) return Automatune.O_LEFT;
+    if (orientation == Automatune.O_UP) return Automatune.O_DOWN;
+    if (orientation == Automatune.O_LEFT) return Automatune.O_RIGHT;
+    if (orientation == Automatune.O_DOWN) return Automatune.O_UP;
+    assert(false);
+};
+
+/**
+ * Given an Orientation, returns an {x, y} delta of where an object would land if it were to move forward.
+ * @param {Orientation} orientation The Orientation to derive the delta from.
+ * @returns {Vector2} delta The delta derived from the orientation.
+ */
+Automatune.util.getOrientationDelta = function(orientation) {
+    "use strict";
+    if (orientation == Automatune.O_RIGHT) return {x: 1, y: 0};
+    if (orientation == Automatune.O_UP) return {x: 0, y: -1};
+    if (orientation == Automatune.O_LEFT) return {x: -1, y: 0};
+    if (orientation == Automatune.O_DOWN) return {x: 0, y: 1};
+    assert(false);
 };
 
