@@ -94,6 +94,7 @@ body {
 	width: 89vmin;
 	height: 89vmin;
 	background-color: black;
+	font-size: 100%;
 	-moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;

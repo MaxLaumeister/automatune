@@ -60,14 +60,22 @@ Automatune.Visitor = function(pGame, x, y, orient) {
             delta = Automatune.util.getOrientationDelta(this.orientation);
         }
         var destination = {x: this.pos.x + delta.x, y: this.pos.y + delta.y};
-        var cssPos = grid.getCell(destination.x, destination.y).getCSSPosition();
-        this.domElement.style.left = cssPos.x + "%";
-        this.domElement.style.top = cssPos.y + "%";
-        
-        
+        this.updateCSSPosition();
         
         this.pos = {x: this.pos.x + delta.x, y: this.pos.y + delta.y};
         this.parentGame.grid.getCell(this.pos.x, this.pos.y).onVisit(this);
+    };
+    
+    /**
+     * Updates the element's CSS position to reflect its grid position.
+     *
+     * @private
+     */
+    this.updateCSSPosition = function() {
+        var cssPos = this.parentGame.grid.getCell(this.pos.x, this.pos.y).getCSSPositionAbsolute();
+        var cssTransform = "translate(" + cssPos.x + "px, " + cssPos.y + "px)";
+        this.domElement.style["-webkit-transform"] = cssTransform;
+        this.domElement.style.transform = cssTransform;
     };
     
     /**
@@ -97,15 +105,12 @@ Automatune.Visitor = function(pGame, x, y, orient) {
     var grid = this.parentGame.grid;
     this.domElement.style.width = grid.cellCSSWidth + "%";
     this.domElement.style.height = grid.cellCSSWidth + "%";
-    var cssPos = grid.getCell(this.pos.x, this.pos.y).getCSSPosition();
-    this.domElement.style.left = cssPos.x + "%";
-    this.domElement.style.top = cssPos.y + "%";
+    this.updateCSSPosition();
     this.parentGame.domElement.appendChild(this.domElement);
     
     // Initialize DOM Transition
     var ms = this.parentGame.getTickMs();
-    var cssTrans = "left " + ms + "ms linear, top " + ms + "ms linear";
-    this.domElement.style["webkit-transition"] = cssTrans;
-    this.domElement.style.transition = cssTrans;
+    this.domElement.style["webkit-transition"] = "-webkit-transform " + ms + "ms linear";
+    this.domElement.style.transition = "transform " + ms + "ms linear";
 };
 
