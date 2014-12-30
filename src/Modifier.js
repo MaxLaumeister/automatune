@@ -9,7 +9,7 @@ Automatune.Modifier = function(pCell) {
     
     "use strict";
     
-    assert(arguments.length === 2);
+    assert(arguments.length === 1);
     
     /**
      * The parent {@linkcode GridCell} of this Component.

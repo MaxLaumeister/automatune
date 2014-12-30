@@ -3,13 +3,14 @@
  * @abstract
  * @class
  * @classdesc A component on a grid cell, such as an {@linkcode Component_Arrow|Arrow}. A {@linkcode GridCell} can only contain one component at a time.
+ * @param {GridCell} pCell The parent {@linkcode GridCell} of this Component.
  * @param {Orientation} orient The orientation the new Component should have.
  */
-Automatune.Component = function(orient) {
+Automatune.Component = function(pCell, orient) {
     
     "use strict";
     
-    assert(arguments.length === 1);
+    assert(arguments.length === 2);
     
     /**
      * The parent {@linkcode GridCell} of this Component.
@@ -47,7 +48,25 @@ Automatune.Component = function(orient) {
      */
     this.setOrientation = function(orient) {
         orientation = orient;
-        // TODO: Update DOM Element
+        Automatune.util.setCSSRotation(this.domElement, orientation);
+    };
+    
+    /**
+     * Rotates this component right 90 degrees
+     * @public
+     */
+    this.rotateRight = function() {
+        orientation = Automatune.util.rotateRight(orientation);
+        Automatune.util.setCSSRotation(this.domElement, orientation);
+    };
+    
+    /**
+     * Rotates this component left 90 degrees
+     * @public
+     */
+    this.rotateLeft = function() {
+        orientation = Automatune.util.rotateLeft(orientation);
+        Automatune.util.setCSSRotation(this.domElement, orientation);
     };
     
     /**
@@ -70,6 +89,16 @@ Automatune.Component = function(orient) {
     // Initialize variables
     
     orientation = orient;
+    this.parentCell = pCell;
+    this.domElement = document.createElement("div");
+    this.domElement.className = "gridCellProperty";
+    this.parentCell.domElement.appendChild(this.domElement);
+    
+    this.setOrientation(orientation);
+    
+    window.setTimeout((function(){
+        this.domElement.classList.add("active");
+    }).bind(this), 160);
 };
 
 /**
@@ -80,22 +109,13 @@ Automatune.Component = function(orient) {
  * @extends Component
  * @param {Orientation} orientation The type of component to create.
  */
-Automatune.Component_Arrow = function(orientation) {
+Automatune.Component_Arrow = function(pCell, orientation) {
     
     "use strict";
     
-    assert(arguments.length === 1);
+    assert(arguments.length === 2);
     
-    Automatune.Component.call(this, orientation);
-    
-    // Init DOM
-    
-    var img = document.createElement("img");
-    img.src = "images/arrow.svg";
-    img.className = "gridCellProperty";
-
-    this.domElement = img;
-    this.parentCell.domElement.appendChild(img);
+    Automatune.Component.call(this, pCell, orientation);
     
     /**
      * Destroys this Arrow, removing it from its {@linkcode GridCell}.
@@ -105,5 +125,11 @@ Automatune.Component_Arrow = function(orientation) {
         // Deconstruct DOM
         //this.domElement.
     };
+    
+    // Initialize Arrow DOM
+    
+    var img = document.createElement("img");
+    img.src = "images/arrow.svg";
+    this.domElement.appendChild(img);
 };
 

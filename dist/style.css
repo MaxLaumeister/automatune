@@ -190,6 +190,11 @@ body {
     visibility: visible;
 }
 
+.gridCellProperty > img {
+    width: 100%;
+	height: 100%;
+}
+
 .gridVisitor {
 	position: absolute;
 	background-color: white;

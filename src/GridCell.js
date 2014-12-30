@@ -113,8 +113,8 @@ Automatune.GridCell = function(pGrid, x, y) {
      */
     this.setComponent = function(ct) {
         this.destroyComponent();
-        ct.parentCell = this;
         component = ct;
+        this.domElement.classList.add("active");
     };
     
     /**
@@ -124,6 +124,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     this.destroyComponent = function(ct) {
         if (component) component.destroy();
         component = null;
+        this.domElement.classList.remove("active");
     };
     
     /**
@@ -141,7 +142,9 @@ Automatune.GridCell = function(pGrid, x, y) {
      */
     var onClick = function() {
         if (!this.hasComponent()) {
-            this.setComponent(new Automatune.Component_Arrow(Automatune.O_RIGHT));
+            this.setComponent(new Automatune.Component_Arrow(this, Automatune.O_RIGHT));
+        } else {
+            this.getComponent().rotateRight();
         }
     };
     
@@ -169,6 +172,7 @@ Automatune.GridCell = function(pGrid, x, y) {
     this.domElement.style.top = cssPos_y + "%";
     this.domElement.style.width = cell_width_percent + "%";
     this.domElement.style.height = cell_height_percent + "%";
+    this.domElement.style.padding = cell_spacing_percent + "%";
     
     this.parentGrid.domElement.appendChild(this.domElement);
     

@@ -50,6 +50,9 @@ function Automatune(domEl, size) {
     this.domElement = domEl;
     this.grid = new Automatune.Grid(this, size);
     
+    // Attach menu system
+    new Automatune.Menu(this);
+    
 }
 
 // Initialize Automatune
