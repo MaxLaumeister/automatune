@@ -5,13 +5,14 @@
  * @classdesc The main Automatune class.
  * @param {HTMLElement} domEl The DOM Element (a square div) that Automatune should render in.
  * @param {HTMLElement} playbackEl The DOM Element that contains the Automatune playback controls.
+ * @param {HTMLElement} menuEl The DOM Element that contains the Automatune menu bar.
  * @param {int} size The width/height (in cells) of the square grid.
  */
-function Automatune(domEl, playbackEl, size) {
+function Automatune(domEl, playbackEl, menuEl, size) {
     
     "use strict";
     
-    assert(arguments.length === 3);
+    assert(arguments.length === 4);
     
     /**
      * The DOM Element that contains the Automatune game.
@@ -178,7 +179,7 @@ function Automatune(domEl, playbackEl, size) {
     this.grid = new Automatune.Grid(this, size);
     
     // Attach menu system
-    new Automatune.Menu(this, playbackEl);
+    new Automatune.Menu(this, menuEl);
     
     // Attach playback onclick events
     var playButton;
@@ -208,7 +209,8 @@ $(document).ready(function() {
     "use strict";
     var el = document.getElementById("automatune");
     var pb = document.getElementsByClassName("playback-controls")[0];
-    var AutomatuneInst = new Automatune(el, pb, 7);
+    var mn = document.getElementById("menubar");
+    var AutomatuneInst = new Automatune(el, pb, mn, 7);
     AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
     AutomatuneInst.play();
     console.log("SaveState: ", AutomatuneInst.getSaveState());

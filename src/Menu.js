@@ -21,16 +21,231 @@ Automatune.Menu = function(pGame, menuEl) {
      */
     this.parentGame;
     
-    /**
-     * The "Menu Bar" DOM Element, containing the menus.
-     *
-     * @public
-     * @type {HTMLElement}
-     */
-    this.menuDomElement;
-    
     // Initialize variables
     
     this.parentGame = pGame;
+    
+    // Init Menus
+    
+    var gameDiv = $(pGame.domElement);
+    var menuDiv = $(menuEl);
+    
+    var MenuInst = this;
+    
+    function generatePitchMenu() {
+        var pitches = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "C"];
+        var menu = {title: "Set Pitch", children: []};
+        var min_octave = 1;
+        var max_octave = 7;
+        
+        function getOctaveName(num) {
+            var result = "Octave " + num;
+            if (num === min_octave) return result + " (Lowest)";
+            if (num === 3) return result + " (Mid)";
+            if (num === max_octave) return result + " (Highest)";
+            return result;
+        }
+        
+        function getPitchNames(num) {
+            var result = [];
+            for (var j = pitches.length - 1; j >= 0; j--) {
+                var p = pitches[j]; // "C", or "Db", etc.
+                var note_name;
+                if (j === pitches.length - 1) note_name = p + (num + 1);
+                else note_name = p + num;
+                result.push({
+                    title: note_name, // "C4", or "Db4", etc.
+                    cmd: "pitch." + note_name
+                });
+            }
+            return result;
+        }
+        
+        for (var i = max_octave; i >= min_octave; i--) {
+            menu.children.push({
+                title: getOctaveName(i),
+                children: getPitchNames(i)
+            });
+        }
+        menu.children.push({title: "---"});
+        menu.children.push({title: "Delete&nbsp;All&nbsp;Notes", cmd: "pitch.delete"});
+        return menu;
+    }
+
+    gameDiv.contextmenu({
+        delegate: ".gridCellDiv",
+        menu: [
+            generatePitchMenu(),
+            {title: "---"},
+            {title: "Clear Tile", cmd: "delete_tile"},
+            {title: "---"},
+            {title: "Create New Visitor", cmd: "new_visitor"},
+            {title: "Delete Visitor", cmd: "delete_visitor"}
+            ],
+        select: function(event, ui) {
+            var el = ui.target[0];
+            // Traverse up and get grid cell
+            while(!el.classList.contains("gridCellDiv")) {
+                el = el.parentNode;
+                assert(el != document.body);
+            }
+            var elx = parseInt(el.getAttribute("data-pos-x"), 10);
+            var ely = parseInt(el.getAttribute("data-pos-y"), 10);
+            var gridCell = MenuInst.parentGame.grid.getCell(elx, ely);
+            var cmdarr = ui.cmd.split(".");
+            switch (cmdarr[0]) {
+                case "pitch":
+                    if (cmdarr[1] === "delete") {
+                        gridCell.removeModifiers("note");
+                    } else {
+                        gridCell.addModifier(new Automatune.Modifier_Note(gridCell, cmdarr[1]));
+                    }
+                    break;
+                case "new_visitor":
+                    //var new_visitor = new gridVisitor(elx, ely, O_RIGHT);
+                    //visitors.push(new_visitor);
+                    break;
+                case "delete_tile":
+                    gridCell.removeTile();
+                    break;
+                case "delete_visitor":
+                    for (var i = 0; i < visitors.length; i++) {
+                        var v = visitors[i];
+                        if (v.position.x === elx && v.position.y === ely) {
+                            visitors.splice(i, 1);
+                            v.domElement.parentNode.removeChild(v.domElement);
+                        }
+                    }
+                    break;
+                default:
+                    alert("Menu item not yet implemented");
+            }
+        }
+    });
+    
+    // Automatune menu
+    
+    menuDiv.find("> .menu-automatune").contextmenu({
+        delegate: "span",
+        menu: [
+            {title: "About Automatune", cmd: "about"}
+        ],
+        select: function(event, ui) {
+            console.log("select " + ui.cmd + " on ", ui.target);
+            switch(ui.cmd) {
+                case "about":
+                    $("#automatune-about").dialog("open");
+                    break;
+                default:
+                    alert("Menu item not yet implemented");
+            }
+        },
+        autoTrigger: false
+    });
+    
+    $("#automatune-about").dialog({
+        autoOpen: false
+    });
+    
+    // File menu
+    
+    menuDiv.find("> .menu-file").contextmenu({
+        delegate: "span",
+        menu: [
+            {title: "New (Not Yet Implemented)", cmd: "new", disabled: true},
+            {title: "Open (Not Yet Implemented)", cmd: "open", disabled: true},
+            {title: "Save (Not Yet Implemented)", cmd: "save", disabled: true}
+        ],
+        select: function(event, ui) {
+            console.log("select " + ui.cmd + " on ", ui.target);
+        },
+        autoTrigger: false
+    });
+    
+    // Edit menu
+    
+    menuDiv.find("> .menu-edit").contextmenu({
+        delegate: "span",
+        menu: [
+            {title: "Select All (Not Yet Implemented)", cmd: "selectall", disabled: true},
+            {title: "Copy (Not Yet Implemented)", cmd: "copy", disabled: true},
+            {title: "Paste (Not Yet Implemented)", cmd: "paste", disabled: true}
+        ],
+        select: function(event, ui) {
+            console.log("select " + ui.cmd + " on ", ui.target);
+        },
+        autoTrigger: false
+    });
+    
+    // Sound menu
+    
+    menuDiv.find("> .menu-sound").contextmenu({
+        delegate: "span",
+        menu: [
+            {title: "Volume", children: [
+                {title: "10&nbsp;(Highest)", cmd: "volume.10"},
+                {title: "9", cmd: "volume.9"},
+                {title: "8", cmd: "volume.8"},
+                {title: "7", cmd: "volume.7"},
+                {title: "6", cmd: "volume.6"},
+                {title: "5", cmd: "volume.5"},
+                {title: "4", cmd: "volume.4"},
+                {title: "3", cmd: "volume.3"},
+                {title: "2", cmd: "volume.2"},
+                {title: "1&nbsp;(Lowest)", cmd: "volume.1"}
+            ]},
+            {title: "Tempo", children: [
+                {title: "Slow", cmd: "tempo.slow"},
+                {title: "Normal", cmd: "tempo.normal"},
+                {title: "Fast", cmd: "tempo.fast"},
+                {title: "Fastest", cmd: "tempo.fastest"}
+            ]},
+            {title: "Enable Metronome (Not Yet Implemented)", cmd: "metronome", disabled: true}
+        ],
+        select: function(event, ui) {
+            console.log("select " + ui.cmd + " on ", ui.target);
+            var cmdarr = ui.cmd.split(".");
+            switch (cmdarr[0]) {
+                case "volume":
+                    var vol_pre = 0.1 * parseInt(cmdarr[1], 10);
+                    var vol = vol_pre * vol_pre;
+                    Howler.volume(vol);
+                    ohSnap("Volume " + cmdarr[1], "black");
+                    break;
+                case "tempo":
+                    switch (cmdarr[1]) {
+                        case "slow":
+                            setTickMs(1000);
+                            ohSnap("Tempo: Slow", "black");
+                            break;
+                        case "normal":
+                            setTickMs(500);
+                            ohSnap("Tempo: Normal", "black");
+                            break;
+                        case "fast":
+                            setTickMs(250);
+                            ohSnap("Tempo: Fast", "black");
+                            break;
+                        case "fastest":
+                            setTickMs(125);
+                            ohSnap("Tempo: Fastest", "black");
+                            break;
+                        default:
+                    }
+                    break;
+                default:
+                    alert("Menu item not yet implemented");
+            }
+        },
+        autoTrigger: false
+    });
+    // Set initial volume
+    Howler.volume(0.25);
+    
+    // Attach menu click handler
+    
+    menuDiv.find("> li").click(function() {
+        $(this).contextmenu("open", $(this).find("span"));
+    });
 };
 

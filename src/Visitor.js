@@ -53,17 +53,16 @@ Automatune.Visitor = function(pGame, x, y, orient) {
      * @private
      */
     this.update = function() {
+        this.parentGame.grid.getCell(this.pos.x, this.pos.y).onVisit(this);
+        
         var grid = this.parentGame.grid;
         var delta = Automatune.util.getOrientationDelta(this.orientation);
         if (!grid.isInBounds(this.pos.x + delta.x, this.pos.y + delta.y)) {
             this.orientation = Automatune.util.getOpposite(this.orientation);
             delta = Automatune.util.getOrientationDelta(this.orientation);
         }
-        var destination = {x: this.pos.x + delta.x, y: this.pos.y + delta.y};
-        this.updateCSSPosition();
-        
         this.pos = {x: this.pos.x + delta.x, y: this.pos.y + delta.y};
-        this.parentGame.grid.getCell(this.pos.x, this.pos.y).onVisit(this);
+        this.updateCSSPosition();
     };
     
     /**

@@ -61,7 +61,7 @@ Automatune.GridCell = function(pGrid, x, y) {
      * @param {Modifier} mod The Modifier to add to this GridCell.
      */
     this.addModifier = function(mod) {
-        
+        modifiers.push(mod);
     };
     
     /**
@@ -72,7 +72,30 @@ Automatune.GridCell = function(pGrid, x, y) {
      * @param {string} type The type of Modifier to remove from this GridCell.
      */
     this.removeModifier = function(type) {
-        
+        for (var i = 0; i < modifiers.length; i++) {
+            var m = modifiers[i];
+            if (m.type === type) {
+                modifiers.splice(i, 1); // Remove modifier from array
+                return;
+            }
+        }
+    };
+    
+    /**
+     * Remove all {@linkcode Modifier|Modifiers} of a certain type from this GridCell.
+     *
+     * @public
+     * @param {string} type The type of Modifier to remove from this GridCell.
+     */
+    this.removeModifiers = function(type) {
+        for (var i = 0; i < modifiers.length; i++) {
+            var m = modifiers[i];
+            if (m.type === type) {
+                modifiers.splice(i, 1); // Remove modifier from array
+                i--; // Correct for removal
+                m.destroy(); // Destroy modifier
+            }
+        }
     };
     
     /**
@@ -83,7 +106,13 @@ Automatune.GridCell = function(pGrid, x, y) {
      * @returns {boolean} hasModifier
      */
     this.hasModifier = function(type) {
-        
+        for (var i = 0; i < modifiers.length; i++) {
+            var m = modifiers[i];
+            if (m.type === type) {
+                return true;
+            }
+        }
+        return false;
     };
     
     /**

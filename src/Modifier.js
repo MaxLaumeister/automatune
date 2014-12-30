@@ -27,6 +27,9 @@ Automatune.Modifier = function(pCell) {
      */
     this.domElement;
     
+    //TODO docs
+    this.type;
+    
     /**
      * Appends this Modifier to a {@linkcode GridCell}.
      *
@@ -59,8 +62,10 @@ Automatune.Modifier = function(pCell) {
     // Initialize variables
     
     this.parentCell = pCell;
+    this.type = "abstract";
 };
 
+//TODO docs
 /**
  * Creates a new Note modifier.
  * @alias Modifier_Note
@@ -68,9 +73,35 @@ Automatune.Modifier = function(pCell) {
  * @classdesc A modifier that plays an audible note when visited by a {@linkcode Visitor}.
  * @extends Modifier
  */
-Automatune.Modifier_Note = function() {
+Automatune.Modifier_Note = function(pCell, noteName) {
     
-    //assert(arguments.length === 3);
+    "use strict";
+    
+    assert(arguments.length === 2);
+    
+    Automatune.Modifier.call(this, pCell);
+    
+    // TODO docs
+    var howl;
+    
+    //TODO docs
+    this.onVisit = function(visitor) {
+        howl.play();
+    };
+    
+    // Initialize Varaibles
+    
+    this.type = "note";
+    
+    var sndpath = "snd/piano/Piano.mf.";
+    
+    howl = new Howl({
+        urls: [
+            sndpath + noteName + '.mp3',
+            sndpath + noteName + '.ogg'
+        ],
+        volume: 0.7
+    });
     
 };
 
