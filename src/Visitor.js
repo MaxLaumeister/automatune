@@ -48,7 +48,7 @@ Automatune.Visitor = function(pGame, x, y, orient) {
      * @private
      */
     this.update = function() {
-        
+        console.log("Update Visitor");
     };
     
     // Initialize variables
