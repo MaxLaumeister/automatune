@@ -157,16 +157,6 @@ Automatune.GridCell = function(pGrid, x, y) {
     };
     
     /**
-     * Calculate the CSS position of this cell in pixels relative to the grid.
-     *
-     * @public
-     * @returns {Vector2} pos The CSS position of this cell.
-     */
-    this.getCSSPositionAbsolute = function() {
-        return {x: this.domElement.offsetLeft, y: this.domElement.offsetTop};
-    };
-    
-    /**
      * Called when a {@linkcode Visitor} visits this GridCell.
      * Triggers the onVisit() event for the Component and all Modifiers attached to this GridCell.
      *

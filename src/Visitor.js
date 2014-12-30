@@ -72,8 +72,17 @@ Automatune.Visitor = function(pGame, x, y, orient) {
      * @private
      */
     this.updateCSSPosition = function() {
-        var cssPos = this.parentGame.grid.getCell(this.pos.x, this.pos.y).getCSSPositionAbsolute();
-        var cssTransform = "translate(" + cssPos.x + "px, " + cssPos.y + "px)";
+        var cell_width_percent = grid.cellCSSWidth;
+        
+        var cssPos = this.parentGame.grid.getCell(this.pos.x, this.pos.y).getCSSPosition();
+        var factor = 100 / cell_width_percent;
+        
+        cssPos = {
+            x: cssPos.x * factor,
+            y: cssPos.y * factor
+        };
+        
+        var cssTransform = "translate(" + cssPos.x + "%, " + cssPos.y + "%)";
         this.domElement.style["-webkit-transform"] = cssTransform;
         this.domElement.style.transform = cssTransform;
     };
