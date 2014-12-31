@@ -126,16 +126,16 @@ function Automatune(domEl, playbackEl, menuEl, size) {
       visibilityChange = "webkitvisibilitychange";
     }
     
-    function handleVisibilityChange() {
+    function handleVisibilityChange(autInst) {
       if (document[hidden]) {
-        this.pause();
+        autInst.pause();
         Howler.mute();
       } else {
         Howler.unmute();
       }
     }
     
-    document.addEventListener(visibilityChange, handleVisibilityChange.bind(this), false);
+    document.addEventListener(visibilityChange, handleVisibilityChange(this), false);
 }
 
 // Initialize Automatune

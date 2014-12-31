@@ -204,7 +204,7 @@ body {
 }
 
 .tileicon {
-    position: absolute;
+    float: left;
     width: 15%;
     height: 15%;
     border-radius: 50%;
@@ -213,8 +213,7 @@ body {
 }
 
 .tileicon.note {
-    top: 10%;
-    right: 10%;
+    margin: 5%;
 }
 
 .floatnote {

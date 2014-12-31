@@ -131,8 +131,8 @@ Automatune.Grid.prototype.getCell = function (x, y) {
 Automatune.Grid.prototype.getSaveState = function() {
     "use strict";
     return {
-        instanceOf: "Grid"
-        // TODO: Finish save state implementation
+        instanceOf: "Grid",
+        
     };
 };
 

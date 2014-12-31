@@ -19,14 +19,6 @@ Automatune.Modifier = function(pCell) {
      */
     this.parentCell;
     
-    /**
-     * The DOM Element that visually represents this Modifier.
-     *
-     * @public
-     * @type {HTMLElement}
-     */
-    this.domElement;
-    
     //TODO docs
     this.type;
     
@@ -84,8 +76,17 @@ Automatune.Modifier_Note = function(pCell, noteName) {
     
     Automatune.Modifier.call(this, pCell);
     
+    /**
+     * The DOM Element that visually represents this Note Modifier.
+     *
+     * @public
+     * @type {HTMLElement}
+     */
+    this.domElement;
+    
     // TODO docs
     this.howl;
+    
     
     
     
@@ -103,6 +104,11 @@ Automatune.Modifier_Note = function(pCell, noteName) {
         volume: 0.7
     });
     
+    // Show DOM Element
+    this.domElement = document.createElement("div");
+    this.domElement.className = "tileicon note";
+    this.parentCell.domElement.appendChild(this.domElement);
+    
 };
 Automatune.util.extend(Automatune.Modifier, Automatune.Modifier_Note);
 
@@ -110,5 +116,25 @@ Automatune.util.extend(Automatune.Modifier, Automatune.Modifier_Note);
 Automatune.Modifier_Note.prototype.onVisit = function(visitor) {
     "use strict";
     this.howl.play();
+    
+    var div = document.createElement("div");
+    div.classList.add("floatnote");
+    this.parentCell.domElement.appendChild(div);
+    (function(d){
+        var player = div.animate([
+            {transform: "scale(0.15)", opacity: 1},
+            {transform: "scale(1.75)", opacity: 0}
+        ], {
+            duration: 1000
+        });
+        player.onfinish = function(e) {
+            d.parentNode.removeChild(d);
+        };
+    })(div);
+};
+
+Automatune.Modifier_Note.prototype.destroy = function() {
+    "use strict";
+    this.domElement.parentNode.removeChild(this.domElement);
 };
 

@@ -34,7 +34,7 @@ Automatune.Menu = function(pGame, menuEl) {
     
     function generatePitchMenu() {
         var pitches = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "C"];
-        var menu = {title: "Set Pitch", children: []};
+        var menu = {title: "Add Note", children: []};
         var min_octave = 1;
         var max_octave = 7;
         
@@ -67,8 +67,6 @@ Automatune.Menu = function(pGame, menuEl) {
                 children: getPitchNames(i)
             });
         }
-        menu.children.push({title: "---"});
-        menu.children.push({title: "Delete&nbsp;All&nbsp;Notes", cmd: "pitch.delete"});
         return menu;
     }
 
@@ -76,6 +74,7 @@ Automatune.Menu = function(pGame, menuEl) {
         delegate: ".gridCellDiv",
         menu: [
             generatePitchMenu(),
+            {title: "Delete&nbsp;All&nbsp;Notes", cmd: "pitch.delete"},
             {title: "---"},
             {title: "Delete Component", cmd: "delete_component"},
             {title: "---"},
