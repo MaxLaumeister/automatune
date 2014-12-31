@@ -31,6 +31,14 @@ function Automatune(domEl, playbackEl, menuEl, size) {
     this.playbackElement;
     
     /**
+     * A simple object containing each of the playback control buttons.
+     *
+     * @private
+     * @type {HTMLElements}
+     */
+    this.playbackButtons;
+    
+    /**
      * The {@linkcode Grid} that contains the {@linkcode GridCell|GridCells} of this Automatune instance.
      *
      * @public
@@ -78,26 +86,29 @@ function Automatune(domEl, playbackEl, menuEl, size) {
     new Automatune.Menu(this, menuEl);
     
     // Attach playback onclick events
-    var playButton;
-    var pauseButton;
-    var resetButton;
+    this.playbackButtons = {};
     for (var i = 0; i < playbackEl.childNodes.length; i++) {
         var el = playbackEl.childNodes[i];
         
         if (!el.classList) continue;
         
         if (el.classList.contains("playback-play")) {
-            playButton = el;
+            this.playbackButtons.playButton = el;
         } else if (el.classList.contains("playback-pause")) {
-            pauseButton = el;
+            this.playbackButtons.pauseButton = el;
         } else if (el.classList.contains("playback-reset")) {
-            resetButton = el;
+            this.playbackButtons.resetButton = el;
         }
     }
-    assert(playButton && pauseButton && resetButton); // Make sure all the buttons are there
-    playButton.onclick = this.play.bind(this);
-    pauseButton.onclick = this.pause.bind(this);
-    resetButton.onclick = this.reset.bind(this);
+    // Make sure all the buttons are there
+    assert(     
+        this.playbackButtons.playButton &&
+        this.playbackButtons.pauseButton &&
+        this.playbackButtons.resetButton
+    );
+    this.playbackButtons.playButton.onclick = this.play.bind(this);
+    this.playbackButtons.pauseButton.onclick = this.pause.bind(this);
+    this.playbackButtons.resetButton.onclick = this.reset.bind(this);
 }
 
 // Initialize Automatune
@@ -159,6 +170,14 @@ Automatune.prototype.getTickMs = function() {
     return this.tickMs;
 };
 
+//TODO doc
+Automatune.prototype.resetPlaybackButtons = function() {
+    "use strict";
+    this.playbackButtons.playButton.classList.remove("active");
+    this.playbackButtons.pauseButton.classList.remove("active");
+    this.playbackButtons.resetButton.classList.remove("active");
+};
+
 /**
  * Plays the Automatune by starting all {@linkcode Visitor|Visitors},
  * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}.
@@ -169,6 +188,8 @@ Automatune.prototype.play = function() {
     "use strict";
     if (!this.playing) {
         this.playing = true;
+        this.resetPlaybackButtons();
+        this.playbackButtons.playButton.classList.add("active");
         this.updateInterval = window.setInterval(this.update.bind(this), this.tickMs);
         this.update();
     }
@@ -183,6 +204,8 @@ Automatune.prototype.play = function() {
 Automatune.prototype.pause = function() {
     "use strict";
     this.playing = false;
+    this.resetPlaybackButtons();
+    this.playbackButtons.pauseButton.classList.add("active");
     window.clearInterval(this.updateInterval);
 };
 
