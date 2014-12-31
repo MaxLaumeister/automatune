@@ -9,7 +9,20 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    connect: {
+      all: {
+        options: {
+          base: 'dist',
+          port: 8000,
+          keepalive: true
+        }
+      }
+    },
     concat: {
+      options: {
+        sourceMap: true,
+        sourceMapStyle: "inline"
+      },
       all: {
         src: libFiles.concat(srcFiles),
         dest: destFile
@@ -53,7 +66,7 @@ module.exports = function(grunt) {
     watch: {
       all: {
         files: libFiles.concat(srcFiles).concat(['Gruntfile.js']),
-        tasks: ['concat', 'newer:jshint:all'],
+        tasks: ['concat', 'newer:jshint:all', 'connect'],
         options: {
           interrupt: true
         }
@@ -62,6 +75,7 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jsdoc');
