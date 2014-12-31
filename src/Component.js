@@ -144,12 +144,6 @@ Automatune.Component_Arrow = function(pCell, orient) {
 };
 Automatune.util.extend(Automatune.Component, Automatune.Component_Arrow);
 
-/*function extend(ChildClass, ParentClass) {
-	"use strict";
-	ChildClass.prototype = new ParentClass();
-	ChildClass.prototype.constructor = ChildClass;
-}*/
-
 /**
  * Destroys this Arrow, removing it from its {@linkcode GridCell}.
  * @public
@@ -164,5 +158,19 @@ Automatune.Component_Arrow.prototype.destroy = function() {
 Automatune.Component_Arrow.prototype.onVisit = function(visitor) {
     "use strict";
     visitor.orientation = this.orientation;
+};
+
+/**
+ * Constructs a JSON-compatible object representing the current state of this object.
+ *
+ * @public
+ * @returns {Object} save A JSON-compatible object representing a save state.
+ */
+Automatune.Component_Arrow.prototype.getSaveState = function() {
+    "use strict";
+    return {
+        instanceOf: "Component_Arrow",
+        orientation: this.orientation
+    };
 };
 

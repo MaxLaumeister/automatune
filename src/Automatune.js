@@ -265,7 +265,7 @@ Automatune.prototype.createVisitor = function(x, y, orientation) {
 /**
  * Constructs a JSON-compatible object representing the current state of the entire game.
  *
- * @public
+ * @private
  * @returns {Object} save A JSON-compatible object representing a save state.
  */
 Automatune.prototype.getSaveState = function() {
@@ -282,10 +282,24 @@ Automatune.prototype.getSaveState = function() {
     }
     
     return {
-        version: "prototype",
-        tickMs: self.tickMs,
-        updateTargets: getUpdateTargets(),
-        grid: self.grid.getSaveState()
+        info: "Automatune Save File - www.automatune.com",
+        save: {
+            date: Date.now(),
+            version: "prototype",
+            tickMs: self.tickMs,
+            updateTargets: getUpdateTargets(),
+            grid: self.grid.getSaveState()
+        }
     };
+};
+
+/**
+ * Saves the current game state to a file (download) on the user's computer.
+ *
+ * @public
+ */
+Automatune.prototype.downloadSaveState = function() {
+    "use strict";
+    download(JSON.stringify(this.getSaveState()), "file.atune", "text/plain");
 };
 

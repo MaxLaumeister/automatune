@@ -150,11 +150,16 @@ Automatune.Menu = function(pGame, menuEl) {
         delegate: "span",
         menu: [
             {title: "New (Not Yet Implemented)", cmd: "new", disabled: true},
-            {title: "Open (Not Yet Implemented)", cmd: "open", disabled: true},
-            {title: "Save (Not Yet Implemented)", cmd: "save", disabled: true}
+            {title: "Open from File (Not Yet Implemented)", cmd: "open", disabled: true},
+            {title: "Save to File", cmd: "save"}
         ],
         select: function(event, ui) {
             console.log("select " + ui.cmd + " on ", ui.target);
+            switch (ui.cmd) {
+                case "save":
+                    MenuInst.parentGame.downloadSaveState();
+                    break;
+            }
         },
         autoTrigger: false
     });

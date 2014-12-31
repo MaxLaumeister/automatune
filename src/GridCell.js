@@ -255,3 +255,24 @@ Automatune.GridCell.prototype.onClick = function() {
     }
 };
 
+/**
+ * Constructs a JSON-compatible object representing the current state of this object.
+ *
+ * @public
+ * @returns {Object} save A JSON-compatible object representing a save state.
+ */
+Automatune.GridCell.prototype.getSaveState = function() {
+    "use strict";
+    return {
+        instanceOf: "GridCell",
+        component: this.component ? this.component.getSaveState() : null,
+        modifiers: (function() {
+            var result = [];
+            for (var i = 0; i < this.modifiers.length; i++) {
+                result.push(this.modifiers[i].getSaveState());
+            }
+            return result;
+        }).call(this)
+    };
+};
+

@@ -130,9 +130,18 @@ Automatune.Grid.prototype.getCell = function (x, y) {
  */
 Automatune.Grid.prototype.getSaveState = function() {
     "use strict";
+    
     return {
         instanceOf: "Grid",
-        
+        gridCells: (function() {
+            var result = [];
+            for (var i = 0; i < this.gridSize; i++) {
+                for (var j = 0; j < this.gridSize; j++) {
+                    result.push(this.gridCells[i][j].getSaveState());
+                }
+            }
+            return result;
+        }).call(this)
     };
 };
 

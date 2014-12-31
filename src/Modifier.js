@@ -85,6 +85,9 @@ Automatune.Modifier_Note = function(pCell, noteName) {
     this.domElement;
     
     // TODO docs
+    this.noteName;
+    
+    // TODO docs
     this.howl;
     
     
@@ -93,6 +96,7 @@ Automatune.Modifier_Note = function(pCell, noteName) {
     // Initialize Varaibles
     
     this.type = "note";
+    this.noteName = noteName;
     
     var sndpath = "snd/piano/Piano.mf.";
     
@@ -136,5 +140,19 @@ Automatune.Modifier_Note.prototype.onVisit = function(visitor) {
 Automatune.Modifier_Note.prototype.destroy = function() {
     "use strict";
     this.domElement.parentNode.removeChild(this.domElement);
+};
+
+/**
+ * Constructs a JSON-compatible object representing the current state of this object.
+ *
+ * @public
+ * @returns {Object} save A JSON-compatible object representing a save state.
+ */
+Automatune.Modifier_Note.prototype.getSaveState = function() {
+    "use strict";
+    return {
+        instanceOf: "Modifier_Note",
+        noteName: this.noteName
+    };
 };
 
