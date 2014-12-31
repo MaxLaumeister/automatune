@@ -54,6 +54,17 @@ Automatune.Component = function(pCell, orient) {
 };
 
 /**
+ * Returns the name of the class that this object is an instance of.
+ *
+ * @public
+ * @returns {string} className The name of the class that this object is an instance of.
+ */
+Automatune.Component.prototype.getClassName = function() {
+    "use strict";
+    return "Automatune.Component";
+};
+
+/**
  * Appends this Component to a {@linkcode GridCell}.
  *
  * @public
@@ -143,6 +154,17 @@ Automatune.Component_Arrow = function(pCell, orient) {
     this.domElement.appendChild(this.img);
 };
 Automatune.util.extend(Automatune.Component, Automatune.Component_Arrow);
+
+/**
+ * Returns the name of the class that this object is an instance of.
+ *
+ * @public
+ * @returns {string} className The name of the class that this object is an instance of.
+ */
+Automatune.Component_Arrow.prototype.getClassName = function() {
+    "use strict";
+    return "Automatune.Component_Arrow";
+};
 
 /**
  * Destroys this Arrow, removing it from its {@linkcode GridCell}.

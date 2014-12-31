@@ -86,6 +86,17 @@ Automatune.Grid = function(pGame, size) {
 };
 
 /**
+ * Returns the name of the class that this object is an instance of.
+ *
+ * @public
+ * @returns {string} className The name of the class that this object is an instance of.
+ */
+Automatune.Grid.prototype.getClassName = function() {
+    "use strict";
+    return "Automatune.Grid";
+};
+
+/**
  * Get the length/width of the Grid, which is also the side length of the Grid.
  *
  * @public

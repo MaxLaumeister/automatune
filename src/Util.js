@@ -19,7 +19,12 @@ function assert(expression) {
 
 Automatune.util = {};
 
-// TODO doc
+/**
+ * Extends one class with another.
+ *
+ * @param {Function} baseClass The base class to extend.
+ * @param {Function} newClass The class to extend from the base class.
+ */
 Automatune.util.extend = function(baseClass, newClass) {
     "use strict";
     newClass.prototype = Object.create(baseClass.prototype);

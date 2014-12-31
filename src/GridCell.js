@@ -87,6 +87,17 @@ Automatune.GridCell = function(pGrid, x, y) {
 };
 
 /**
+ * Returns the name of the class that this object is an instance of.
+ *
+ * @public
+ * @returns {string} className The name of the class that this object is an instance of.
+ */
+Automatune.GridCell.prototype.getClassName = function() {
+    "use strict";
+    return "Automatune.GridCell";
+};
+
+/**
  * Add a {@linkcode Modifier} to this GridCell.
  *
  * @public
@@ -102,13 +113,13 @@ Automatune.GridCell.prototype.addModifier = function(mod) {
  * If there are multiple Modifiers of this type, removes the oldest Modifier.
  *
  * @public
- * @param {string} type The type of Modifier to remove from this GridCell.
+ * @param {string} type The class name of the Modifier to remove from this GridCell.
  */
 Automatune.GridCell.prototype.removeModifier = function(type) {
     "use strict";
     for (var i = 0; i < this.modifiers.length; i++) {
         var m = this.modifiers[i];
-        if (m.type === type) {
+        if (m.getClassName() === type) {
             this.modifiers.splice(i, 1); // Remove modifier from array
             return;
         }
@@ -119,13 +130,13 @@ Automatune.GridCell.prototype.removeModifier = function(type) {
  * Remove all {@linkcode Modifier|Modifiers} of a certain type from this GridCell.
  *
  * @public
- * @param {string} type The type of Modifier to remove from this GridCell.
+ * @param {string} type The class name of the Modifiers to remove from this GridCell.
  */
 Automatune.GridCell.prototype.removeModifiers = function(type) {
     "use strict";
     for (var i = 0; i < this.modifiers.length; i++) {
         var m = this.modifiers[i];
-        if (m.type === type) {
+        if (m.getClassName() === type) {
             this.modifiers.splice(i, 1); // Remove modifier from array
             i--; // Correct for removal
             m.destroy(); // Destroy modifier
@@ -144,7 +155,7 @@ Automatune.GridCell.prototype.hasModifier = function(type) {
     "use strict";
     for (var i = 0; i < this.modifiers.length; i++) {
         var m = this.modifiers[i];
-        if (m.type === type) {
+        if (m.getClassName() === type) {
             return true;
         }
     }

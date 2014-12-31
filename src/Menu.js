@@ -95,7 +95,7 @@ Automatune.Menu = function(pGame, menuEl) {
             switch (cmdarr[0]) {
                 case "pitch":
                     if (cmdarr[1] === "delete") {
-                        gridCell.removeModifiers("note");
+                        gridCell.removeModifiers("Automatune.Modifier_Note");
                     } else {
                         gridCell.addModifier(new Automatune.Modifier_Note(gridCell, cmdarr[1]));
                     }

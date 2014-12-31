@@ -70,7 +70,12 @@ function Automatune(domEl, playbackEl, menuEl, size) {
      */
     this.tickMs;
     
-    // TODO doc
+    /**
+     * Whether this Automatune simulation is currently running.
+     *
+     * @private
+     * @type {float}
+     */
     this.playing = false;
     
     // Initialize this Automatune instance.
@@ -126,29 +131,26 @@ function Automatune(domEl, playbackEl, menuEl, size) {
       visibilityChange = "webkitvisibilitychange";
     }
     
-    function handleVisibilityChange(autInst) {
-      if (document[hidden]) {
-        autInst.pause();
-        Howler.mute();
-      } else {
-        Howler.unmute();
-      }
-    }
-    
-    document.addEventListener(visibilityChange, handleVisibilityChange(this), false);
+    document.addEventListener(visibilityChange, (function() {
+        if (document[hidden]) {
+            this.pause();
+            Howler.mute();
+        } else {
+            Howler.unmute();
+        }
+    }).bind(this), false);
 }
 
-// Initialize Automatune
-$(document).ready(function() {
+/**
+ * Returns the name of the class that this object is an instance of.
+ *
+ * @public
+ * @returns {string} className The name of the class that this object is an instance of.
+ */
+Automatune.prototype.getClassName = function() {
     "use strict";
-    var el = document.getElementById("automatune");
-    var pb = document.getElementsByClassName("playback-controls")[0];
-    var mn = document.getElementById("menubar");
-    var AutomatuneInst = new Automatune(el, pb, mn, 7);
-    AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
-    AutomatuneInst.play();
-    console.log("SaveState: ", AutomatuneInst.getSaveState());
-});
+    return "Automatune";
+};
 
 /**
  * Updates all active actors (e.g. {@linkcode Visitor|Visitors}, {@linkcode Component|Components},
@@ -197,7 +199,12 @@ Automatune.prototype.getTickMs = function() {
     return this.tickMs;
 };
 
-//TODO doc
+/**
+ * Removes the "active" class from all playback buttons, making them appear
+ * inactive to the user. Generally used before activating a particular button.
+ *
+ * @private
+ */
 Automatune.prototype.resetPlaybackButtons = function() {
     "use strict";
     this.playbackButtons.playButton.classList.remove("active");
@@ -236,7 +243,7 @@ Automatune.prototype.pause = function() {
     window.clearInterval(this.updateInterval);
 };
 
-/**
+/* // (When implemented, enable as a jsdoc)
  * Resets all {@linkcode Visitor|Visitors},
  * {@linkcode Component|Components}, and {@linkcode Modifier|Modifiers}
  * to their original position and orientation.
@@ -245,7 +252,7 @@ Automatune.prototype.pause = function() {
  */
 Automatune.prototype.reset = function() {
     "use strict";
-    // TODO: Implement
+    // Not yet implemented
 };
 
 /**
@@ -302,4 +309,16 @@ Automatune.prototype.downloadSaveState = function() {
     "use strict";
     download(JSON.stringify(this.getSaveState()), "file.atune", "text/plain");
 };
+
+// Initialize Automatune
+$(document).ready(function() {
+    "use strict";
+    var el = document.getElementById("automatune");
+    var pb = document.getElementsByClassName("playback-controls")[0];
+    var mn = document.getElementById("menubar");
+    var AutomatuneInst = new Automatune(el, pb, mn, 7);
+    AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
+    AutomatuneInst.play();
+    console.log("SaveState: ", AutomatuneInst.getSaveState());
+});
 

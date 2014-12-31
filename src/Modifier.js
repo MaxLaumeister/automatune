@@ -19,15 +19,22 @@ Automatune.Modifier = function(pCell) {
      */
     this.parentCell;
     
-    //TODO docs
-    this.type;
-    
     
     
     // Initialize variables
     
     this.parentCell = pCell;
-    this.type = "abstract";
+};
+
+/**
+ * Returns the name of the class that this object is an instance of.
+ *
+ * @public
+ * @returns {string} className The name of the class that this object is an instance of.
+ */
+Automatune.Modifier.prototype.getClassName = function() {
+    "use strict";
+    return "Automatune.Modifier";
 };
 
 /**
@@ -60,13 +67,14 @@ Automatune.Modifier.prototype.destroy = function() {
 
 };
 
-//TODO docs
 /**
  * Creates a new Note modifier.
  * @alias Modifier_Note
  * @class
  * @classdesc A modifier that plays an audible note when visited by a {@linkcode Visitor}.
  * @extends Modifier
+ * @param {GridCell} pCell The parent cell of this Note Modifier.
+ * @param {string} noteName The pitch of this Modifier's note, e.g. "Eb6".
  */
 Automatune.Modifier_Note = function(pCell, noteName) {
     
@@ -84,10 +92,20 @@ Automatune.Modifier_Note = function(pCell, noteName) {
      */
     this.domElement;
     
-    // TODO docs
+    /**
+     * The pitch of this Modifier's note, e.g. "Eb6".
+     *
+     * @private
+     * @type {string}
+     */
     this.noteName;
     
-    // TODO docs
+    /**
+     * The Howler.js sound instance associated with this Note Modifier.
+     *
+     * @private
+     * @type {Howl}
+     */
     this.howl;
     
     
@@ -95,7 +113,6 @@ Automatune.Modifier_Note = function(pCell, noteName) {
     
     // Initialize Varaibles
     
-    this.type = "note";
     this.noteName = noteName;
     
     var sndpath = "snd/piano/Piano.mf.";
@@ -116,7 +133,17 @@ Automatune.Modifier_Note = function(pCell, noteName) {
 };
 Automatune.util.extend(Automatune.Modifier, Automatune.Modifier_Note);
 
-//TODO docs
+/**
+ * Returns the name of the class that this object is an instance of.
+ *
+ * @public
+ * @returns {string} className The name of the class that this object is an instance of.
+ */
+Automatune.Modifier_Note.prototype.getClassName = function() {
+    "use strict";
+    return "Automatune.Modifier_Note";
+};
+
 Automatune.Modifier_Note.prototype.onVisit = function(visitor) {
     "use strict";
     this.howl.play();

@@ -68,6 +68,17 @@ Automatune.Visitor = function(pGame, x, y, orient) {
 };
 
 /**
+ * Returns the name of the class that this object is an instance of.
+ *
+ * @public
+ * @returns {string} className The name of the class that this object is an instance of.
+ */
+Automatune.Visitor.prototype.getClassName = function() {
+    "use strict";
+    return "Automatune.Visitor";
+};
+
+/**
  * Steps this Visitor forward, sending it on its way to the next grid cell.
  *
  * @private
@@ -108,7 +119,12 @@ Automatune.Visitor.prototype.updateCSSPosition = function() {
     this.domElement.style.transform = cssTransform;
 };
 
-// TODO doc
+/**
+ * Notifies this visitor that the simulation speed (tickMs) has changed,
+ * and to update accordingly.
+ *
+ * @public
+ */
 Automatune.Visitor.prototype.updateTickMs = function() {
     "use strict";
     var ms = this.parentGame.getTickMs();
