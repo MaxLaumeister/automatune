@@ -214,15 +214,14 @@ body {
 
 .tileicon {
     display: inline-block;
-    width: 15%;
-    height: 15%;
-    border-radius: 50%;
-    background-color: white;
-    pointer-events: none;
 }
 
 .tileicon.note {
     margin: 5%;
+    width: 15%;
+    height: 15%;
+    border-radius: 50%;
+    background-color: white;
 }
 
 .floatnote {

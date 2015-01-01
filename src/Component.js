@@ -44,7 +44,7 @@ Automatune.Component = function(pCell, orient) {
     this.parentCell = pCell;
     this.domElement = document.createElement("div");
     this.domElement.className = "gridCellProperty";
-    this.parentCell.domElement.appendChild(this.domElement);
+    this.parentCell.domElement.insertBefore(this.domElement, this.parentCell.domElement.firstChild);
     
     this.setOrientation(this.orientation);
     

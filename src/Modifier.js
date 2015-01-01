@@ -128,6 +128,7 @@ Automatune.Modifier_Note = function(pCell, noteName) {
     // Show DOM Element
     this.domElement = document.createElement("div");
     this.domElement.className = "tileicon note";
+    this.domElement.title = this.noteName; // Tooltip
     this.parentCell.modifiersElement.appendChild(this.domElement);
     
 };
