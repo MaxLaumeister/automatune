@@ -145,7 +145,7 @@ Automatune.Visitor.prototype.destroy = function() {
 /**
  * Constructs a JSON-compatible object representing the current state of this object.
  *
- * @public
+ * @private
  * @returns {Object} save A JSON-compatible object representing a save state.
  */
 Automatune.Visitor.prototype.getSaveState = function() {

@@ -150,7 +150,8 @@ Automatune.Menu = function(pGame, menuEl) {
                 {title: "X&#8209;Large&nbsp;(11x11)", cmd: "new.xlarge"},
                 {title: "XX&#8209;Large&nbsp;(15x15)", cmd: "new.xxlarge"}
             ]},
-            {title: "Open from File (Not Yet Implemented)", cmd: "open", disabled: true},
+            {title: "Open Example (Not Yet Implemented)", disabled: true},
+            {title: "Open from File", cmd: "open"},
             {title: "Save to File", cmd: "save"}
         ],
         select: function(event, ui) {
@@ -200,6 +201,49 @@ Automatune.Menu = function(pGame, menuEl) {
                                 MenuInst.parentGame.newGrid(size);
                                 MenuInst.parentGame.createVisitor(Math.floor(size/2), Math.floor(size/2), Automatune.O_RIGHT);
                                 $( this ).dialog( "close" );
+                            }
+                        },
+                        open: function() {
+                            $(this).parent().find('button:nth-child(2)').focus();
+                        }
+                    });
+                    
+                    break;
+                case "open":
+                    
+                    var uploadDialog = $([
+                        '<div title="Open an Automatune">',
+                            '<p>Choose a file to open.</p>',
+                            '<input class="openInput" type="file" />',
+                        '</div>'
+                    ].join(''));
+                    
+                    $(MenuInst.parentGame.domElement).append(uploadDialog);
+                    uploadDialog.dialog({
+                        resizable: false,
+                        width: 500,
+                        modal: true,
+                        buttons: {
+                            Cancel: function() {
+                                $( this ).dialog( "close" );
+                            },
+                            "Open": function() {
+                                function processFile(e) {
+                                    var save = JSON.parse(e.target.result);
+                                    MenuInst.parentGame.applySaveState(save);
+                                }
+                                
+                                var input = uploadDialog.find(".openInput")[0];
+                                // Create a reader object
+                                var reader = new FileReader();
+                                if (input.files.length) {
+                                    var textFile = input.files[0];
+                                    reader.readAsText(textFile);
+                                    $(reader).on('load', processFile);
+                                    $( this ).dialog( "close" );
+                                } else {
+                                    alert('Please select a file before continuing');
+                                }
                             }
                         },
                         open: function() {

@@ -173,7 +173,7 @@ Automatune.Modifier_Note.prototype.destroy = function() {
 /**
  * Constructs a JSON-compatible object representing the current state of this object.
  *
- * @public
+ * @private
  * @returns {Object} save A JSON-compatible object representing a save state.
  */
 Automatune.Modifier_Note.prototype.getSaveState = function() {
@@ -182,5 +182,19 @@ Automatune.Modifier_Note.prototype.getSaveState = function() {
         instanceOf: this.getClassName(),
         noteName: this.noteName
     };
+};
+
+/**
+ * Constructs a Note from a save state created using the getSaveState instance method.
+ *
+ * @private
+ * @static
+ * @param {GridCell} pCell The parent {@linkcode GridCell} for this Note.
+ * @param {Object} save A JSON-compatible object representing a save state.
+ * @returns {Modifier_Note} note The constructed instance.
+ */
+Automatune.Modifier_Note.constructFromSaveState = function(pCell, save) {
+    "use strict";
+    return new Automatune.Modifier_Note(pCell, save.noteName);
 };
 

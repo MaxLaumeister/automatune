@@ -281,7 +281,7 @@ Automatune.GridCell.prototype.onClick = function() {
 /**
  * Constructs a JSON-compatible object representing the current state of this object.
  *
- * @public
+ * @private
  * @returns {Object} save A JSON-compatible object representing a save state.
  */
 Automatune.GridCell.prototype.getSaveState = function() {
@@ -296,5 +296,39 @@ Automatune.GridCell.prototype.getSaveState = function() {
             return result;
         }).call(this)
     };
+};
+
+/**
+ * Applies a save state to this object. Designed to be called in a chain from the main game instance.
+ *
+ * @private
+ * @param {Object} o The save state object to apply.
+ */
+Automatune.GridCell.prototype.applySaveState = function(o) {
+    "use strict";
+    
+    console.log(window);
+    
+    // Apply component
+    if (o.component) {
+        var c_instanceName = o.component.instanceOf.split(".")[1]; // e.g. Transforms  "Automatune.Component_Arrow" into "Component_Arrow"
+        if (c_instanceName.split("_")[0] === "Component" && Automatune[c_instanceName]) {
+            var newComponent = Automatune[c_instanceName].constructFromSaveState(this, o.component);
+            this.setComponent(newComponent);
+        } else {
+            throw "Unexpected Component type";
+        }
+    }
+    
+    // Apply modifiers
+    for (var i = 0; i < o.modifiers.length; i++) {
+        var m_instanceName = o.modifiers[i].instanceOf.split(".")[1];
+        if (m_instanceName.split("_")[0] === "Modifier" && Automatune[m_instanceName]) {
+            var newModifier = Automatune[m_instanceName].constructFromSaveState(this, o.modifiers[i]);
+            this.addModifier(newModifier);
+        } else {
+            throw "Unexpected Modifier type";
+        }
+    }
 };
 

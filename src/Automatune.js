@@ -364,12 +364,12 @@ Automatune.prototype.applySaveState = function(o) {
             this.setTickMs(o.tickMs);
             
             // Clear Grid
-            this.clearGrid(/* Tiles */);
+            this.newGrid(o.grid.size);
             
             // Create Visitors
             for (var i = 0; i < o.updateTargets.length; i++) {
                 var visSave = o.updateTargets[i];
-                this.createVisitor(visSave.pos.x, visSave.pox.y, visSave.orientation);
+                this.createVisitor(visSave.pos.x, visSave.pos.y, visSave.orientation);
             }
             
             // Apply Grid
@@ -379,7 +379,8 @@ Automatune.prototype.applySaveState = function(o) {
         }
     } catch(err) {
         console.error("Loading of save state failed. The save is either corrupt or incompatible with this version of Automatune.");
-        console.error("The specific error message produced was: ", err.message);
+        console.error("The exception produced was: ");
+        throw err;
     }
 };
 
@@ -402,6 +403,5 @@ $(document).ready(function() {
     var AutomatuneInst = new Automatune(el, pb, mn, 7);
     AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
     AutomatuneInst.play();
-    console.log("SaveState: ", AutomatuneInst.getSaveState());
 });
 

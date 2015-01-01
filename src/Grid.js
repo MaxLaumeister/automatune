@@ -151,7 +151,7 @@ Automatune.Grid.prototype.destroy = function() {
 /**
  * Constructs a JSON-compatible object representing the current state of this object.
  *
- * @public
+ * @private
  * @returns {Object} save A JSON-compatible object representing a save state.
  */
 Automatune.Grid.prototype.getSaveState = function() {
@@ -169,5 +169,21 @@ Automatune.Grid.prototype.getSaveState = function() {
             return result;
         }).call(this)
     };
+};
+
+/**
+ * Applies a save state to this object. Designed to be called in a chain from the main game instance.
+ *
+ * @private
+ * @param {Object} o The save state object to apply.
+ */
+Automatune.Grid.prototype.applySaveState = function(o) {
+    "use strict";
+    
+    var s = this.getGridSize();
+    
+    for (var i = 0; i < o.gridCells.length; i++) {
+        this.getCell(Math.floor(i / s), i % s).applySaveState(o.gridCells[i]);
+    }
 };
 

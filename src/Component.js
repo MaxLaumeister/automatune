@@ -150,6 +150,7 @@ Automatune.Component.prototype.destroy = function() {
  * @class
  * @classdesc A component that changes a {@linkcode Visitor}'s direction upon visiting a {@linkcode GridCell}.
  * @extends Component
+ * @param {GridCell} pCell The parent {@linkcode GridCell} for this Arrow.
  * @param {Orientation} orient The type of component to create.
  */
 Automatune.Component_Arrow = function(pCell, orient) {
@@ -200,7 +201,7 @@ Automatune.Component_Arrow.prototype.onVisit = function(visitor) {
 /**
  * Constructs a JSON-compatible object representing the current state of this object.
  *
- * @public
+ * @private
  * @returns {Object} save A JSON-compatible object representing a save state.
  */
 Automatune.Component_Arrow.prototype.getSaveState = function() {
@@ -209,5 +210,19 @@ Automatune.Component_Arrow.prototype.getSaveState = function() {
         instanceOf: this.getClassName(),
         orientation: this.orientation
     };
+};
+
+/**
+ * Constructs an Arrow from a save state created using the getSaveState instance method.
+ *
+ * @private
+ * @static
+ * @param {GridCell} pCell The parent {@linkcode GridCell} for this Arrow.
+ * @param {Object} save A JSON-compatible object representing a save state.
+ * @returns {Component_Arrow} arrow The constructed instance.
+ */
+Automatune.Component_Arrow.constructFromSaveState = function(pCell, save) {
+    "use strict";
+    return new Automatune.Component_Arrow(pCell, save.orientation);
 };
 

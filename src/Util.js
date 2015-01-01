@@ -32,7 +32,7 @@ Automatune.util.extend = function(baseClass, newClass) {
 };
 
 /**
- * Sets the CSS rotation of an HTMLElement to reflect an {@linkcode Orientation.
+ * Sets the CSS rotation of an HTMLElement to reflect an {@linkcode Orientation}.
  *
  * @param {HTMLElement} domElement The DOM Element to set the rotation of.
  * @param {Orientation} orientation The Orientation to set the rotation to reflect.
