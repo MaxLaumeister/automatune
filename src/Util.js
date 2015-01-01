@@ -41,7 +41,6 @@ Automatune.util.setCSSRotation = function(domElement, orientation) {
     "use strict";
     var rotation = orientation * -90;
     var cssString = "rotate(" + rotation + "deg)";
-    domElement.style["-ms-transform"] = cssString;
     domElement.style["-webkit-transform"] = cssString;
     domElement.style.transform = cssString;
 };

@@ -93,8 +93,23 @@ Automatune.Component.prototype.setOrientation = function(orient) {
  */
 Automatune.Component.prototype.rotateRight = function() {
     "use strict";
+    var orientation_last = this.orientation;
     this.orientation = Automatune.util.rotateRight(this.orientation);
     Automatune.util.setCSSRotation(this.domElement, this.orientation);
+    
+    var rotation1 = orientation_last * -90;
+    var cssString1 = "rotate(" + rotation1 + "deg)";
+    
+    var rotation2 = this.orientation == Automatune.O_RIGHT ? -360 : this.orientation * -90;
+    var cssString2 = "rotate(" + rotation2 + "deg)";
+    
+    this.domElement.animate([
+        {transform: cssString1},
+        {transform: cssString2}
+    ], {
+        duration: 200,
+        easing: "ease-out"
+    });
 };
 
 /**
