@@ -275,7 +275,6 @@ Automatune.GridCell.prototype.onClick = function() {
 Automatune.GridCell.prototype.getSaveState = function() {
     "use strict";
     return {
-        instanceOf: "GridCell",
         component: this.component ? this.component.getSaveState() : null,
         modifiers: (function() {
             var result = [];

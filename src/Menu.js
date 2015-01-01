@@ -107,13 +107,7 @@ Automatune.Menu = function(pGame, menuEl) {
                     MenuInst.parentGame.grid.getCell(elx, ely).destroyComponent();
                     break;
                 case "delete_visitor":
-                    for (var i = 0; i < visitors.length; i++) {
-                        var v = visitors[i];
-                        if (v.position.x === elx && v.position.y === ely) {
-                            visitors.splice(i, 1);
-                            v.domElement.parentNode.removeChild(v.domElement);
-                        }
-                    }
+                    MenuInst.parentGame.destroyVisitor(elx, ely);
                     break;
                 default:
                     alert("Menu item not yet implemented");
@@ -134,7 +128,7 @@ Automatune.Menu = function(pGame, menuEl) {
                     $("#automatune-about").dialog("open");
                     break;
                 default:
-                    alert("Menu item not yet implemented");
+                    alert("Menu item not implemented");
             }
         },
         autoTrigger: false
@@ -149,16 +143,76 @@ Automatune.Menu = function(pGame, menuEl) {
     menuDiv.find("> .menu-file").contextmenu({
         delegate: "span",
         menu: [
-            {title: "New (Not Yet Implemented)", cmd: "new", disabled: true},
+            {title: "New", children: [
+                {title: "Small&nbsp;(5x5)", cmd: "new.small"},
+                {title: "Medium&nbsp;(7x7)", cmd: "new.medium"},
+                {title: "Large&nbsp;(9x9)", cmd: "new.large"},
+                {title: "X&#8209;Large&nbsp;(11x11)", cmd: "new.xlarge"},
+                {title: "XX&#8209;Large&nbsp;(15x15)", cmd: "new.xxlarge"}
+            ]},
             {title: "Open from File (Not Yet Implemented)", cmd: "open", disabled: true},
             {title: "Save to File", cmd: "save"}
         ],
         select: function(event, ui) {
-            console.log("select " + ui.cmd + " on ", ui.target);
-            switch (ui.cmd) {
+            var cmdarr = ui.cmd.split(".");
+            
+            switch (cmdarr[0]) {
+                case "new":
+                    // TODO: Implement choosing grid size
+                    var size;
+                    switch (cmdarr[1]) {
+                        case "small":
+                            size = 5;
+                            break;
+                        case "medium":
+                            size = 7;
+                            break;
+                        case "large":
+                            size = 9;
+                            break;
+                        case "xlarge":
+                            size = 11;
+                            break;
+                        case "xxlarge":
+                            size = 15;
+                            break;
+                        default:
+                            alert("Menu item not implemented");
+                            return;
+                    }
+                    
+                    var confirmDialog = $([
+                        '<div title="Create new Automatune?">',
+                            '<p>Are you sure you want to create a new tune? Any unsaved progress will be lost.</p>',
+                        '</div>'
+                    ].join(''));
+                    
+                    $(MenuInst.parentGame.domElement).append(confirmDialog);
+                    confirmDialog.dialog({
+                        resizable: false,
+                        width: 500,
+                        modal: true,
+                        buttons: {
+                            Cancel: function() {
+                                $( this ).dialog( "close" );
+                            },
+                            "Create New Tune": function() {
+                                MenuInst.parentGame.newGrid(size);
+                                MenuInst.parentGame.createVisitor(Math.floor(size/2), Math.floor(size/2), Automatune.O_RIGHT);
+                                $( this ).dialog( "close" );
+                            }
+                        },
+                        open: function() {
+                            $(this).parent().find('button:nth-child(2)').focus();
+                        }
+                    });
+                    
+                    break;
                 case "save":
                     MenuInst.parentGame.downloadSaveState();
                     break;
+                default:
+                    alert("Menu item not implemented");
             }
         },
         autoTrigger: false

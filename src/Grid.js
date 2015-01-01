@@ -67,7 +67,11 @@ Automatune.Grid = function(pGame, size) {
     
     // Initialize variables
     this.parentGame = pGame;
-    this.domElement = this.parentGame.domElement;
+    
+    this.domElement = document.createElement("div");
+    this.domElement.className = "gridContainer";
+    this.parentGame.domElement.appendChild(this.domElement);
+    
     this.gridSize = size;
     
     // Initialize CSS conversion factors
@@ -134,6 +138,17 @@ Automatune.Grid.prototype.getCell = function (x, y) {
 };
 
 /**
+ * Removes this Grid and along with all child elements from the DOM.
+ *
+ * @private
+ */
+Automatune.Grid.prototype.destroy = function() {
+    "use strict";
+    this.domElement.parentNode.removeChild(this.domElement);
+};
+
+
+/**
  * Constructs a JSON-compatible object representing the current state of this object.
  *
  * @public
@@ -143,7 +158,7 @@ Automatune.Grid.prototype.getSaveState = function() {
     "use strict";
     
     return {
-        instanceOf: "Grid",
+        size: this.gridSize,
         gridCells: (function() {
             var result = [];
             for (var i = 0; i < this.gridSize; i++) {

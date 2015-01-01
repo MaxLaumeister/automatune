@@ -178,7 +178,7 @@ Automatune.Modifier_Note.prototype.destroy = function() {
 Automatune.Modifier_Note.prototype.getSaveState = function() {
     "use strict";
     return {
-        instanceOf: "Modifier_Note",
+        instanceOf: this.getClassName(),
         noteName: this.noteName
     };
 };

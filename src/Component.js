@@ -191,7 +191,7 @@ Automatune.Component_Arrow.prototype.onVisit = function(visitor) {
 Automatune.Component_Arrow.prototype.getSaveState = function() {
     "use strict";
     return {
-        instanceOf: "Component_Arrow",
+        instanceOf: this.getClassName(),
         orientation: this.orientation
     };
 };

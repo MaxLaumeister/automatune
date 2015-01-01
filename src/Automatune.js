@@ -270,9 +270,50 @@ Automatune.prototype.createVisitor = function(x, y, orientation) {
 };
 
 /**
+ * Destroys the {@linkcode Visitor} at a specific {x, y} grid position.
+ *
+ * @public
+ * @param {int} x The grid x coordinate of the Visitor to delete.
+ * @param {int} y The grid y coordinate of the Visitor to delete.
+ */
+Automatune.prototype.destroyVisitor = function(x, y) {
+    "use strict";
+    for (var i = 0; i < this.updateTargets.length; i++) {
+        var vis = this.updateTargets[i];
+        if (vis.pos.x === x && vis.pos.y === y) {
+            this.updateTargets.splice(i, 1); // Remove visitor from array
+            i--; // Correct for removal
+            vis.destroy();
+        }
+    }
+};
+
+/**
+ * Destroys the current grid including all visitors, components, etc., and initializes a new grid of a specific size.
+ * 
+ * @public
+ * @param {int} size The width/height of the new grid to be created.
+ */
+Automatune.prototype.newGrid = function(size) {
+    "use strict";
+    
+    // Destroy all update targets
+    for (var i = 0; i < this.updateTargets.length; i++) {
+        this.updateTargets[i].destroy();
+    }
+    this.updateTargets = [];
+    
+    // Destroy the old grid
+    this.grid.destroy();
+    
+    // Create a new grid
+    this.grid = new Automatune.Grid(this, size);
+};
+
+/**
  * Constructs a JSON-compatible object representing the current state of the entire game.
  *
- * @private
+ * @public
  * @returns {Object} save A JSON-compatible object representing a save state.
  */
 Automatune.prototype.getSaveState = function() {
@@ -291,13 +332,55 @@ Automatune.prototype.getSaveState = function() {
     return {
         info: "Automatune Save File - www.automatune.com",
         save: {
-            date: Date.now(),
+            type: "uncompressed",
             version: "prototype",
-            tickMs: self.tickMs,
-            updateTargets: getUpdateTargets(),
-            grid: self.grid.getSaveState()
+            data: {
+                date: Date.now(),
+                tickMs: self.tickMs,
+                updateTargets: getUpdateTargets(),
+                grid: self.grid.getSaveState()
+            }
         }
     };
+};
+
+/**
+ * Applies a save state to this Automatune instance, overwriting the tune that is currently open.
+ *
+ * @public
+ * @param {Object} o The save state object to apply.
+ */
+Automatune.prototype.applySaveState = function(o) {
+    "use strict";
+    
+    try {
+        o = o.save;
+        
+        if (o.version !== "prototype") throw "Unexpected save version";
+        if (o.type === "uncompressed") {
+            o = o.data;
+            
+            // Set tick speed
+            this.setTickMs(o.tickMs);
+            
+            // Clear Grid
+            this.clearGrid(/* Tiles */);
+            
+            // Create Visitors
+            for (var i = 0; i < o.updateTargets.length; i++) {
+                var visSave = o.updateTargets[i];
+                this.createVisitor(visSave.pos.x, visSave.pox.y, visSave.orientation);
+            }
+            
+            // Apply Grid
+            this.grid.applySaveState(o.grid);
+        } else {
+            throw "Unexpected save type";
+        }
+    } catch(err) {
+        console.error("Loading of save state failed. The save is either corrupt or incompatible with this version of Automatune.");
+        console.error("The specific error message produced was: ", err.message);
+    }
 };
 
 /**
@@ -307,7 +390,7 @@ Automatune.prototype.getSaveState = function() {
  */
 Automatune.prototype.downloadSaveState = function() {
     "use strict";
-    download(JSON.stringify(this.getSaveState()), "file.atune", "text/plain");
+    download(JSON.stringify(this.getSaveState(), null, 4), "tune.atune", "text/plain");
 };
 
 // Initialize Automatune

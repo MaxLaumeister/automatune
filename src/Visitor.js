@@ -133,6 +133,16 @@ Automatune.Visitor.prototype.updateTickMs = function() {
 };
 
 /**
+ * Removes this Visitor from the DOM.
+ *
+ * @private
+ */
+Automatune.Visitor.prototype.destroy = function() {
+    "use strict";
+    this.domElement.parentNode.removeChild(this.domElement);
+};
+
+/**
  * Constructs a JSON-compatible object representing the current state of this object.
  *
  * @public
@@ -141,7 +151,6 @@ Automatune.Visitor.prototype.updateTickMs = function() {
 Automatune.Visitor.prototype.getSaveState = function() {
     "use strict";
     return {
-        instanceOf: "Visitor",
         pos: this.pos,
         orientation: this.orientation
     };

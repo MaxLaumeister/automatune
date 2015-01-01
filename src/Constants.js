@@ -1,5 +1,5 @@
 /**
- * Enum that defines orientation. Values are Automatune.O_RIGHT,
+ * Constants that define orientation. Values are Automatune.O_RIGHT,
  * Automatune.O_UP, Automatune.O_LEFT, and Automatune.O_DOWN.
  *
  * @alias Orientation
@@ -10,7 +10,7 @@ Automatune.O_LEFT = 2;
 Automatune.O_DOWN = 3;
 
 /**
- * Enum that defines tick speed (the speed at which the Automatune simulation runs).
+ * Constants that define tick speed (the speed at which the Automatune simulation runs).
  * Values are Automatune.TICK_SLOW, Automatune.TICK_NORMAL,
  * Automatune.TICK_FAST, and Automatune.TICK_FASTEST.
  *
