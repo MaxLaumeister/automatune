@@ -196,6 +196,15 @@ body {
 	height: 100%;
 }
 
+.modifiersContainer {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    text-align: right;
+}
+
 .gridVisitor {
 	position: absolute;
 	background-color: white;
@@ -204,7 +213,7 @@ body {
 }
 
 .tileicon {
-    float: left;
+    display: inline-block;
     width: 15%;
     height: 15%;
     border-radius: 50%;

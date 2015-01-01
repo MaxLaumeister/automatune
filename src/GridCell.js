@@ -31,6 +31,14 @@ Automatune.GridCell = function(pGrid, x, y) {
     this.domElement;
     
     /**
+     * The DOM Element that contains the {@linkcode Modifier|Modifiers} of this GridCell.
+     *
+     * @public
+     * @type {HTMLElement}
+     */
+    this.modifiersElement;
+    
+    /**
      * The grid position of this GridCell.
      *
      * @private
@@ -79,6 +87,10 @@ Automatune.GridCell = function(pGrid, x, y) {
     this.domElement.style.height = cell_size_percent + "%";
     this.domElement.style.padding = cell_spacing_percent + "%";
     
+    this.modifiersElement = document.createElement("div");
+    this.modifiersElement.className = "modifiersContainer";
+    
+    this.domElement.appendChild(this.modifiersElement);
     this.parentGrid.domElement.appendChild(this.domElement);
     
     // Register onClick

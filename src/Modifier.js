@@ -2,7 +2,7 @@
  * @alias Modifier
  * @abstract
  * @class
- * @classdesc A modifier that gets attached to a grid cell, such as a {@linkcode Component_Note|Note}. A {@linkcode GridCell} may have one or more modifiers.
+ * @classdesc A modifier that gets attached to a grid cell, such as a {@linkcode Modifier_Note|Note}. A {@linkcode GridCell} may have one or more modifiers.
  * @param {GridCell} pCell The parent grid cell.
  */
 Automatune.Modifier = function(pCell) {
@@ -128,7 +128,7 @@ Automatune.Modifier_Note = function(pCell, noteName) {
     // Show DOM Element
     this.domElement = document.createElement("div");
     this.domElement.className = "tileicon note";
-    this.parentCell.domElement.appendChild(this.domElement);
+    this.parentCell.modifiersElement.appendChild(this.domElement);
     
 };
 Automatune.util.extend(Automatune.Modifier, Automatune.Modifier_Note);

@@ -76,7 +76,8 @@ module.exports = function(grunt) {
         files: libFiles.concat(srcFiles).concat(['Gruntfile.js']),
         tasks: ['concat', 'newer:jshint:all', 'connect'],
         options: {
-          interrupt: true
+          interrupt: true,
+          atBegin: true
         }
       }
     }
