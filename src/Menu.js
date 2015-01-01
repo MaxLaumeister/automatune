@@ -150,9 +150,11 @@ Automatune.Menu = function(pGame, menuEl) {
                 {title: "X&#8209;Large&nbsp;(11x11)", cmd: "new.xlarge"},
                 {title: "XX&#8209;Large&nbsp;(15x15)", cmd: "new.xxlarge"}
             ]},
-            {title: "Open Example (Not Yet Implemented)", disabled: true},
+            {title: "---"},
             {title: "Open from File", cmd: "open"},
-            {title: "Save to File", cmd: "save"}
+            {title: "Save to File", cmd: "save"},
+            {title: "---"},
+            {title: "Open Example (Not Yet Implemented)", disabled: true}
         ],
         select: function(event, ui) {
             var cmdarr = ui.cmd.split(".");
@@ -215,6 +217,9 @@ Automatune.Menu = function(pGame, menuEl) {
                         '<div title="Open an Automatune">',
                             '<p>Choose a file to open.</p>',
                             '<input class="openInput" type="file" />',
+                            '<p class="youGottaChoose" style="display: none; color: red;">',
+                                'Please select a file before continuing.',
+                            '</p>',
                         '</div>'
                     ].join(''));
                     
@@ -242,7 +247,7 @@ Automatune.Menu = function(pGame, menuEl) {
                                     $(reader).on('load', processFile);
                                     $( this ).dialog( "close" );
                                 } else {
-                                    alert('Please select a file before continuing');
+                                    uploadDialog.find(".youGottaChoose").css("display", "block");
                                 }
                             }
                         },
