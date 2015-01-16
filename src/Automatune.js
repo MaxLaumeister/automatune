@@ -333,7 +333,7 @@ Automatune.prototype.getSaveState = function() {
         info: "Automatune Save File - www.automatune.com",
         save: {
             type: "uncompressed",
-            version: "prototype",
+            version: "alpha1",
             data: {
                 date: Date.now(),
                 tickMs: self.tickMs,
