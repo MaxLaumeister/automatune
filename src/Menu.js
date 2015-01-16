@@ -344,6 +344,21 @@ Automatune.Menu = function(pGame, menuEl) {
         },
         autoTrigger: false
     });
+    
+    // Help menu
+    
+    menuDiv.find("> .menu-help").contextmenu({
+        delegate: "span",
+        menu: [
+            {title: "View Tutorial Video", cmd: "tutorialvideo"}
+        ],
+        select: function(event, ui) {
+            
+            if (ui.cmd === "tutorialvideo") window.open("https://www.youtube.com/watch?v=rU6m4N4Okv8",'_blank');
+        },
+        autoTrigger: false
+    });
+    
     // Set initial volume
     Howler.volume(0.25);
     
