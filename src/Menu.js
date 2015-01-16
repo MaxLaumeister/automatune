@@ -367,5 +367,9 @@ Automatune.Menu = function(pGame, menuEl) {
     menuDiv.find("> li").click(function() {
         $(this).contextmenu("open", $(this).find("span"));
     });
+    
+    if (!Automatune.browserSupported) {
+        $("#automatune-unsupported").dialog();
+    }
 };
 

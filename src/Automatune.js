@@ -402,6 +402,21 @@ $(document).ready(function() {
     var mn = document.getElementById("menubar");
     var AutomatuneInst = new Automatune(el, pb, mn, 7);
     AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
-    AutomatuneInst.play();
+    if (Automatune.browserSupported) AutomatuneInst.play();
 });
+
+/**
+ * Whether the user's web browser is supported by Automatune.
+ *
+ * @public
+ * @static
+ */
+Automatune.browserSupported = 
+        (
+            bowser.chrome ||
+            bowser.firefox ||
+            (bowser.msie && bowser.version >= 11)
+        ) &&
+        !bowser.mobile &&
+        !bowser.tablet;
 
