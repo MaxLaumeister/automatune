@@ -115,6 +115,10 @@ body {
     text-align: left;
 }
 
+#automatune-instructions a {
+    color: #CCCCCC;
+}
+
 .playback-controls {
     margin: 1em auto;
     -webkit-touch-callout: none;
