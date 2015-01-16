@@ -20,6 +20,14 @@
         </script>
 	</head>
 	<body>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
 		<div class="pageCenter">
             <div class="pageContainer">
                 <ul id="menubar">
@@ -28,7 +36,11 @@
                     <li class="menu-edit"><span>Edit</span></li>
                     <li class="menu-sound"><span>Sound</span></li>
                     <li class="menu-help"><span>Help</span></li>
-                    <span class="titlebarText">Version: Alpha 1</span>
+                    <div class="titlebarText">
+                        <div class="fb-like" data-href="https://www.automatune.com/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.automatune.com/" data-text="Check out the Automatune Procedural Music Editor!" data-hashtags="Automatune">Tweet</a>
+                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                    </div>
                 </ul>
                 <div class="gameContainer" id="automatune"></div>
                 <div class="sidebar">
@@ -48,7 +60,7 @@
 		</div>
 		<div id="automatune-about" title="About Automatune" style="display: none;">
 		    <h3 style="text-align: center;"><img src="images/logo-icon.png" style="vertical-align: middle; position: relative; top: -0.1em; margin-right: 0.5em; width: 2em; height: 2em" />Automatune</h3>
-		    <p>Version: Prototype/Pre-Alpha</p>
+		    <p>Version: Alpha 1</p>
 		    <p>Created by <a href="http://www.maxlaumeister.com/" target="_blank">Maximillian&nbsp;Laumeister</a></p>
 		</div>
 	    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
