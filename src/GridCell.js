@@ -307,8 +307,6 @@ Automatune.GridCell.prototype.getSaveState = function() {
 Automatune.GridCell.prototype.applySaveState = function(o) {
     "use strict";
     
-    console.log(window);
-    
     // Apply component
     if (o.component) {
         var c_instanceName = o.component.instanceOf.split(".")[1]; // e.g. Transforms  "Automatune.Component_Arrow" into "Component_Arrow"

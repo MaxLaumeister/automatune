@@ -356,7 +356,6 @@ Automatune.prototype.applySaveState = function(o) {
     try {
         o = o.save;
         
-        if (o.version !== "prototype") throw "Unexpected save version";
         if (o.type === "uncompressed") {
             o = o.data;
             
