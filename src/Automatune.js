@@ -105,6 +105,13 @@ function Automatune(domEl, playbackEl, menuEl, size) {
             this.playbackButtons.resetButton = el;
         }
     }
+    
+    // Attach share button
+    var self = this;
+    $("#share-this-tune").click(function() {
+        self.getSharingURL();
+    });
+    
     // Make sure all the buttons are there
     assert(     
         this.playbackButtons.playButton &&

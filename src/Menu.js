@@ -151,9 +151,10 @@ Automatune.Menu = function(pGame, menuEl) {
                 {title: "XX&#8209;Large&nbsp;(15x15)", cmd: "new.xxlarge"}
             ]},
             {title: "---"},
+            {title: "Share via URL...", cmd: "share"},
+            {title: "---"},
             {title: "Open from File", cmd: "open"},
             {title: "Save to File", cmd: "save"},
-            {title: "Share URL...", cmd: "share"},
             {title: "---"},
             {title: "Open Example (Not Yet Implemented)", disabled: true}
         ],

@@ -129,6 +129,8 @@ body {
 #automatune-instructions {
     color: gray;
     text-align: left;
+    border: solid gray 1px;
+    padding: 0 10px;
 }
 
 #automatune-instructions a {
@@ -177,6 +179,18 @@ body {
 /* TODO: Display this button after it gets implemented */
 .playback-reset {
     display: none;
+}
+
+#share-this-tune {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    background-color: #3F5AA6;
+    margin: 20px 0;
+    box-sizing: border-box;
+    border-radius: 11px;
+    cursor: pointer;
 }
 
 .gridCellDiv {
