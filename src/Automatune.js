@@ -332,7 +332,6 @@ Automatune.prototype.getSaveState = function() {
     return {
         info: "Automatune Save File - www.automatune.com",
         save: {
-            type: "uncompressed",
             version: "alpha1",
             data: {
                 date: Date.now(),
@@ -354,28 +353,23 @@ Automatune.prototype.applySaveState = function(o) {
     "use strict";
     
     try {
-        o = o.save;
+        o = o.save.data;
+            
+        // Set tick speed
+        this.setTickMs(o.tickMs);
         
-        if (o.type === "uncompressed") {
-            o = o.data;
-            
-            // Set tick speed
-            this.setTickMs(o.tickMs);
-            
-            // Clear Grid
-            this.newGrid(o.grid.size);
-            
-            // Create Visitors
-            for (var i = 0; i < o.updateTargets.length; i++) {
-                var visSave = o.updateTargets[i];
-                this.createVisitor(visSave.pos.x, visSave.pos.y, visSave.orientation);
-            }
-            
-            // Apply Grid
-            this.grid.applySaveState(o.grid);
-        } else {
-            throw "Unexpected save type";
+        // Clear Grid
+        this.newGrid(o.grid.size);
+        
+        // Create Visitors
+        for (var i = 0; i < o.updateTargets.length; i++) {
+            var visSave = o.updateTargets[i];
+            this.createVisitor(visSave.pos.x, visSave.pos.y, visSave.orientation);
         }
+        
+        // Apply Grid
+        this.grid.applySaveState(o.grid);
+        
     } catch(err) {
         console.error("Loading of save state failed. The save is either corrupt or incompatible with this version of Automatune.");
         console.error("The exception produced was: ");
@@ -391,6 +385,26 @@ Automatune.prototype.applySaveState = function(o) {
 Automatune.prototype.downloadSaveState = function() {
     "use strict";
     download(JSON.stringify(this.getSaveState(), null, 4), "tune.atune", "text/plain");
+};
+
+/**
+ * Shows the user a sharing URL that represents the current save state.
+ *
+ * @public
+ */
+Automatune.prototype.getSharingURL = function() {
+    "use strict";
+    // TODO: Display a sharing url in a dialog
+    var state = JSON.stringify(this.getSaveState());
+    var encodedState = LZMA.compress(state, 1, function(result) {
+        console.log(result);
+        for (var i in result) {
+            result[i] += 128;
+        }
+        console.log(result);
+        var str = String.fromCharCode.apply(null,result);
+        console.log(btoa(str));
+    });
 };
 
 // Initialize Automatune

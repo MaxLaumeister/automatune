@@ -153,6 +153,7 @@ Automatune.Menu = function(pGame, menuEl) {
             {title: "---"},
             {title: "Open from File", cmd: "open"},
             {title: "Save to File", cmd: "save"},
+            {title: "Share URL...", cmd: "share"},
             {title: "---"},
             {title: "Open Example (Not Yet Implemented)", disabled: true}
         ],
@@ -161,7 +162,6 @@ Automatune.Menu = function(pGame, menuEl) {
             
             switch (cmdarr[0]) {
                 case "new":
-                    // TODO: Implement choosing grid size
                     var size;
                     switch (cmdarr[1]) {
                         case "small":
@@ -259,6 +259,9 @@ Automatune.Menu = function(pGame, menuEl) {
                     break;
                 case "save":
                     MenuInst.parentGame.downloadSaveState();
+                    break;
+                case "share":
+                    MenuInst.parentGame.getSharingURL();
                     break;
                 default:
                     alert("Menu item not implemented");
