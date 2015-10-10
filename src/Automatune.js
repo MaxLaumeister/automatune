@@ -397,14 +397,40 @@ Automatune.prototype.getSharingURL = function() {
     // TODO: Display a sharing url in a dialog
     var state = JSON.stringify(this.getSaveState());
     var encodedState = LZMA.compress(state, 1, function(result) {
-        console.log(result);
         for (var i in result) {
             result[i] += 128;
         }
-        console.log(result);
         var str = String.fromCharCode.apply(null,result);
-        console.log(btoa(str));
+        var finalUrl = "http://www.automatune.com/app/?state=" + encodeURIComponent(btoa(str));
+        var docstr = "<div><p>Here's your sharing URL!<br />(" + (navigator.userAgent.indexOf('Mac OS X') != -1 ? "cmd" : "ctrl") + "-c to copy it)</p>" +
+        "<input type='text' style='width: 100%;' onfocus='this.select();' onmouseup='return false;' value='" + finalUrl + "'></div>";
+        $(docstr).dialog();
     });
+};
+
+/**
+ * Loads a save state from the "state" url component.
+ *
+ * @public
+ */
+Automatune.prototype.loadFromUrlComponent = function(encstate) {
+    "use strict";
+    try {
+        var self = this;
+        var strstate = atob(decodeURIComponent(encstate));
+        var bytearray = [];
+        for (var i = 0; i < strstate.length; i++) {
+            bytearray.push(strstate.charCodeAt(i) - 128);
+        }
+        LZMA.decompress(bytearray, function(result) {
+            self.applySaveState(JSON.parse(result));
+        });
+    } catch(err) {
+        $("<p>Sorry, the URL seems to be invalid, so we couldn't load that tune :(</p>").dialog(); 
+        console.error("Loading of save state from URL failed. The URL is either corrupt or contains a save that is incompatible with this version of Automatune.");
+        console.error("The exception produced was: ");
+        throw err;
+    }
 };
 
 // Initialize Automatune
@@ -414,6 +440,9 @@ $(document).ready(function() {
     var pb = document.getElementsByClassName("playback-controls")[0];
     var mn = document.getElementById("menubar");
     var AutomatuneInst = new Automatune(el, pb, mn, 7);
+    
+    AutomatuneInst.loadFromUrlComponent(getUrlParameter("state"));
+    
     AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
     if (Automatune.browserSupported) AutomatuneInst.play();
 });

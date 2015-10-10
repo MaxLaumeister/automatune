@@ -6,12 +6,12 @@ body {
     font-size: 15px;
 }
 
-::-moz-selection { /* Code for Firefox */
+:not(input)::-moz-selection { /* Code for Firefox */
     color: black;
     background: white;
 }
 
-::selection {
+:not(input)::selection {
     color: black; 
     background: white;
 }
