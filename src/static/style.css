@@ -53,6 +53,7 @@ body {
     -webkit-transition: background-color 0.2s;
     transition: background-color 0.2s;
     cursor: pointer;
+    vertical-align: middle;
 }
 
 #menubar > li > span {
@@ -64,7 +65,8 @@ body {
     top: -0.15vmin;
     height: 3vmin;
     vertical-align: middle;
-    margin-right: 1vmin;
+    margin-right: 0.5vmin;
+    height: 100%;
 }
 
 #menubar > li:hover {
