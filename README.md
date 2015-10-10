@@ -4,20 +4,28 @@ Grid-based procedural music editor. For more info, please visit the landing page
 
 http://www.automatune.com/
 
+To play around with the newest version of the app, visit:
+
+http://www.automatune.com/app/
+
 ### Building ###
 
-To build Automatune, you need to have `npm` and `grunt-cli` installed. Once installed, `cd` into the Automatune folder and run the following:
+To build Automatune, you need to have `npm` and `grunt-cli` installed. Once installed, `cd` into the automatune folder and run the following:
 
     npm install
-    grunt dist # (or just "grunt" to get concatenated but not minified output, without building the docs)
+    grunt dist #(or just "grunt" to get concatenated but not minified output)
 
-Those commands will compile Automatune and place it into a newly created `dist` directory. The JSDocs will be compiled into a newly created `docs` directory.
+Those commands will compile Automatune and place it into a newly created `dist` directory. If you ran `grunt dist` and not just `grunt`, the JSDocs will be compiled into a newly created `docs` directory.
 
-Automatune is a client-side web application, and requires a static web server to run.
+Automatune is a client-side web application, and requires a static web server to run. To fire up Automatune using the built-in grunt server, run the following command:
+
+    grunt connect
+    
+Then visit http://localhost:8000/ to run Automatune.
 
 ### License ###
 
-Automatune is licensed under GNU GPL. Please see the included `LICENSE` file for the full text of the GNU GPL license.
+Automatune is licensed under GNU GPL. Please see the included `LICENSE` file for the full text of the GNU General Public License.
 
 > This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
