@@ -2,6 +2,8 @@ body {
 	margin: 0;
 	color: white;
 	background-color: black;
+	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+    font-size: 15px;
 }
 
 ::-moz-selection { /* Code for Firefox */
@@ -26,16 +28,16 @@ body {
 	height: 95vmin;
 	border: 1px solid rgba(255, 255, 255, .5);
 	background-color: black;
+	text-align: left;
 }
 
 #menubar {
+    display: inline-block;
     text-align: left;
     height: 20px;
     margin: 0;
     padding: 5px;
-    font-size: 15px;
     list-style-type: none;
-	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -49,11 +51,23 @@ body {
     padding: 0 5px;
     margin: 0;
     height: 20px;
-    line-height: 20px;
     -webkit-transition: background-color 0.2s;
     transition: background-color 0.2s;
     cursor: pointer;
+    line-height: 20px;
     vertical-align: middle;
+}
+
+.source-code-link {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: inline-block;
+    margin: 5px;
+}
+
+.source-code-link a {
+    color: gray;
 }
 
 #menubar > li > span {
