@@ -15,6 +15,5 @@ Thumbs.db
 #########################
 
 doc/
+dist/
 node_modules/
-dist/automatune.js
-
