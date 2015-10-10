@@ -80,6 +80,13 @@ module.exports = function(grunt) {
           atBegin: true
         }
       }
+    },
+    copy: {
+      main: {
+        files: [
+          {expand: true, cwd: 'src/static/', src: ['**'], dest: 'dist/'},
+        ]
+      }
     }
   });
 
@@ -91,9 +98,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-newer');
   grunt.loadNpmTasks('grunt-todos');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('default', ['concat', 'jshint']);
-  grunt.registerTask('min', ['jshint', 'uglify']);
+  grunt.registerTask('default', ['concat', 'jshint', 'copy']);
+  grunt.registerTask('min', ['jshint', 'uglify', 'copy']);
+  grunt.registerTask('dist', ['jshint', 'uglify', 'jsdoc:public', 'copy']);
   grunt.registerTask('doc', ['jsdoc:public']);
   grunt.registerTask('docprivate', ['jsdoc:private']);
 };
