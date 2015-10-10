@@ -30,7 +30,7 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> Copyright (c) <%= grunt.template.today("yyyy") %> Maximillian Laumeister, All Rights Reserved */\n'
+        banner: '/*! <%= pkg.name %> Copyright (c) <%= grunt.template.today("yyyy") %> Maximillian Laumeister, see https://github.com/MaxLaumeister/automatune for license details */\n'
       },
       build: {
         src: libFiles.concat(srcFiles),
