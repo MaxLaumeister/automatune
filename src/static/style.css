@@ -268,5 +268,6 @@ body {
     border-radius: 50%;
     background-color: white;
     pointer-events: none;
+    opacity: 0;
 }
 
