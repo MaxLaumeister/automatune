@@ -410,7 +410,7 @@ Automatune.prototype.getSharingURL = function() {
         var urlComponent = encodeURIComponent(btoa(str));
         var checksum = CryptoJS.MD5(urlComponent).toString(CryptoJS.enc.Hex);
         var finalUrl = window.location.href.split('?')[0] + "?state=" + urlComponent + "&checksum=" + checksum;
-        var docstr = "<div><p>Here's your sharing URL!<br />(" + (navigator.userAgent.indexOf('Mac OS X') != -1 ? "cmd" : "ctrl") + "-c to copy it)</p>" +
+        var docstr = "<div><p>Here's the URL of your song in its current state!<br />(" + (navigator.userAgent.indexOf('Mac OS X') != -1 ? "cmd" : "ctrl") + "-c to copy it)</p>" +
         "<input type='text' style='width: 100%;' onfocus='this.select();' onmouseup='return false;' value='" + finalUrl + "'></div>";
         $(docstr).dialog();
     });
@@ -455,6 +455,9 @@ $(document).ready(function() {
             if (checksum !== url_checksum) throw "URL checksum mismatch";
             // Try to load the save data from the URL
             AutomatuneInst.loadFromUrlComponent(getUrlParameter("state"));
+            // If loaded, then remove query string from URL
+            if (history) history.pushState({}, "", window.location.href.split('?')[0]);
+            
             loadedSaveFromUrl = true;
         } catch(err) {
             $("<p>Sorry, that URL seems to be invalid, so we couldn't load that tune :(</p>").dialog(); 
