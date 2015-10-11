@@ -401,14 +401,15 @@ Automatune.prototype.downloadSaveState = function() {
  */
 Automatune.prototype.getSharingURL = function() {
     "use strict";
-    // TODO: Display a sharing url in a dialog
     var state = JSON.stringify(this.getSaveState());
     var encodedState = LZMA.compress(state, 1, function(result) {
         for (var i in result) {
             result[i] += 128;
         }
         var str = String.fromCharCode.apply(null,result);
-        var finalUrl = "http://www.automatune.com/app/?state=" + encodeURIComponent(btoa(str));
+        var urlComponent = encodeURIComponent(btoa(str));
+        var checksum = CryptoJS.MD5(urlComponent).toString(CryptoJS.enc.Hex);
+        var finalUrl = window.location.href.split('?')[0] + "?state=" + urlComponent + "&checksum=" + checksum;
         var docstr = "<div><p>Here's your sharing URL!<br />(" + (navigator.userAgent.indexOf('Mac OS X') != -1 ? "cmd" : "ctrl") + "-c to copy it)</p>" +
         "<input type='text' style='width: 100%;' onfocus='this.select();' onmouseup='return false;' value='" + finalUrl + "'></div>";
         $(docstr).dialog();
@@ -422,22 +423,16 @@ Automatune.prototype.getSharingURL = function() {
  */
 Automatune.prototype.loadFromUrlComponent = function(encstate) {
     "use strict";
-    try {
-        var self = this;
-        var strstate = atob(decodeURIComponent(encstate));
-        var bytearray = [];
-        for (var i = 0; i < strstate.length; i++) {
-            bytearray.push(strstate.charCodeAt(i) - 128);
-        }
-        LZMA.decompress(bytearray, function(result) {
-            self.applySaveState(JSON.parse(result));
-        });
-    } catch(err) {
-        $("<p>Sorry, the URL seems to be invalid, so we couldn't load that tune :(</p>").dialog(); 
-        console.error("Loading of save state from URL failed. The URL is either corrupt or contains a save that is incompatible with this version of Automatune.");
-        console.error("The exception produced was: ");
-        throw err;
+    var self = this;
+    var strstate = atob(decodeURIComponent(encstate));
+    
+    var bytearray = [];
+    for (var i = 0; i < strstate.length; i++) {
+        bytearray.push(strstate.charCodeAt(i) - 128);
     }
+    LZMA.decompress(bytearray, function(result) {
+        self.applySaveState(JSON.parse(result));
+    });
 };
 
 // Initialize Automatune
@@ -448,9 +443,30 @@ $(document).ready(function() {
     var mn = document.getElementById("menubar");
     var AutomatuneInst = new Automatune(el, pb, mn, 7);
     
-    AutomatuneInst.loadFromUrlComponent(getUrlParameter("state"));
+    var loadedSaveFromUrl = false;
     
-    AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
+    // Is there a save state in the URL to load?
+    if (window.location.href.indexOf("?state=") !== -1) {
+        try {
+            var state = getUrlParameter("state");
+            var url_checksum = getUrlParameter("checksum");
+            // Check that the checksum matches
+            var checksum = CryptoJS.MD5(state).toString(CryptoJS.enc.Hex);
+            if (checksum !== url_checksum) throw "URL checksum mismatch";
+            // Try to load the save data from the URL
+            AutomatuneInst.loadFromUrlComponent(getUrlParameter("state"));
+            loadedSaveFromUrl = true;
+        } catch(err) {
+            $("<p>Sorry, that URL seems to be invalid, so we couldn't load that tune :(</p>").dialog(); 
+            console.error("Loading of save state from URL failed. The URL is either corrupt or contains a save that is incompatible with this version of Automatune.");
+            console.error("The exception produced was: ");
+            loadedSaveFromUrl = false;
+        }
+    }
+    
+    // If we didn't load a saved state, then initialize with a single visitor.
+    if (!loadedSaveFromUrl) AutomatuneInst.createVisitor(3, 4, Automatune.O_RIGHT);
+    
     if (Automatune.browserSupported) AutomatuneInst.play();
 });
 
