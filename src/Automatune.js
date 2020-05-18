@@ -1,3 +1,6 @@
+window.MidiTargets = [];
+
+
 /**
  * Initializes Automatune on a div.
  *
@@ -170,6 +173,15 @@ Automatune.prototype.update = function() {
     for (var i = 0; i < this.updateTargets.length; i++) {
         var target = this.updateTargets[i];
         target.update();
+    }
+    for (var i = 0; i < window.MidiTargets.length; i++) {
+        var target = window.MidiTargets[i];
+        target.update();
+        console.log(target.life);
+        if (target.life <= 0) {
+            window.MidiTargets.splice(i, 1);
+            WebMidiOutput.stopNote(target.noteName);
+        }
     }
 };
 

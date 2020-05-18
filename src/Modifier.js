@@ -148,6 +148,19 @@ Automatune.Modifier_Note.prototype.getClassName = function() {
 Automatune.Modifier_Note.prototype.onVisit = function(visitor) {
     "use strict";
     this.howl.play();
+
+    console.log(this.noteName);
+    console.log(WebMidiOutput);
+    console.log(window.WebMidiOutput);
+
+    if (WebMidiOutput) WebMidiOutput.playNote(this.noteName);
+    window.MidiTargets.push({
+        noteName: this.noteName,
+        life: 2,
+        update: function() {
+            this.life--;
+        }
+    });
     
     var div = document.createElement("div");
     div.classList.add("floatnote");
