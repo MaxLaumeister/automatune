@@ -174,14 +174,20 @@ Automatune.prototype.update = function() {
         var target = this.updateTargets[i];
         target.update();
     }
+    console.log(window.MidiTargets);
     for (var i = 0; i < window.MidiTargets.length; i++) {
         var target = window.MidiTargets[i];
-        target.update();
         console.log(target.life);
         if (target.life <= 0) {
+            console.log("life zero");
             window.MidiTargets.splice(i, 1);
-            WebMidiOutput.stopNote(target.noteName);
+            let flag = false;
+            for (const note of window.MidiTargets) {
+                if (note.noteName === target.noteName) flag = true;
+            }
+            if (!flag) WebMidiOutput.stopNote(target.noteName);
         }
+        target.update();
     }
 };
 
