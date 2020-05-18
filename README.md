@@ -2,11 +2,11 @@
 
 Grid-based procedural music editor. For more info, please visit the landing page at:
 
-http://www.automatune.com/
+https://www.maxlaumeister.com/automatune/
 
 To play around with the newest version of the app, visit:
 
-http://www.automatune.com/app/
+https://www.maxlaumeister.com/automatune/app/
 
 ### Building ###
 

@@ -337,7 +337,7 @@ Automatune.prototype.getSaveState = function() {
     }
     
     return {
-        info: "Automatune Save File - www.automatune.com",
+        info: "Automatune Save File",
         save: {
             version: "alpha1",
             data: {
