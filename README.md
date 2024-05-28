@@ -1,12 +1,6 @@
 ## Automatune ##
 
-Grid-based procedural music editor. For more info, please visit the landing page at:
-
-https://www.maxlaumeister.com/automatune/
-
-To play around with the newest version of the app, visit:
-
-https://www.maxlaumeister.com/automatune/app/
+Grid-based procedural music editor. Code status: incomplete.
 
 ### Building ###
 
