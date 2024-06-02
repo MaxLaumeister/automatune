@@ -8,6 +8,8 @@ To play around with the newest version of the app, visit:
 
 https://automatune.maxlaumeister.com/
 
+Due to its ancient code from when I was a much younger developer, Automatune works best in Google Chrome!
+
 ### Building ###
 
 To build Automatune, you need to have `npm` and `grunt-cli` installed. Once installed, `cd` into the automatune folder and run the following:
