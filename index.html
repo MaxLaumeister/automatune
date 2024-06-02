@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <meta charset="utf-8" />
+        <title>Automatune</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="canonical" href="https://www.maxlaumeister.com/automatune/app/" />
+
+        <!-- OpenGraph Tags -->
+        <meta property="og:title" content="Automatune" />
+        <meta property="og:description" content="A new way to discover and share melodies.">
+        <meta property="og:url" content="https://www.maxlaumeister.com/automatune/app/" />
+        <meta property="og:locale" content="en_US">
+        <meta property="og:type" content="website" />
+
+        <link rel="stylesheet" type="text/css" href="lib/jquery-ui.min.css">
+        <link rel="stylesheet" type="text/css" href="lib/jquery-ui.theme.css">
+        <link rel="stylesheet" type="text/css" href="lib/ohsnap.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-24440376-11"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-24440376-11');
+        </script>
+	</head>
+	<body>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+		<div class="pageCenter">
+            <div class="pageContainer">
+                <ul id="menubar">
+                    <li class="menu-automatune"><span><img class="logo" src="images/logo-icon.png" />Automatune</span></li>
+                    <li class="menu-file"><span>File</span></li>
+                    <li class="menu-edit"><span>Edit</span></li>
+                    <li class="menu-sound"><span>Sound</span></li>
+                    <li class="menu-help"><span>Help</span></li>
+                </ul>
+                <div class="titlebarText">
+                        <div class="fb-like" data-href="https://www.maxlaumeister.com/automatune/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.maxlaumeister.com/automatune/" data-text="Check out the Automatune Procedural Music Editor!" data-hashtags="Automatune">Tweet</a>
+                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                </div>
+                <br />
+                <div class="gameContainer" id="automatune"></div>
+                <div class="sidebar">
+                    <div class="playback-controls">
+                        <div class="playback-icon playback-reset"><img src="images/playback-reset.svg" /></div>
+                        <div class="playback-icon playback-play"><img src="images/playback-play.svg" /></div>
+                        <div class="playback-icon playback-pause"><img src="images/playback-pause.svg" /></div>
+                    </div>
+                    <div id="automatune-instructions">
+                        <p style="font-weight: bold;">Instructions:</p>
+                        <p>Click a tile to add an arrow. Click again to change direction. Right click to assign a note.</p>
+                        <p><a href="https://www.youtube.com/watch?v=rU6m4N4Okv8" target="_blank">Video Tutorial</a></p>
+                    </div>
+                    <div id="share-this-tune">Share This Tune</div>
+                </div>
+                <span class="source-code-link"><a target="_blank" href="https://github.com/MaxLaumeister/automatune">View Source Code</a></span>
+                <div class="separator"></div>
+                <div id="ohsnap"></div>
+            </div>
+		</div>
+		<div id="automatune-about" title="About Automatune" style="display: none;">
+		    <h3 style="text-align: center;"><img src="images/logo-icon.png" style="vertical-align: middle; position: relative; top: -0.1em; margin-right: 0.5em; width: 2em; height: 2em" />Automatune</h3>
+		    <p>Version: Alpha 1</p>
+		    <p>Created by <a href="http://www.maxlaumeister.com/" target="_blank">Maximillian&nbsp;Laumeister</a></p>
+		</div>
+		<div id="automatune-unsupported" title="Browser Unsupported" style="display: none;">
+		    <p>Sorry, your web browser is not currently supported by Automatune Alpha. Try Chrome or Firefox on a Mac or PC.</p>
+		</div>
+	    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+	    <script src="automatune.js"></script>
+	</body>
+</html>

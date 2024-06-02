@@ -1,0 +1,273 @@
+body {
+	margin: 0;
+	color: white;
+	background-color: black;
+	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+    font-size: 15px;
+}
+
+:not(input)::-moz-selection { /* Code for Firefox */
+    color: black;
+    background: white;
+}
+
+:not(input)::selection {
+    color: black; 
+    background: white;
+}
+
+.pageCenter {
+    text-align: center;
+}
+
+.pageContainer {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	top: 2.5vmin;
+	height: 95vmin;
+	border: 1px solid rgba(255, 255, 255, .5);
+	background-color: black;
+	text-align: left;
+}
+
+#menubar {
+    display: inline-block;
+    text-align: left;
+    height: 20px;
+    margin: 0;
+    padding: 5px;
+    list-style-type: none;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#menubar > li {
+    display: inline-block;
+    padding: 0 5px;
+    margin: 0;
+    height: 20px;
+    -webkit-transition: background-color 0.2s;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    line-height: 20px;
+    vertical-align: middle;
+}
+
+.source-code-link {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: inline-block;
+    margin: 5px;
+}
+
+.source-code-link a {
+    color: gray;
+}
+
+#menubar > li > span {
+    display: inline-block;
+}
+
+#menubar > li .logo {
+    position: relative;
+    top: -0.15vmin;
+    height: 3vmin;
+    vertical-align: middle;
+    margin-right: 0.5vmin;
+    height: 100%;
+}
+
+#menubar > li:hover {
+    background-color: gray;
+}
+
+.titlebarText {
+    color: gray;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 5px;
+    line-height: 10px;
+}
+
+.separator {
+    position: absolute;
+    left: 0;
+    top: 30px;
+    width: 100%;
+    border-bottom: solid gray 1px;
+}
+
+.gameContainer {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: calc(95vmin - 30px);
+	height: calc(95vmin - 30px);
+	background-color: black;
+	font-size: 100%;
+	-moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+.sidebar {
+    display: inline-block;
+    width: 200px;
+    height: 84vmin;
+    margin: 1em;
+    overflow: auto;
+}
+
+#automatune-instructions {
+    color: gray;
+    text-align: left;
+    border: solid gray 1px;
+    padding: 0 10px;
+}
+
+#automatune-instructions a {
+    color: #CCCCCC;
+}
+
+.playback-controls {
+    margin: 1em auto;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.playback-icon {
+    display: inline-block;
+    width: 5vmin;
+    height: 5vmin;
+    padding: 1vmin;
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    border-radius: 10%;
+}
+
+.playback-icon:hover {
+    -webkit-transition: background-color 0.2s;
+    transition: background-color 0.2s;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.playback-icon.active {
+    background-color: #AD2424;
+}
+
+.playback-icon.active:hover {
+    background-color: red;
+}
+
+.playback-icon > img {
+    width: 100%;
+    height: 100%;
+}
+
+/* TODO: Display this button after it gets implemented */
+.playback-reset {
+    display: none;
+}
+
+#share-this-tune {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    background-color: #3F5AA6;
+    margin: 20px 0;
+    box-sizing: border-box;
+    border-radius: 11px;
+    cursor: pointer;
+}
+
+.gridCellDiv {
+	position: absolute;
+	box-sizing: border-box;
+	overflow: hidden;
+	background-color: rgba(255, 255, 255, 0.3);
+	-webkit-transition: background-color 0.2s, -webkit-transform 0.5s;
+	transition: background-color 0.2s, transform 0.5s;
+	border-radius: 10%;
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	cursor: pointer;
+}
+
+.gridCellDiv:hover {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.gridCellDiv.active {
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.gridCellProperty {
+	width: 100%;
+	height: 100%;
+	visibility: hidden;
+}
+
+.gridCellProperty.active {
+    visibility: visible;
+}
+
+.gridCellProperty > img {
+    width: 100%;
+	height: 100%;
+}
+
+.modifiersContainer {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    text-align: right;
+}
+
+.gridVisitor {
+	position: absolute;
+	background-color: white;
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+.tileicon {
+    display: inline-block;
+}
+
+.tileicon.note {
+    margin: 5%;
+    width: 15%;
+    height: 15%;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.floatnote {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: white;
+    pointer-events: none;
+    opacity: 0;
+}
+
