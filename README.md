@@ -1,6 +1,12 @@
 ## Automatune ##
 
-Grid-based procedural music editor. Code status: incomplete.
+Grid-based procedural music editor. Code status: incomplete. For more info, please visit my portfolio page at:
+
+https://www.maxlaumeister.com/software/automatune/
+
+To play around with the newest version of the app, visit:
+
+https://automatune.maxlaumeister.com/
 
 ### Building ###
 
