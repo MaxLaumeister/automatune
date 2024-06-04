@@ -482,7 +482,6 @@ $(document).ready(function() {
 Automatune.browserSupported = 
         (
             bowser.chrome ||
-            bowser.firefox ||
             (bowser.msie && bowser.version >= 11)
         ) &&
         !bowser.mobile &&
